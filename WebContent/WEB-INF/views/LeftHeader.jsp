@@ -1,24 +1,4 @@
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-    <!-- Font Awesome-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!--For Webpage Logo-->
-    <link rel="shortcut icon" href="images/logo3-plane.png">
-
-    <!--For Multiple Select-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-
-    <!-- For Search Table -->
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-
-
+    
     <style>
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
@@ -700,28 +680,28 @@
         <ul class="categories">
             <li><i class="fa fa-home fa-fw" aria-hidden="true"></i><a>Dashboard</a>
                 <ul class="side-nav-dropdown">
-                    <li class="import_admin hide_sidebar_button import_admin_dashboard" pagename="home" textname="Dashboard"><a href="AdminDashboard.aspx">Home</a></li>                    
+                    <li class="import_admin hide_sidebar_button import_admin_dashboard" pagename="home" textname="Dashboard"><a href="admindashboard">Home</a></li>                    
                 </ul>
             </li>
 
             <li><i class="fa fa-support fa-fw"></i><a>Group</a>
                 <ul class="side-nav-dropdown">
-                    <li class="import_admin hide_sidebar_button" pagename="create_user_group" textname="New User"><a href="AdminCreateUserGroup.aspx">Insert User</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="user_group" textname="User List"><a href="AdminUserGroup.aspx">View Users</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="print_user_group" textname="Report"><a href="DownloadReport.aspx">Download Report</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="create_user_group" textname="New User"><a href="admincreateusergroup">Insert User</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="user_group" textname="User List"><a href="adminusergroup">View Users</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="print_user_group" textname="Report"><a href="downloadreport">Download Report</a></li>
                 </ul>
             </li>
 
-            <li><i class="fa fa-tasks fa-fw"></i><a>services</a>
+            <li><i class="fa fa-tasks fa-fw"></i><a>services</a> 
                 <ul class="side-nav-dropdown">
-                    <li class="import_admin hide_sidebar_button" pagename="create_bill" textname="Bill Creation Page"><a href="AdminCreateBill.aspx">Create Bill</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="create_meter" textname="Meter Creation Page"><a href="AdminCreateMeter.aspx">Create Meter</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="meter_list" textname="Meter List"><a href="AdminMeterList.aspx">View Meter</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="print_user_group" textname="Report"><a href="DownloadMeterReport.aspx">Download Meter Report</a></li>
-					<li class="import_admin hide_sidebar_button" pagename="company_readings" textname="CompanyReadings"><a href="CompanyReadings.aspx">Create Company Readings</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="download_company_readings" textname="DownloadCompanyReadingsReport"><a href="CompanyReading_Report.aspx">Download Company Readings Report</a></li>
-                                        <li class="import_admin hide_sidebar_button" pagename="create_shop_details" textname="CreateShopDetails"><a href="CreateShopDetails.aspx">Create Shop Details</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="view_shop_details" textname="ViewShopDetails"><a href="ViewShopDetails.aspx">View Shop Details</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="create_bill" textname="Bill Creation Page"><a href="admincreatebill">Create Bill</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="create_meter" textname="Meter Creation Page"><a href="admincreatemeter">Create Meter</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="meter_list" textname="Meter List"><a href="adminmeterlist">View Meter</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="print_user_group" textname="Report"><a href="downloadmeterreport">Download Meter Report</a></li>
+					<li class="import_admin hide_sidebar_button" pagename="company_readings" textname="CompanyReadings"><a href="companyreadings">Create Company Readings</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="download_company_readings" textname="DownloadCompanyReadingsreport"><a href="companyreadingreport">Download Company Readings Report</a></li>
+                                        <li class="import_admin hide_sidebar_button" pagename="create_shop_details" textname="CreateShopDetails"><a href="createshopdetails">Create Shop Details</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="view_shop_details" textname="ViewShopDetails"><a href="viewshopdetails">View Shop Details</a></li>
                 </ul>
             </li>
 
@@ -731,4 +711,5 @@
         
     </aside>
 
-  
+<jsp:include page="Loader.jsp"/> 
+   

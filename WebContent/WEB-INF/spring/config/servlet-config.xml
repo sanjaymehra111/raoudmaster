@@ -36,7 +36,7 @@
 	
 	<bean id="db" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://103.117.180.175:3306/serviceonway" />
+		<property name="url" value="jdbc:mysql://103.117.180.175:3306/raoudmarket" />
 		<property name="username" value="root" />
 		<property name="password" value="BGk3FVgKXR" />
 	</bean>

@@ -1,6 +1,29 @@
-﻿<%@ Page Title="Company Readings" Language="C#" MasterPageFile="~/Dashboard.Master" AutoEventWireup="true" CodeBehind="CompanyReadings.aspx.cs" Inherits="EPMain.CompanyReadings" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+<html>
+<head>
+
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <!-- Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--For Webpage Logo-->
+    <link rel="shortcut icon" href="images/logo3-plane.png">
+
+    <!--For Multiple Select-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+    <!-- For Search Table -->
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+
     <style type="text/css">
         .test-1 {
             background-color: rgba(255, 255, 255, 0.932);
@@ -96,6 +119,8 @@
             }
         }
     </style>
+    
+    
     <script>
 
         $(function () {
@@ -106,45 +131,39 @@
 
             $(".user_save_button3").click(function () {
                 var a = 5;
-                $(".text_field3").each(function () {
-                    if ($(this).val() == "")
-                        a = a - 1;
+                $(".validation_check").each(function () {
+                    if ($(this).val() == ""){
+                    	$(this).css({"border-bottom":"solid 1px red"});
+                    	a = a - 1;
+                    }
+                    else{
+                    	$(this).css({"border-bottom":""});
+                    }
                 })
                 if (a != 5)
                     $(".insert_error_alert").css({ "font-size": "15px" });
                 else {
                     $(".insert_error_alert").css({ "font-size": "0px" });
+                    
+                    $(function(){
+                		console.log("Stored data");
+                	})
                 }
             }); //user_save_button3 click close
 
         })
 
     </script>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cp" runat="server">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <i class="fa fa-align-right"></i>
-                </button>
-                <a class="navbar-brand" href="#">My <span class="main-color pagename">Company Reading Detail</span></a>
-            </div>
-            <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <i data-show="show-side-navigation1" style="color: white; font-size: 18px; margin-top: 15px; padding: 5px; cursor: pointer; float: right;" class="fa fa-bars show-side-btn"></i>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Dashboard <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+    
+ 
+</head>
 
-                            <li><a href="logout.aspx"><i class="fa fa-sign-out"></i>Log out</a></li>
-                        </ul>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </nav>
+	<jsp:include page="LeftHeader.jsp"/> 
+    <section id="contents">
+	<jsp:include page="TopHeader.jsp"/>
+	  
+	
+	
     <br>
     <br>
     <br>
@@ -155,21 +174,15 @@
                 <br>
                 <div class="col-md-2"></div>
                 <div class="col-md-4" style="text-align: center;">
-                     <i class="fa fa-dashboard fa_text_fonts1 fa_text_fonts12"></i>                    
-                    <asp:TextBox ID="txtMeter" runat="server" CssClass="text_field3" placeholder="User Meter Number*"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="User Meter Number Required*"
-                            SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtMeter">
-                    </asp:RequiredFieldValidator>
+                     <i class="fa fa-dashboard fa_text_fonts1 fa_text_fonts12"></i>  
+                     <input type="text" class="text_field3 validation_check user_meter_number" placeholder="User Meter Number*">
                     <br>
                     <br>
                     
                 </div>
                 <div class="col-md-4" style="text-align: center;">
-                    <i class="fa fa-map-marker fa_text_fonts1 fa_text_fonts12"></i>
-                    <asp:TextBox ID="txtBillReading" runat="server" CssClass="text_field3" placeholder="Total Bill Reading*"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage="Total Bill Reading Required*"
-                            SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtBillReading">
-                    </asp:RequiredFieldValidator>
+                    <i class="fa fa-pencil fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="text" class="text_field3 validation_check user_date validation_check user_bill_reading" placeholder="Total Bill Reading*">
                     <br>
                     <br>                   
                 </div>
@@ -180,9 +193,8 @@
                     <br>
                     <p class="insert_error_alert">Please Insert All Necessary Details (*)</p>
                     <br>
-                    <div class="user_buttons">                        
-                        <asp:Button ID="btnUpdate" Text="Submit" runat="server" ValidationGroup="upd" CssClass="user_edit_button2 user_save_button3" OnClick="btnUpdate_Click" />                        
-                        <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
+                    <div class="user_buttons">       
+                    <button class="user_edit_button2 user_save_button3">Submit</button> 
                     </div>
                 </div>
                 <div class="container-fluid"></div>
@@ -191,4 +203,8 @@
             </div>
         </div>
     </div>
-</asp:Content>
+
+    </section>
+    
+    </html>
+   

@@ -1,6 +1,29 @@
-﻿<%@ Page Title="Create Shop Details" Language="C#" MasterPageFile="~/Dashboard.Master" AutoEventWireup="true" CodeBehind="CreateShopDetails.aspx.cs" Inherits="EPMain.CreateShopDetails" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+<html>
+<head>
+
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <!-- Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--For Webpage Logo-->
+    <link rel="shortcut icon" href="images/logo3-plane.png">
+
+    <!--For Multiple Select-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+    <!-- For Search Table -->
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+
     <style type="text/css">
         .test-1 {
             background-color: rgba(255, 255, 255, 0.932);
@@ -97,32 +120,46 @@
         }
     </style>
     
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cp" runat="server">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <i class="fa fa-align-right"></i>
-                </button>
-                <a class="navbar-brand" href="#">Create<span class="main-color pagename"> Shop Details</span></a>
-            </div>
-            <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <i data-show="show-side-navigation1" style="color: white; font-size: 18px; margin-top: 15px; padding: 5px; cursor: pointer; float: right;" class="fa fa-bars show-side-btn"></i>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Dashboard <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+    <script>
 
-                            <li><a href="logout.aspx"><i class="fa fa-sign-out"></i>Log out</a></li>
-                        </ul>
-                    </li>
+        $(function () {
+            $(".text_field3").focus(function () {
+                $(".fa_text_fonts12").css({ "color": "#6f6486" });
+                $(this).prev(".fa_text_fonts1").css({ "color": "rgb(9, 156, 156)" });
+            })
 
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <br>
+            $(".user_save_button3").click(function () {
+                var a = 5;
+                $(".validation_check").each(function () {
+                	if ($(this).val() == ""){
+                    	$(this).css({"border-bottom":"solid 1px red"});
+                    	a = a - 1;
+                    }
+                    else{
+                    	$(this).css({"border-bottom":""});
+                    }
+                })
+                if (a != 5)
+                    $(".insert_error_alert").css({ "font-size": "15px" });
+                else {
+                    $(".insert_error_alert").css({ "font-size": "0px" });
+                    $(function(){
+                		console.log("Stored data");
+                	}) 
+                }
+            }); //user_save_button3 click close
+
+        })
+
+    </script>
+</head>
+
+	<jsp:include page="LeftHeader.jsp"/> 
+    <section id="contents">
+	<jsp:include page="TopHeader.jsp"/>
+	  
+	
+	    <br>
     <br>
     <br>
     <div class="admin_create_user">
@@ -130,72 +167,52 @@
             <div class="test-1">
                 <br>
                 <br>
-                <div class="col-md-2"></div>
-                <div class="col-md-4" style="text-align: center;">
-                    <i class="fa fa-user fa_text_fonts1 fa_text_fonts12"></i>
-                    <asp:TextBox ID="txtShopName" runat="server" CssClass="text_field3" placeholder="Shop Name*" TabIndex="1"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvShopName" runat="server" ErrorMessage="Shop Name Required*"
-                        SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtShopName">
-                    </asp:RequiredFieldValidator>
-                    <br>
-                    <br>
-                    Contact Number
-                    
-                    <asp:TextBox ID="txtContactNumber" runat="server" CssClass="text_field3"  TabIndex="3"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Contact Number Required*"
-                        SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtContactNumber">
-                    </asp:RequiredFieldValidator>
-                    <br>
+                <div class="col-md-6" style="text-align: center;">
+                    <i class="fa fa-home fa_text_fonts1 fa_text_fonts12"></i>
+                     <input type="text" class="text_field3 validation_check shop_name" placeholder="Shop Name*">
+                     <br>
                     <br>
                 </div>
-                <div class="col-md-4" style="text-align: center;">
-
-                    <i class="fa fa-envelope fa_text_fonts1 fa_text_fonts12"></i>
-                    <asp:TextBox ID="txtShopOwnerName" runat="server" CssClass="text_field3" placeholder="Shop Owner Name*"  TabIndex="2"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Shop Owner Name Required*"
-                        SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtShopOwnerName">
-                    </asp:RequiredFieldValidator>
+                
+                <div class="col-md-6" style="text-align: center;">
+	                <i class="fa fa-phone fa_text_fonts1 fa_text_fonts12"></i>
+	                <input type="number" class="text_field3 validation_check user_contact" placeholder="Contact Number*">
+	                <br>
+	                <br> 
+	            </div>
+	                
+                <div class="col-md-6" style="text-align: center;">
+                    <i class="fa fa-user fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="text" class="text_field3 validation_check user_name" placeholder="Shop Owner Name*">
                     <br>
                     <br>                    
-                    Bill DateFrom 
-                    <asp:TextBox ID="txtBillDateFrom" runat="server" TextMode="Date" CssClass="text_field3" placeholder="Bill Date From*"  TabIndex="4"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="Bill Date From Required*"
-                        SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtBillDateFrom">
-                    </asp:RequiredFieldValidator>
+                </div>
+                
+                <div class="col-md-6" style="text-align: center;">
+                    <i class="fa fa-map-marker fa_text_fonts1 fa_text_fonts12"></i> 	
+                     <input type="text" class="text_field3 validation_check user_address" placeholder="Shop Address*">
                     <br>
                     <br>
                 </div>
-                <br>
-                <br>
-                <div class="col-md-12"></div>
-                <div class="col-md-2"></div>
-                <div class="col-md-4" style="text-align: center;">
-                    Bill DateTo 
-                    <asp:TextBox ID="txtBillDateTo" runat="server" TextMode="Date" CssClass="text_field3" placeholder="Bill Date To*" TabIndex="5"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage="Bill Date To Required*"
-                        SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtBillDateTo">
-                    </asp:RequiredFieldValidator>
+                
+                
+                <div class="col-md-6" style="text-align: center;">
+	                <i class="fa fa-calendar-check-o fa_text_fonts1 fa_text_fonts12"></i>
+	                <input type="text" onfocus="(this.type='date')" class="text_field3 validation_check date_from" placeholder="Bill Date From*">
+	                <br>
+	                <br> 
+	            </div>
+
+                <div class="col-md-6" style="text-align: center;">
+                	<i class="fa fa-calendar-times-o fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="text" onfocus="(this.type='date')" class="text_field3 validation_check date_to" placeholder="Bill Date To*">
                     <br>
                     <br>
                 </div>
-                <div class="col-md-4" style="text-align: center;">
-                </div>
-                <div class="col-md-12"></div>
-                <div class="col-md-2"></div>
-                <div class="col-md-8" style="text-align: center;">
-                    <i class="fa fa-map-marker fa_text_fonts1 fa_text_fonts12"></i>
-                    <asp:TextBox ID="txtShopAddress" runat="server" CssClass="text_field3" placeholder="Shop Address*"  TabIndex="6"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="Shop Address Required*"
-                        SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtShopAddress">
-                    </asp:RequiredFieldValidator>
-                    <br>
-                    <br>
-                </div>
-                <div class="col-md-12"></div>
-                <div class="col-md-2"></div>
-                <div class="col-md-8">
-                    Bill Photo Upload
-                    <asp:FileUpload ID="imgBill" runat="server"  TabIndex="7" />
+
+                
+                <div class="col-md-12">
+                     <input type="file" class="text_field3 validation_check user_file" placeholder="Upload File*">
                     <br>
                     <br>
                 </div>
@@ -204,8 +221,7 @@
                     <p class="insert_error_alert">Please Insert All Necessary Details (*)</p>
                     <br>
                     <div class="user_buttons">
-                        <asp:Button ID="btnSubmit" Text="Submit" runat="server"  TabIndex="8" ValidationGroup="upd" CssClass="user_edit_button2 user_save_button3" OnClick="btnSubmit_Click" />
-                        <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
+                    <button class="user_edit_button2 user_save_button3">Submit</button>
                     </div>
                 </div>
                 <div class="container-fluid"></div>
@@ -214,4 +230,7 @@
             </div>
         </div>
     </div>
-</asp:Content>
+    </section>
+    
+    </html>
+    

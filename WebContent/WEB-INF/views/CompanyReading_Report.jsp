@@ -1,55 +1,45 @@
-﻿<%@ Page Title="Download Company Reading Report" Language="C#" MasterPageFile="~/Dashboard.Master" AutoEventWireup="true" CodeBehind="CompanyReading_Report.aspx.cs" Inherits="EPMain.CompanyReading_Report" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cp" runat="server">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <i class="fa fa-align-right"></i>
-                </button>
-                <a class="navbar-brand" href="#">My <span class="main-color pagename">Company Reading Report</span></a>
-            </div>
-            <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <i data-show="show-side-navigation1" style="color: white; font-size: 18px; margin-top: 15px; padding: 5px; cursor: pointer; float: right;" class="fa fa-bars show-side-btn"></i>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Dashboard <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
-                            <li><a href="logout.aspx"><i class="fa fa-sign-out"></i>Log out</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+<html lang="en">
+<head>
+    <title>View Users</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--For Webpage Logo-->
+    <link rel="shortcut icon" href="images/logo3-plane.png" />
+
+    <!--For Multiple Select-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+    <!-- For Search Table -->
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    
+
+</head>
+
+	<jsp:include page="LeftHeader.jsp"/> 
+    <section id="contents">
+	<jsp:include page="TopHeader.jsp"/>
+	  
+	
+  
+    <div>
+	    <div class="col-md-12">
+        <div class="test-1">
+          
+          data 
+            
         </div>
-    </nav>
-    <br>
-    <br>
-    <br>
-
-    <div class="col-md-12" style="overflow-x: auto; height: auto">
-        <asp:GridView ID="grvReport" runat="server"
-            BackColor="White" BorderColor="#E7E7FF"
-            BorderStyle="None" BorderWidth="1px" CellPadding="3"
-            GridLines="Horizontal" Width="100%">
-            <AlternatingRowStyle BackColor="#F7F7F7" />
-            <FooterStyle BackColor="#B5C7DE" ForeColor="#4A3C8C" />
-            <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#F7F7F7" />
-            <PagerStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" HorizontalAlign="Right" />
-            <RowStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" />
-            <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="#F7F7F7" />
-            <SortedAscendingCellStyle BackColor="#F4F4FD" />
-            <SortedAscendingHeaderStyle BackColor="#5A4C9D" />
-            <SortedDescendingCellStyle BackColor="#D8D8F0" />
-            <SortedDescendingHeaderStyle BackColor="#3E3277" />
-        </asp:GridView>
-
     </div>
-    <div class="col-md-12">
-        <br />
-        <asp:Button ID="btnDownload" runat="server" CssClass="btn btn-primary" Text="Download Company Reading Report" OnClick="btnDownload_Click" />
-        <br />
-        <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
     </div>
-</asp:Content>
+   
+	
+	</section>
+</html>

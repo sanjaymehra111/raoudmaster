@@ -1,6 +1,28 @@
-﻿<%@ Page Title="Insert User" Language="C#" MasterPageFile="~/Dashboard.Master" AutoEventWireup="true" CodeBehind="AdminCreateUserGroup.aspx.cs" Inherits="EPMain.AdminCreateUserGroup" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<html>
+<head>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <!-- Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--For Webpage Logo-->
+    <link rel="shortcut icon" href="images/logo3-plane.png">
+
+    <!--For Multiple Select-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+    <!-- For Search Table -->
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+
     <style type="text/css">
         .test-1 {
             background-color: rgba(255, 255, 255, 0.932);
@@ -106,118 +128,127 @@
 
             $(".user_save_button3").click(function () {
                 var a = 5;
-                $(".text_field3").each(function () {
-                    if ($(this).val() == "")
-                        a = a - 1;
+                $(".validation_check").each(function () {
+                    if ($(this).val() == ""){
+                    	$(this).css({"border-bottom":"solid 1px red"});
+                    	a = a - 1;
+                    }
+                    else{
+                    	$(this).css({"border-bottom":""});
+                    }
                 })
                 if (a != 5)
                     $(".insert_error_alert").css({ "font-size": "15px" });
                 else {
                     $(".insert_error_alert").css({ "font-size": "0px" });
+
+                	$(function(){
+                		StartLoader();
+                		name = $(".user_name").val();
+                		contact = $(".user_contact").val();
+                		email  = $(".user_email").val();
+                		address = $(".user_address").val();
+                		meter = $(".user_meter_number").val();
+                		reading = $(".user_bill_reading").val();
+                		
+                		$.ajax({
+                			url:"CreateUserGroup",
+                			data:{"name":name, "contact":contact, "email":email, "meter":meter, "reading":reading, "address":address}, 
+                			type:"post",
+                			dataType:"text",
+                			success:function(e){
+                				CloseLoader();
+                				 $(".validation_check").val(""); 
+                				//console.log("Success", e);
+                			},
+                			error:function(){
+                				CloseLoader();
+                				console.log("User Creation Server Error");
+                			}
+                			
+                		}) // ajax close
+                	})// function close
+                	
                 }
             }); //user_save_button3 click close
 
         })
 
     </script>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cp" runat="server">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <i class="fa fa-align-right"></i>
-                </button>
-                <a class="navbar-brand" href="#">My <span class="main-color pagename">New User</span></a>
-            </div>
-            <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <i data-show="show-side-navigation1" style="color: white; font-size: 18px; margin-top: 15px; padding: 5px; cursor: pointer; float: right;" class="fa fa-bars show-side-btn"></i>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Dashboard <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                      
-                            <li><a href="logout.aspx"><i class="fa fa-sign-out"></i>Log out</a></li>
-                        </ul>
-                    </li>
-                    
-                </ul>
-            </div>
-        </div>
-    </nav>
+
+
+</head>
+
+	<jsp:include page="LeftHeader.jsp"/> 
+    <section id="contents">
+	<jsp:include page="TopHeader.jsp"/>
+	  
+	
+	 
+    
     <br><br><br>
     <div class="admin_create_user">
         <div class="col-md-12">
             <div class="test-1">
                 <br>
                 <br>
-                <div class="col-md-2"></div>
+                <div class="col-md-2"></div>  
                 <div class="col-md-4" style="text-align: center;">
-                    <i class="fa fa-user fa_text_fonts1 fa_text_fonts12"></i>                    
-                    <asp:TextBox ID="txtUsername" runat="server" CssClass="text_field3" placeholder="User Name*"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvUsername" runat="server" ErrorMessage="User Name Required*"
-                            SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtUsername">
-                    </asp:RequiredFieldValidator>
-                    <br>
-                    <br>
-
-                    <i class="fa fa-phone fa_text_fonts1 fa_text_fonts12"></i>                    
-                    <asp:TextBox ID="txtContact" runat="server" CssClass="text_field3" TextMode="Number" placeholder="User Contact*" 
-                        onkeypress="if(this.value.length>=10) return false"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="User Contact Required*"
-                            SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtContact">
-                    </asp:RequiredFieldValidator>
-                    <br>
-                    <br>
-                </div>
-                <div class="col-md-4" style="text-align: center;">
-
-                    <i class="fa fa-envelope fa_text_fonts1 fa_text_fonts12"></i>                    
-                    <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" CssClass="text_field3" placeholder="User E-Mail*"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="User E-Mail Required*"
-                            SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtEmail">
-                    </asp:RequiredFieldValidator>
-                    <br>
-                    <br>
-
-                    <i class="fa fa-dashboard fa_text_fonts1 fa_text_fonts12"></i>                    
-                    <asp:TextBox ID="txtMeter" runat="server" CssClass="text_field3" placeholder="User Meter Number*"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="User Meter Number Required*"
-                            SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtMeter">
-                    </asp:RequiredFieldValidator>
-                    <br>
-                    <br>
-                </div>
-                <div class="col-md-12"></div>
-                <div class="col-md-2"></div>                
-                <div class="col-md-8" style="text-align: center;">
-                    <i class="fa fa-map-marker fa_text_fonts1 fa_text_fonts12"></i>                    
-                    <asp:TextBox ID="txtPrevBillReading" runat="server" CssClass="text_field3" placeholder="Previous Bill Reading*"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage="Previous Bill Reading Required*"
-                            SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtPrevBillReading">
-                    </asp:RequiredFieldValidator>
-                    <br>
-                    <br>
-                </div>
-                <div class="col-md-12"></div>
-                <div class="col-md-2"></div>                
-                <div class="col-md-8" style="text-align: center;">
-                    <i class="fa fa-map-marker fa_text_fonts1 fa_text_fonts12"></i>                    
-                    <asp:TextBox ID="txtAddress" runat="server" CssClass="text_field3" placeholder="User Address*"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="User Address Required*"
-                            SetFocusOnError="true" ForeColor="Red" ValidationGroup="upd" ControlToValidate="txtAddress">
-                    </asp:RequiredFieldValidator>
+                    <i class="fa fa-user fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="text" class="text_field3 validation_check user_name" placeholder="User Name*">
                     <br>
                     <br>
                 </div>
                 
+                <div class="col-md-4" style="text-align: center;">
+                    <i class="fa fa-phone fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="number" class="text_field3 validation_check user_contact" placeholder="User Contact*">
+                    <br>
+                    <br>
+                </div>
+                
+                <div class="col-md-12"></div>
+                <div class="col-md-2"></div>
+                
+                <div class="col-md-4" style="text-align: center;">
+                    <i class="fa fa-envelope fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="text" class="text_field3 validation_check user_email" placeholder="User E-Mail*">
+                    <br>
+                    <br>
+                </div>
+                
+                  <div class="col-md-4" style="text-align: center;">
+                    <i class="fa fa-map-marker fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="text" class="text_field3 validation_check user_address" placeholder="User Address*">
+                    <br>
+                    <br>
+                </div>
+                
+                <div class="col-md-12"></div>
+                <div class="col-md-2"></div>                
+                
+                <div class="col-md-4" style="text-align: center;">
+				    <i class="fa fa-dashboard fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="text" class="text_field3 validation_check user_meter_number" placeholder="User Meter Number*">
+                    <br>
+                    <br>
+                </div>
+                
+                <div class="col-md-4" style="text-align: center;">
+                    <i class="fa fa-pencil fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="number" class="text_field3 validation_check user_bill_reading" placeholder="Previous Bill Reading*">
+                    <br>
+                    <br>
+                </div>
+                
+              
+              
                 <div class="col-md-12" style="text-align: center;">
                     <br>
                     <p class="insert_error_alert">Please Insert All Necessary Details (*)</p>
                     <br>
-                    <div class="user_buttons">                        
-                        <asp:Button ID="btnUpdate" Text="Create New User" runat="server" ValidationGroup="upd" CssClass="user_edit_button2 user_save_button3" OnClick="btnUpdate_Click" />                        
-                        <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
+                    <div class="user_buttons">
+                    <button class="user_edit_button2 user_save_button3">Create New User</button>
                     </div>
                 </div>
                 <div class="container-fluid"></div>
@@ -226,4 +257,6 @@
             </div>
         </div>
     </div>
-</asp:Content>
+</section>
+
+</html>

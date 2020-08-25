@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
 <html>
 <head>
     <title>Login</title>
@@ -171,6 +173,31 @@
                 else {
                     $(".admin_id").css({ "border-bottom": "solid 1px rgba(134, 129, 128, 0.699)" });
                     $(".admin_pwd").css({ "border-bottom": "solid 1px rgba(134, 129, 128, 0.699)" });
+                    
+                    $(function(){
+                    	StartLoader();
+                		id = $(".admin_id").val();
+                		pwd = $(".admin_pwd").val();
+                		
+                		$.ajax({
+                			url:"AdminLoginCheck",
+                			data:{"id":id, "pwd":pwd}, 
+                			type:"post",
+                			dataType:"text",
+                			success:function(res){
+                				CloseLoader();
+                				console.log("Response : ", res);
+                				if(res == "success")
+                					window.location.href="AdminDashboard";
+                				else
+                					alert("INCORRECT ID/PASSWORD");
+                			},
+                			error:function(){ CloseLoader(); console.log("Admin Login Server Error");}
+                			
+                		}) // ajax close
+                	})// function close
+                	
+                	
                 }
             })
         })
@@ -178,8 +205,12 @@
     </script>
 </head>
 
+
+<jsp:include page="Loader.jsp"/> 
+   
+
 <body style="background-image: linear-gradient(#d9edf7, rgb(234, 215, 215), rgb(162, 234, 197)); background-size: 100% 130%;">
-    <form id="frm" autocomplete="off">
+   
         <div class="user_profile">
             <br />
             <br />
@@ -220,6 +251,6 @@
         </div>
         <br />
         
-    </form>
+   
 </body>
 </html>

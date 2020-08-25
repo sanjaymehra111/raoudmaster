@@ -1,7 +1,30 @@
-﻿<%@ Page Title="Meter Creation Page" Language="C#" MasterPageFile="~/Dashboard.Master" AutoEventWireup="true" CodeBehind="AdminCreateMeter.aspx.cs" Inherits="EPMain.AdminCreateMeter" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<html>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style type="text/css">
+<head>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <!-- Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--For Webpage Logo-->
+    <link rel="shortcut icon" href="images/logo3-plane.png">
+
+    <!--For Multiple Select-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+    <!-- For Search Table -->
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+
+ <style type="text/css">
         .test-1 {
             background-color: rgba(255, 255, 255, 0.932);
             box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.308);
@@ -108,68 +131,64 @@
 
             $(".user_save_button3").click(function () {
                 var a = 5;
-                $(".text_field3").each(function () {
-                    if ($(this).val() == "")
-                        a = a - 1;
-                })
+                $(".validation_check").each(function () {
+                	 $(".insert_error_alert").css({ "font-size": "0px" });
+
+                	 if ($(this).val() == ""){
+                     	$(this).css({"border-bottom":"solid 1px red"});
+                     	a = a - 1;
+                     }
+                     else{
+                     	$(this).css({"border-bottom":""});
+                     }
+                	 
+                 })
                 if (a != 5)
                     $(".insert_error_alert").css({ "font-size": "15px" });
                 else {
-                    $(".insert_error_alert").css({ "font-size": "0px" });
+                	 $(".insert_error_alert").css({ "font-size": "0px" });
+
+                 	$(function(){
+                 		console.log("Stored data");
+                 	})
                 }
             }); //user_save_button3 click close
 
         })
     </script>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cp" runat="server">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <i class="fa fa-align-right"></i>
-                </button>
-                <a class="navbar-brand" href="#">My <span class="main-color pagename">Meter Creation Page</span></a>
-            </div>
-            <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <i data-show="show-side-navigation1" style="color: white; font-size: 18px; margin-top: 15px; padding: 5px; cursor: pointer; float: right;" class="fa fa-bars show-side-btn"></i>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Dashboard <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="logout.aspx"><i class="fa fa-sign-out"></i>Log out</a></li>
-                        </ul>
-                    </li>
-                    
-                </ul>
-            </div>
-        </div>
-    </nav>
+</head>
+
+	<jsp:include page="LeftHeader.jsp"/> 
+    <section id="contents">
+	<jsp:include page="TopHeader.jsp"/>
+	  
+	
     <br />
     <div class="admin_create_user">
-        <div class="col-md-12">
+        
+        <br>
+	    <br>
+	    
+	    <div class="col-md-12">
             <div class="test-1">
                 <br>
                 <br>
 
                 <div class="col-md-4" style="text-align: center;">
                     <i class="fa fa-dashboard fa_text_fonts1 fa_text_fonts12"></i>
-                    <asp:TextBox ID="txtMeterNum" runat="server" CssClass="text_field3" placeholder="User Meter Number*"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvMeterNum" runat="server" ControlToValidate="txtMeterNum" ErrorMessage="User Meter Number Required*" ForeColor="Red" ValidationGroup="sbm"></asp:RequiredFieldValidator>
+                    <input type="text" class="text_field3 validation_check user_meter_number" placeholder="User Meter Number*">
                     <br>
                     <br>
                 </div>
                 <div class="col-md-4" style="text-align: center;">
-                    <i class="fa fa-user fa_text_fonts1 fa_text_fonts12"></i>                    
-                    <asp:TextBox ID="txtShopName" runat="server" CssClass="text_field3" placeholder="Shop Name*"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtShopName" ErrorMessage="Shop Name Required*" ForeColor="Red" ValidationGroup="sbm"></asp:RequiredFieldValidator>
+                    <i class="fa fa-home fa_text_fonts1 fa_text_fonts12"></i>                    
+                    <input type="text" class="text_field3 validation_check user_shop_name" placeholder="Shop Name*">
                     <br>
                     <br>
                 </div>
                 <div class="col-md-4" style="text-align: center;">
-                    <i class="fa fa-inr fa_text_fonts1 fa_text_fonts12"></i>                    
-                    <asp:TextBox ID="txtMeterCharge" TextMode="Number" runat="server" CssClass="text_field3" placeholder="Meter Charge*"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtMeterCharge" ErrorMessage="Meter Charge Required*" ForeColor="Red" ValidationGroup="sbm"></asp:RequiredFieldValidator>
+                    <i class="fa fa-inr fa_text_fonts1 fa_text_fonts12"></i> 
+                    <input type="number" class="text_field3 validation_check user_meter_charge" placeholder="Meter Charge*">                   
                     <br>
                     <br>
                 </div>
@@ -179,9 +198,7 @@
                     <p class="insert_error_alert">Please Insert All Necessary Details (*)</p>
                     <br>
                     <div class="user_buttons">
-                        <asp:Button ID="btnSubmit" Text="Create Meter" runat="server" OnClick="btnSubmit_Click" CssClass="user_edit_button2 user_save_button3" ValidationGroup="sbm" />                        
-                        <br />
-                        <asp:Label ID="lblMessage" ForeColor="Red" runat="server"></asp:Label>
+                    <button class="user_edit_button2 user_save_button3 ">Create Meter</button>
                     </div>
                 </div>
                 <div class="container-fluid"></div>
@@ -190,4 +207,6 @@
             </div>
         </div>
     </div>
-</asp:Content>
+    
+</section>
+    </html>
