@@ -22,6 +22,13 @@
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 
 
+     <script>
+        $(function ImportPage() {
+        	$(".pagename").html("Dashboard");
+		});
+    </script>
+
+
 </head>
 
   	<jsp:include page="LeftHeader.jsp"/> 

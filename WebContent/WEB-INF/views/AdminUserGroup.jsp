@@ -21,6 +21,32 @@
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     
+    
+    <script>
+        $(function ImportPage() {
+        	$(".pagename").html("User's");
+		});
+    </script>
+    
+<script>
+
+$(function(){
+	StartLoader();
+	$.ajax({
+		url:"ViewUserGroup",
+		type:"post",
+		dataType:"json",
+		success:function(res){
+			CloseLoader();
+			console.log("Response : ", res);
+		},
+		error:function(){CloseLoader(); console.log("Admin View User Group Server Error");}
+		
+	}) // ajax close
+})// function close
+
+</script>
+
 
 </head>
 

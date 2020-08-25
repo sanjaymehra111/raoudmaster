@@ -650,21 +650,7 @@
     </script>
 
 
-    <script>
-
-
-        $(function ImportPage() {
-            $(".ImportPage").load("admin_home.html");
-            $(document).on("click", ".import_admin", function () {
-                var pn = $(this).attr("pagename");
-                var tn = $(this).attr("textname");
-                $(".pagename").html(tn);
-                $(".ImportPage").load("admin_" + pn + ".html");                
-            });
-
-        })
-
-    </script>
+   
 
 
     <aside class="side-nav" id="show-side-navigation1">

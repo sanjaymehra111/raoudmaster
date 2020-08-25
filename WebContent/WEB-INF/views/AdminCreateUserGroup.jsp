@@ -23,6 +23,13 @@
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 
 
+
+     <script>
+        $(function ImportPage() {
+        	$(".pagename").html("Create User");
+		});
+    </script>
+
     <style type="text/css">
         .test-1 {
             background-color: rgba(255, 255, 255, 0.932);

@@ -145,8 +145,28 @@
                 	$(".insert_error_alert").css({ "font-size": "0px" });
                 	
                 	$(function(){
-                		console.log("Stored data");
-                	})
+                		StartLoader();
+                		number = $(".user_meter_number").val();
+                		reading = $(".user_bill_reading").val();
+                		date  = $(".user_date").val();
+                		
+                		$.ajax({
+                			url:"CreateBill",
+                			data:{"number":number, "reading":reading, "date":date}, 
+                			type:"post",
+                			dataType:"text",
+                			success:function(e){
+                				CloseLoader();
+                				$(".validation_check").val(""); 
+                				//console.log("Success", e);
+                			},
+                			error:function(){
+                				CloseLoader();
+                				console.log("Bill Creation Server Error");
+                			}
+                			
+                		}) // ajax close
+                	})// function close
 
                 }
             }); //user_save_button3 click close
@@ -155,6 +175,12 @@
 
     </script>
     
+    
+     <script>
+        $(function ImportPage() {
+        	$(".pagename").html("Bill Creation Page");
+		});
+    </script>
  
 </head>
 
@@ -187,7 +213,7 @@
 
             <div class="col-md-4" style="text-align: center;">
                 <!-- <i class="fa fa-pencil fa_text_fonts1 fa_text_fonts12"></i> -->
-                <input type="date" class="text_field3 validation_check user_date" placeholder="Date*">
+                <input type="text" onfocus="(this.type='date')" class="text_field3 validation_check user_date" placeholder="Bill Date*">
                 <br>
                 <br>
             </div>

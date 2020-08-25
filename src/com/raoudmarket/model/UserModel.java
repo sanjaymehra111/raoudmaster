@@ -8,6 +8,7 @@ public class UserModel {
 	String id;
 	String name;
 	String contact;
+	String email;
 	String address;
 	String meter;
 	String reading;

@@ -24,6 +24,13 @@
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 
 
+
+     <script>
+        $(function ImportPage() {
+        	$(".pagename").html("Create Meter");
+		});
+    </script>
+
  <style type="text/css">
         .test-1 {
             background-color: rgba(255, 255, 255, 0.932);
@@ -148,9 +155,31 @@
                 else {
                 	 $(".insert_error_alert").css({ "font-size": "0px" });
 
-                 	$(function(){
-                 		console.log("Stored data");
-                 	})
+                	 $(function(){
+                 		StartLoader();
+                 		number = $(".user_meter_number").val();
+                 		shop = $(".user_shop_name").val();
+                 		charge  = $(".user_meter_charge").val();
+                 		
+                 		$.ajax({
+                 			url:"CreateMeter",
+                 			data:{"number":number, "shop":shop, "charge":charge}, 
+                 			type:"post",
+                 			dataType:"text",
+                 			success:function(e){
+                 				CloseLoader();
+                 				$(".validation_check").val(""); 
+                 				//console.log("Success", e);
+                 			},
+                 			error:function(){
+                 				CloseLoader();
+                 				console.log("Meter Creation Server Error");
+                 			}
+                 			
+                 		}) // ajax close
+                 	})// function close
+                 	
+                 	
                 }
             }); //user_save_button3 click close
 

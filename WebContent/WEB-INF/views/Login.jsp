@@ -186,9 +186,9 @@
                 			dataType:"text",
                 			success:function(res){
                 				CloseLoader();
-                				console.log("Response : ", res);
+                				//console.log("Response : ", res);
                 				if(res == "success")
-                					window.location.href="AdminDashboard";
+                					window.location.href="admindashboard";
                 				else
                 					alert("INCORRECT ID/PASSWORD");
                 			},

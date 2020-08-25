@@ -28,10 +28,23 @@ public class SessionController {
 	public String CheckSession(HttpSession session) throws IOException {
 		try {
 			SessionModel sn = (SessionModel) session.getAttribute("AdminSession");
+			//System.out.println("sess : "+sn);
 			if(sn != null)
 				return "success";
 			else
 				return "error";
+		}
+		catch(Exception e) {
+			System.out.println("Exception "+ e);
+			return "error";
+		}
+	}
+	
+	public String TerminateSession(HttpSession session) throws IOException {
+		try {
+			session.removeAttribute("UserSessionData");
+			session.invalidate();
+			return "success";
 		}
 		catch(Exception e) {
 			System.out.println("Exception "+ e);

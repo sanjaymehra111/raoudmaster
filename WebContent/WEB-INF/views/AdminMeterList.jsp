@@ -21,6 +21,277 @@
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     
+    
+
+<style>
+
+	
+	::-webkit-scrollbar {
+      background: transparent;
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #888;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: rgb(78, 75, 75);
+    }
+	
+    table.dataTable.dtr-inline.collapsed
+      > tbody
+      > tr[role="row"]
+      > td:first-child:before,
+    table.dataTable.dtr-inline.collapsed
+      > tbody
+      > tr[role="row"]
+      > th:first-child:before {
+      top: 28px;
+      left: 14px;
+      border: none;
+      box-shadow: none;
+    }
+    
+    table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child,
+    table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child {
+      padding-left: 48px;
+    }
+    
+    table.dataTable > tbody > tr.child ul.dtr-details {
+      width: 100%;
+    }
+    
+    table.dataTable > tbody > tr.child span.dtr-title {
+      min-width: 50%;
+    }
+    
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td.child,
+    table.dataTable.dtr-inline.collapsed > tbody > tr > th.child,
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td.dataTables_empty {
+      padding: 0.75rem 1rem 0.125rem;
+    }
+    
+    div.dataTables_wrapper div.dataTables_length label,
+    div.dataTables_wrapper div.dataTables_filter label {
+      margin-bottom: 0;
+    }
+    
+    
+    .btn-icon {
+      background: #fff;
+    }
+    .btn-icon .bx {
+      font-size: 20px;
+    }
+    
+    .btn .bx {
+      vertical-align: middle;
+      font-size: 20px;
+    }
+    
+    .dropdown-menu {
+      padding: 0.25rem 0;
+    }
+    
+    .dropdown-item {
+      padding: 0.5rem 1rem;
+    }
+    
+    .badge {
+    	font-size:12px;
+      padding: 0.5em 0.75em;
+      width: 48%;
+    } 
+    
+    .badge-unsuccess-alt:hover {
+      background-color: #e99a82;
+      color: #7e2f1b;
+    }
+    
+        .badge-unsuccess-alt {
+        cursor:pointer;
+      background-color: #d7f2c2;
+      color: #497922;
+    }
+    
+    
+    .table a {
+      color: #212529;
+    }
+    
+    .table a:hover,
+    .table a:focus {
+      text-decoration: none;
+    }
+    
+    table.dataTable {
+      margin-top: 12px !important;
+    }
+    
+    .icon > .bx {
+      display: block;
+      min-width: 1.5em;
+      min-height: 1.5em;
+      text-align: center;
+      font-size: 1.0625rem;
+    }
+    
+    .btn {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .avatar-blue {
+          background-color: #c8d9f1;
+          color: #467fcf;
+        }
+    
+        .avatar-pink {
+          background-color: #fcd3e1;
+          color: #f66d9b;
+        }
+        .table {
+          border-spacing: 0 1em;
+        border-collapse: collapse;
+    }
+    
+    .table_padding>tbody>tr>td
+    {
+          padding: 10px;
+          max-width: 200px; 
+        }
+        
+    .table>tbody>tr>td
+        {
+          padding: 15px;
+          min-width: 125px;
+        }
+    .row
+    {
+          margin-right: 0px;
+         margin-left: 0px;
+    }
+    
+    
+    .dataTables_length
+    {
+      text-align: left;
+    }
+    .dataTables_filter
+    {
+      text-align: center;
+    }
+    
+    label
+    {
+      font-size: 0px;
+    }
+    .dataTables_info
+    {
+      color: white;
+    }
+    .dataTables_info
+    {
+      margin-top:10px;
+    }
+  
+    /* 	tr:nth-child(odd){ 
+          background: #eeedfc;
+      }
+  
+      tr:nth-child(even){
+          background: #e4efff;
+      }
+   */
+      .table>thead:first-child>tr:first-child>th
+      {
+          min-width: 150px;
+      }
+      
+	  #example_filter {
+		  margin-left: -105%;
+	  }
+
+	  .text_center {
+		  text-align: center;
+	  }
+
+
+	
+	  @media(max-width:975px){
+		#example_filter {
+		  margin-left: 0%;
+	  }
+	  }
+      
+</style>
+
+     
+
+     <script>
+        $(function ImportPage() {
+        	$(".pagename").html("Meter List");
+		});
+        
+        $(function(){
+        	StartLoader();
+        	$.ajax({
+        		url:"ViewMeterList",
+        		type:"post",
+        		dataType:"json",
+        		success:function(data){
+        			CloseLoader();
+        			console.log("Response : ", data);
+        			var html="";
+        			for(var i=0; i<data.length; i++) {
+						html+='<tr>';
+						html+='<td>'+data[i].shop_name+'</td>';
+						html+='<td>'+data[i].number+'</td>';
+						html+='<td>'+data[i].charge+'</td>';
+						html+='<td>'+data[i].date+'</td>';
+					}
+        			$(".meterlist").html(html);
+        			
+        			$("#example").DataTable({
+						columnDefs: [ { type: 'date', 'targets': [2] } ],
+				    	order: [[2, 'desc' ]],
+						aaSorting: [],
+						responsive: true,
+						pageLength : 5,
+						"bLengthChange" : false, //thought this line could hide the LengthMenu
+			    		//"bInfo":false, 
+						
+						columnDefs: [
+							{
+								responsivePriority: 1,
+								targets: 0
+							},
+							{
+								responsivePriority: 2,
+								targets: -1
+							}
+						]
+					});	
+        			
+        			$("#example").wrap( "<div style='width:100%; overflow:scroll'></div>" );
+					$(".dataTables_filter input")
+					.attr("placeholder", "Search here...")
+					.css({
+					'text-align': "center",
+					background : 'transparent',
+					color:'white',
+					width:'250px'
+					});
+        		},
+        		error:function(){CloseLoader(); console.log("Admin View Meter List Server Error");}
+        		
+        	}) // ajax close
+        })// function close
+
+    </script>
+    
+    
 
 </head>
 
@@ -30,16 +301,28 @@
 	  
   
   
-    <div>
-	    <div class="col-md-12">
-        <div class="test-1">
-          
-          data 
+<div style="background-color: #d2d2d2; height: 100%;">
+<br>
+	<div style="background-color: #464646; border-radius: 5px;">
+	<br><br>
+	<div class="test-1" align="center">
+        <table id="example" class="table-bordered table_padding" style="width: 100%; color: white;">
+			<thead>
+				<tr>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Shop Name</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Number</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Charge</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Date</td>
+				</tr>
+			</thead>
+			<tbody style="font-size:12px" class="meterlist"></tbody>
+		</table>
             
-        </div>
     </div>
     </div>
+    <div class="container-fluid"></div> 
+</div>
    
 	
-	</section>
+</section>
 </html>

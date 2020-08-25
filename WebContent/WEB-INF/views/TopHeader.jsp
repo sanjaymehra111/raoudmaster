@@ -4,7 +4,7 @@
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <i class="fa fa-align-right"></i>
                 </button>
-                <a class="navbar-brand" href="#"><span class="main-color pagename">Meter List</span></a>
+                <a class="navbar-brand" href="#"><span class="main-color pagename"></span></a>
             </div>
             <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
