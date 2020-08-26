@@ -42,7 +42,22 @@ public class UserFunctionController {
 	public String CreateBill(@RequestParam String number, String reading, String date, HttpSession session) {
 		String sn = sccot.CheckSession(session);
 		if(sn == "success") {
-			ufdao.CreateBill(number, reading, date);
+		
+			List<UserModel> meter = ufdao.ViewMeterDetails(number);
+			
+			System.out.println("meter : "+meter);
+			
+			if(meter != null) {
+				float pr = Float.parseFloat(meter.get(0).getReading());
+				float cr = Float.parseFloat(reading);
+				
+				float total = (cr-pr)*9+200;
+				System.out.println("total : "+total);
+				ufdao.CreateBill(number, reading, date);
+			}
+			else {
+				return "meter_error";
+			}
 			return "success";
 		}
 		else

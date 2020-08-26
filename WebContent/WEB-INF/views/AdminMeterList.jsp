@@ -241,8 +241,7 @@
         		type:"post",
         		dataType:"json",
         		success:function(data){
-        			CloseLoader();
-        			console.log("Response : ", data);
+        			//console.log("Response : ", data);
         			var html="";
         			for(var i=0; i<data.length; i++) {
 						html+='<tr>';
@@ -283,6 +282,9 @@
 					color:'white',
 					width:'250px'
 					});
+					
+					CloseLoader();
+        			
         		},
         		error:function(){CloseLoader(); console.log("Admin View Meter List Server Error");}
         		

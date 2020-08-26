@@ -157,7 +157,10 @@
                 			dataType:"text",
                 			success:function(e){
                 				CloseLoader();
-                				$(".validation_check").val(""); 
+                    			if(e == "meter_error")
+                					alert("Meter Not Exist");
+                				else
+                					$(".validation_check").val(""); 
                 				//console.log("Success", e);
                 			},
                 			error:function(){

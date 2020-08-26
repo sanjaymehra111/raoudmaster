@@ -87,6 +87,31 @@ public class UserFunctionDaoImpl {
 	}
 	
 	
+	public List<UserModel> ViewMeterDetails(String meter) {
+		List<UserModel> query = template.query("select * from user_group where meter = '"+meter+"'", new RowMapper<UserModel>() {
+
+			@Override
+			public UserModel mapRow(ResultSet rs, int arg1) throws SQLException {
+				// TODO Auto-generated method stub
+				UserModel um = new UserModel();
+				um.setId(rs.getString("id"));
+				um.setName(rs.getString("name"));
+				um.setContact(rs.getString("contact"));
+				um.setEmail(rs.getString("email"));
+				um.setAddress(rs.getString("address"));
+				um.setMeter(rs.getString("meter"));
+				um.setReading(rs.getString("reading"));
+				um.setStatus(rs.getString("status"));
+				um.setDate(rs.getString("date"));
+				return um;
+			}
+			
+		});
+		
+		return query.size()>1 ? query:null;
+	}
+	
+	
 	public List<MeterModel> ViewMeterList() {
 		List<MeterModel> query = template.query("select * from meter", new RowMapper<MeterModel>() {
 
