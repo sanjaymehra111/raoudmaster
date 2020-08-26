@@ -216,7 +216,7 @@
 
             <div class="col-md-4" style="text-align: center;">
                 <!-- <i class="fa fa-pencil fa_text_fonts1 fa_text_fonts12"></i> -->
-                <input type="text" onfocus="(this.type='date')" class="text_field3 validation_check user_date" placeholder="Bill Date*">
+                <input type="text" onfocus="(this.type='datetime-local')" class="text_field3 validation_check user_date" placeholder="Bill Date*">
                 <br>
                 <br>
             </div>

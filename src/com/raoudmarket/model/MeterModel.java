@@ -6,9 +6,16 @@ import lombok.Data;
 public class MeterModel {
 
 	String id;
-	String number;
+	String user_id;
+	String meter_number;
+	String new_reading;
+	String previous_reading;
+	String amount;
+	String pay;
+	String remaining;
 	String shop_name;
 	String charge;
+	String unit;
 	String status;
 	String date;
 	

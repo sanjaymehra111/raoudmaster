@@ -209,7 +209,7 @@
                 
                 <div class="col-md-4" style="text-align: center;">
                     <i class="fa fa-phone fa_text_fonts1 fa_text_fonts12"></i>
-                    <input type="number" class="text_field3 validation_check user_contact" placeholder="User Contact*">
+                    <input type="number" onkeypress="if(this.value.length>=10) return false" class="text_field3 validation_check user_contact" placeholder="User Contact*">
                     <br>
                     <br>
                 </div>

@@ -246,7 +246,7 @@
         			for(var i=0; i<data.length; i++) {
 						html+='<tr>';
 						html+='<td>'+data[i].shop_name+'</td>';
-						html+='<td>'+data[i].number+'</td>';
+						html+='<td>'+data[i].meter_number+'</td>';
 						html+='<td>'+data[i].charge+'</td>';
 						html+='<td>'+data[i].date+'</td>';
 					}

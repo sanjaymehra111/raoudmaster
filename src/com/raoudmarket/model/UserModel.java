@@ -10,9 +10,10 @@ public class UserModel {
 	String contact;
 	String email;
 	String address;
-	String meter;
-	String reading;
+	String meter_number;
+	String previous_reading;
 	String status;
 	String date;
+	String updated_date;
 	
 }
