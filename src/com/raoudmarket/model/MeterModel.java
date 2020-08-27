@@ -18,6 +18,7 @@ public class MeterModel {
 	String unit;
 	String status;
 	String date;
+	String updated_date;
 	
 	
 }

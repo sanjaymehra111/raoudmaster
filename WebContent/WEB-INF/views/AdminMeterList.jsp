@@ -177,6 +177,7 @@
     .dataTables_length
     {
       text-align: left;
+      padding-bottom:10px;
     }
     .dataTables_filter
     {
@@ -210,24 +211,54 @@
       }
       
 	  #example_filter {
-		  margin-left: -105%;
+		  /* margin-left: -105%; */
 	  }
 
 	  .text_center {
 		  text-align: center;
 	  }
 
-
+	  .fix_button {
+		padding:10px; 
+	  }
 	
 	  @media(max-width:975px){
 		#example_filter {
 		  margin-left: 0%;
 	  }
+	  
+	  .dataTables_length {
+	      text-align: center;
+	    }
+	  
 	  }
       
 </style>
 
      
+<style>
+.click_button {
+	padding: 5px;
+    width: 100px;
+    background: transparent;
+    border-radius: 100px;
+    outline: none;
+    border: solid 2px white;
+    transition:0.3s;
+}
+
+
+.click_button:hover {
+	background: white;
+	color:black;
+    border: solid 2px white;
+}  
+
+.click_button:active{
+	transform:scale(0.95);
+}  
+
+</style>
 
      <script>
         $(function ImportPage() {
@@ -248,18 +279,30 @@
 						html+='<td>'+data[i].shop_name+'</td>';
 						html+='<td>'+data[i].meter_number+'</td>';
 						html+='<td>'+data[i].charge+'</td>';
-						html+='<td>'+data[i].date+'</td>';
+						html+='<td style="text-align:center">'+data[i].date+'</td>';
+						if(data[i].updated_date == null)
+							html+='<td style="text-align:center"> - </td>';
+						else
+							html+='<td style="text-align:center">'+data[i].updated_date+'</td>';
+						
+						if(data[i].status == "1")
+							html+='<td style="text-align:center"><button mid="'+data[i].meter_number+'" class="click_button btn_open" style="background-color:green; color:white">OPEN</button></td>';
+						else
+							html+='<td style="text-align:center"><button mid="'+data[i].meter_number+'" class="click_button btn_close" style="background-color:red; color:white">Close</button></td>';
+							
+						html+='<td style="text-align:center"><button mid="'+data[i].meter_number+'" class="click_button btn_edit">EDIT</button></td>';
+							
 					}
         			$(".meterlist").html(html);
         			
         			$("#example").DataTable({
-						columnDefs: [ { type: 'date', 'targets': [2] } ],
-				    	order: [[2, 'desc' ]],
+						columnDefs: [ { type: 'date', 'targets': [3] } ],
+				    	order: [[3, 'desc' ]],
 						aaSorting: [],
 						responsive: true,
-						pageLength : 5,
-						"bLengthChange" : false, //thought this line could hide the LengthMenu
-			    		//"bInfo":false, 
+						pageLength : 10,
+						"bLengthChange" : true, //thought this line could hide the LengthMenu
+			    		//"bInfo":true, 
 						
 						columnDefs: [
 							{
@@ -291,6 +334,35 @@
         	}) // ajax close
         })// function close
 
+        
+        $(document).on("click", ".btn_edit", function(){
+        	StartLoader();
+        	var mid = $(this).attr("mid");
+        	$.ajax({
+        		url:"ViewSpecMeterList",
+        		data:{"mid":mid},
+        		type:"post",
+        		dataType:"json",
+        		success:function(data){
+        			//console.log(data);
+        			$(".update_user_button1").attr("mid", data[0].meter_number);
+        			$(".update_u_shop_name").val(data[0].shop_name);
+        			$(".update_u_meter").val(data[0].meter_number);
+        			$(".update_u_meter_charge").val(data[0].charge);
+        			
+        			var button = '<button mid="'+data[0].meter_number+'" statusto="0" style="outline: none; width: 81%; font-size: 14px;" class="btn btn-danger meter_status_change">Change Status To Closed</button>';
+                	if(data[0].status == "0")
+                    var button = '<button mid="'+data[0].meter_number+'" statusto="1" style="outline: none; width: 81%; font-size: 14px;" class="btn btn-success meter_status_change">Change Status To Open</button>'; 
+                	$("#dvStatusInfo").html(button);
+                	
+                	$("#MeterEditModel").modal("show");
+                	CloseLoader();
+        			
+        		},// success close
+        		error:function(){CloseLoader(); console.log("Admin View Specific Meter List Server Error");}
+        	})// ajax close 
+        })// click close
+        
     </script>
     
     
@@ -312,9 +384,12 @@
 			<thead>
 				<tr>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Shop Name</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Number</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Meter No.</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Charge</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Date</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; min-width:100px">Created</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; min-width:100px">Updated</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Status</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Action</td>
 				</tr>
 			</thead>
 			<tbody style="font-size:12px" class="meterlist"></tbody>
@@ -325,6 +400,171 @@
     <div class="container-fluid"></div> 
 </div>
    
-	
+
+<div id="MeterEditModel" class="modal fade" role="dialog">
+
+            <style>
+                .fa_text_fonts12 {
+                    font-size: 20px;
+                    position: absolute;
+                    margin-top: 10px;
+                    margin-left: 5px;
+                    color: #6f6486;
+                    transition: 0.3s;
+                }
+
+                .text_field4 {
+                    border: none;
+                    outline: none;
+                    background: transparent;
+                    padding: 10px;
+                    font-size: 15px;
+                    padding-left: 30px;
+                    cursor: default;
+                }
+
+                .text_field3 {
+                    border: none;
+                    outline: none;
+                    border-bottom: solid 1px #2a2b3d;
+                    background: transparent;
+                    width: 80%;
+                    padding: 10px;
+                    font-size: 15px;
+                    text-align: center;
+                    padding-left: 30px;
+                    cursor: default;
+                    transition: 0.3s;
+                }
+
+                    .text_field3:focus {
+                        border-bottom: solid 1px rgb(9, 156, 156);
+                    }
+
+                .insert_error_alert {
+                    font-size: 0px;
+                    color: red;
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    transition: 0.3s;
+                }
+
+                @media(max-width:975px) {
+                    .fa_text_fonts1 {
+                        margin-top: 4px;
+                        font-size: 20px;
+                    }
+                }
+            </style>
+
+
+
+            <script>
+
+                $(function () {
+                    $(".update_user_button1").click(function () {
+                        var a = 5;
+                        $(".text_field3").each(function () {
+                        	if ($(this).val() == ""){
+                            	$(this).css({"border-bottom":"solid 1px red"});
+                            	a = a - 1;
+                            }
+                            else{
+                            	$(this).css({"border-bottom":""});
+                            }
+                        })
+                        if (a != 5)
+                            $(".insert_error_alert").css({ "font-size": "15px" });
+                        else {
+                            $(".insert_error_alert").css({ "font-size": "0px" });
+                            $(function(){
+                            	StartLoader();
+                            	var shop = $(".update_u_shop_name").val();
+                            	var charge = $(".update_u_meter_charge").val();
+                            	var mid = $(".update_user_button1").attr("mid");
+                                		
+                    			$.ajax({
+                        			url:"UpdateMeterDetails",
+                        			data:{"mid":mid, "shop":shop, "charge":charge}, 
+                        			type:"post",
+                        			dataType:"text",
+                        			success:function(e){
+                        				CloseLoader();
+                        				//console.log("Res", e);
+                        				location.reload(true);
+                        			},
+                        			error:function(){ CloseLoader(); console.log("Update Meter Details Server Error"); }
+                        		}) // ajax close
+                        	})// main functino close
+                        }
+                    }); //update_user_button1 click close
+                
+                
+                    $(document).on("click", ".meter_status_change", function () {
+                    	StartLoader();
+                        var mid = $(this).attr("mid");
+                        var status = $(this).attr("statusto");
+                        $.ajax({
+                    		url:"UpdateMeterStatus",
+                    		data:{"mid":mid, "status":status}, 
+                    		type:"post",
+                    		dataType:"text",
+                    		success:function(e){
+                    			CloseLoader();
+                    			//console.log("Res", e);
+                    			location.reload(true);
+                    		},
+                    		error:function(){ CloseLoader(); console.log("Update Meter Status Server Error"); }
+                    	}) // ajax close
+                    })// main functino close
+                    
+                
+                })
+
+            </script>
+
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content" style="background-image: linear-gradient(#adccdc, rgba(150, 150, 150, 0.22), rgba(119, 220, 243, 0.17));">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" style="text-align: center;">Edit Meter Details</h4>
+                    </div>
+                    <div class="modal-body" style="text-align: center;">
+
+
+                        <i class="fa fa-home fa_text_fonts1 fa_text_fonts12"></i>
+                        <input type="text" class="text_field3 update_u_shop_name" placeholder="User Shop Name*" id="lblShopName">
+                        <br>
+                        <br>
+
+                        <i class="fa fa-dashboard fa_text_fonts1 fa_text_fonts12"></i>
+                        <input type="text" class="text_field3  update_u_meter" placeholder="User Meter Number*" id="lblMeterNum" readonly="readonly">
+                        <br>
+                        <br>
+
+                        <i class="fa fa-inr fa_text_fonts1 fa_text_fonts12"></i>
+                        <input type="number" onkeypress="if(this.value.length>=10) return false" class="text_field3  update_u_meter_charge" placeholder="Meter Charge*" id="lblMeterCharge">
+                        <br>
+                        <br>
+                        <br>
+
+                        <div style="text-align: center;" id="dvStatusInfo">
+                        </div>
+                        <br>
+                        <br>
+                        <p class="insert_error_alert">Please Insert All Necessary Details (*)</p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" style="width: 100px; font-size: 14px;" class="btn btn-success update_user_button1">Update</button>
+                        <button type="button" style="width: 100px; font-size: 14px;" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        	
 </section>
 </html>

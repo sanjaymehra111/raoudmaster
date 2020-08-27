@@ -103,6 +103,18 @@ public class UserFunctionDaoImpl {
 		return template.update(query);
 	}
 	
+	public int UpdateMeterDetails(String mid, String shop, String charge) {
+		String date = GetDate();
+		String query= "update meter set shop_name='"+shop+"', charge='"+charge+"', updated_date = '"+date+"' where meter_number='"+mid+"'";
+		return template.update(query);
+	}
+
+	public int UpdateMeterStatus(String mid, String status) {
+		String date = GetDate();
+		String query= "update meter set status='"+status+"', updated_date = '"+date+"' where meter_number='"+mid+"'";
+		return template.update(query);
+	}
+
 	public int DeleteUserGroup(String uid) {
 		String query= "delete from user_group where id ='"+uid+"'";
 		return template.update(query);
@@ -262,6 +274,7 @@ public List<UserModel> ViewSpecificUser(String id) {
 				mm.setCharge(rs.getString("charge"));
 				mm.setStatus(rs.getString("status"));
 				mm.setDate(rs.getString("date"));
+				mm.setUpdated_date(rs.getString("updated_date"));
 				return mm;
 			}
 			
@@ -269,5 +282,29 @@ public List<UserModel> ViewSpecificUser(String id) {
 		
 		return query;
 	}
+
+	
+	public List<MeterModel> ViewSpecMeterList(String mid) {
+		List<MeterModel> query = template.query("select * from meter where meter_number = '"+mid+"'", new RowMapper<MeterModel>() {
+
+			@Override
+			public MeterModel mapRow(ResultSet rs, int arg1) throws SQLException {
+				// TODO Auto-generated method stub
+				MeterModel mm = new MeterModel();
+				mm.setId(rs.getString("id"));
+				mm.setMeter_number(rs.getString("meter_number"));
+				mm.setShop_name(rs.getString("shop_name"));
+				mm.setCharge(rs.getString("charge"));
+				mm.setStatus(rs.getString("status"));
+				mm.setDate(rs.getString("date"));
+				mm.setUpdated_date(rs.getString("updated_date"));
+				return mm;
+			}
+			
+		});
+		
+		return query;
+	}
+
 	
 }

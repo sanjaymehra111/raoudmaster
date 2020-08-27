@@ -111,12 +111,41 @@ public class UserFunctionController {
 		 
 	}
 	
+	
+	@ResponseBody
+	@PostMapping("ViewUserGroupAllDetails")
+	public String ViewUserGroupAllDetails(HttpSession session) {
+		String sn = sccot.CheckSession(session);
+		if(sn == "success") {
+			List<UserModel> user = ufdao.ViewAllUserGroup();
+			Gson gson = new Gson();
+			String finals = gson.toJson(user);
+			return finals;
+		}
+		else
+			return "Login Error";
+	}
+
 	@ResponseBody
 	@PostMapping("ViewMeterList")
 	public String ViewMeterList(HttpSession session) {
 		String sn = sccot.CheckSession(session);
 		if(sn == "success") {
 			List<MeterModel> user = ufdao.ViewMeterList();
+			Gson gson = new Gson();
+			String finals = gson.toJson(user);
+			return finals; 
+		}
+		else
+			return "Login Error";
+	}
+	
+	@ResponseBody
+	@PostMapping("ViewSpecMeterList")
+	public String ViewSpecMeterList(@RequestParam String mid, HttpSession session) {
+		String sn = sccot.CheckSession(session);
+		if(sn == "success") {
+			List<MeterModel> user = ufdao.ViewSpecMeterList(mid);
 			Gson gson = new Gson();
 			String finals = gson.toJson(user);
 			return finals; 
@@ -171,6 +200,33 @@ public class UserFunctionController {
 		else
 			return "Login Error";
 	}
+	
+	@ResponseBody
+	@PostMapping("UpdateMeterDetails")
+	public String UpdateMeterDetails(@RequestParam String mid, String shop, String charge, HttpSession session) {
+		String sn = sccot.CheckSession(session);
+		if(sn == "success") {
+			ufdao.UpdateMeterDetails(mid, shop, charge);
+			return "success"; 
+		}
+		else
+			return "Login Error";
+	}
+	
+	@ResponseBody
+	@PostMapping("UpdateMeterStatus")
+	public String UpdateMeterStatus(@RequestParam String mid, String status, HttpSession session) {
+		String sn = sccot.CheckSession(session);
+		if(sn == "success") {
+			ufdao.UpdateMeterStatus(mid, status);
+			return "success"; 
+		}
+		else
+			return "Login Error";
+	}
+	
+	
+	
 	
 	
 	@ResponseBody

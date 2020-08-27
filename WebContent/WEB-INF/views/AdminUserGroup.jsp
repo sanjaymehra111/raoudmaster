@@ -600,6 +600,7 @@
                         			success:function(e){
                         				CloseLoader();
                         				//console.log("Res", e);
+                        				location.reload(true);
                         			},
                         			error:function(){ CloseLoader(); console.log("Update User Server Error"); }
                         		}) // ajax close
@@ -613,7 +614,6 @@
                     $(".delete_user_button1").click(function(){
                     	
                     	var dlt = confirm("Want To Delete This User!");
-                    	console.log(dlt); 
                     	if(dlt == true){
                     		StartLoader();
 	                    	var uid = $(this).attr("uid");
@@ -764,7 +764,7 @@
 	            			dataType:"text",
 	            			success:function(e){
 	            				CloseLoader();
-	            				console.log("Res", e);
+	            				//console.log("Res", e);
 	            				if(e == "amoun_error")
 	            					alert("Server Amount Error");
 	            				else
@@ -850,7 +850,7 @@
                             <br />
                         </div>
                         <div class="col-md-4">
-                            <button type="button" style="width: 100%; font-size: 14px;" class="btn btn-success Print_user_button1">Print</button><br />
+                            <button type="button" style="width: 100%; font-size: 14px;" class="btn btn-success Print_user_button1" onclick="window.print();">Print</button><br />
                             <br />
                         </div>
                         <div class="col-md-4">
