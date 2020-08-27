@@ -84,6 +84,12 @@ public class UserFunctionDaoImpl {
 		return template.update(query);
 	}
 	
+	public int PayPaymentIntoMeterBill(String uid, String meter, String reading, String amount, String pay, String remaining, String status, String date) {
+		String dates = GetDateTime2();
+		String query= "insert into meter_bill (user_id, meter_number, previous_reading, amount, pay, remaining, date, status) values('"+uid+"', '"+meter+"', '"+reading+"', '"+amount+"', '"+pay+"', '"+remaining+"', '"+date+"', '"+status+"')";
+		return template.update(query);
+	}
+
 	public int CreateMeter(String number, String shop, String charge) {
 		String dates = GetDate();
 		String query= "insert into meter (meter_number, shop_name, charge, date) values('"+number+"', '"+shop+"', '"+charge+"', '"+dates+"')";
@@ -102,6 +108,12 @@ public class UserFunctionDaoImpl {
 		return template.update(query);
 	}
 	
+	public int PayPayment(String uid, String reading, String amount, String pay, String remaining, String status) {
+		String dates = GetDateTime();
+		String query= "insert into payment (user_id, reading, amount, pay, remaining, date, status) values('"+uid+"', '"+reading+"', '"+amount+"', '"+pay+"', '"+remaining+"', '"+dates+"', '"+status+"')";
+		return template.update(query);
+	}
+
 	
 	public List<UserModel> ViewAllUserGroup() {
 		List<UserModel> query = template.query("select * from user_group", new RowMapper<UserModel>() {
@@ -165,6 +177,8 @@ public class UserFunctionDaoImpl {
 				mm.setPrevious_reading(rs.getString("previous_reading"));
 				mm.setNew_reading(rs.getString("new_reading"));
 				mm.setAmount(rs.getString("amount"));
+				mm.setPay(rs.getString("pay"));
+				mm.setRemaining(rs.getString("remaining"));
 				mm.setCharge(rs.getString("charge"));
 				mm.setUnit(rs.getString("unit"));
 				mm.setStatus(rs.getString("status"));
@@ -177,6 +191,41 @@ public class UserFunctionDaoImpl {
 		return query.size()>0 ? query:null;
 	}
 	
+	public String ViewSpecificUserRemainingBalance(String uid) {
+		
+		List<MeterModel> bill = template.query("SELECT SUM(amount) FROM meter_bill WHERE user_id ='"+uid+"' AND STATUS = 0", new RowMapper<MeterModel>() {
+			@Override
+			public MeterModel mapRow(ResultSet rs, int arg1) throws SQLException {
+				// TODO Auto-generated method stub
+				MeterModel mm = new MeterModel();
+				mm.setRemaining(rs.getString("sum(amount)"));
+				return mm;
+			}
+		});
+		
+		List<MeterModel> pay = template.query("SELECT SUM(pay) FROM meter_bill WHERE user_id ='"+uid+"' AND STATUS = 1", new RowMapper<MeterModel>() {
+			@Override
+			public MeterModel mapRow(ResultSet rs, int arg1) throws SQLException {
+				// TODO Auto-generated method stub
+				MeterModel mm = new MeterModel();
+				mm.setRemaining(rs.getString("sum(pay)"));
+				return mm;
+			}
+		});
+		
+		
+		float rem;
+		if(bill.size() > 0 && bill.get(0).getRemaining() != null) {
+			if(pay.size() > 0 && pay.get(0).getRemaining() != null) {
+				rem = Float.parseFloat(bill.get(0).getRemaining()) - Float.parseFloat(pay.get(0).getRemaining());
+				return String.valueOf(rem);
+			}
+			else
+				return bill.get(0).getRemaining();
+		}
+		
+		return null;
+	}
 	
 public List<UserModel> ViewSpecificUser(String id) {
 		

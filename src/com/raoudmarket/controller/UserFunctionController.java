@@ -33,7 +33,7 @@ public class UserFunctionController {
 		String sn = sccot.CheckSession(session);
 		if(sn == "success") {
 			Number number = ufdao.CreateUserGroup(name, contact, email, address, meter);
-			ufdao.PreviousBillRecord(number.toString(), meter, reading, "1");
+			ufdao.PreviousBillRecord(number.toString(), meter, reading, "2");
 			return "success";
 		}
 		else
@@ -51,16 +51,21 @@ public class UserFunctionController {
 				int charge=200;
 				int unit=9;
 				
+				//String remaining = ufdao.ViewSpecificUserRemainingBalance(meter.get(0).getUser_id());
+				//System.out.println("rem : " +remaining);
+				
 				String[] dt_new = date.split("T");
 				String[] dt_pr = meter.get(0).getDate().split("T");
 				
+				//System.out.println(dt_pr[0]);
+				
 				String diff = String.valueOf(ChronoUnit.MONTHS.between(LocalDate.parse(dt_pr[0]).withDayOfMonth(1),LocalDate.parse(dt_new[0]).withDayOfMonth(1)));
 				
-				System.out.println("diff : "+diff);
-				if(diff != "0")
+				//System.out.println("diff : "+diff);
+				if(Integer.parseInt(diff) > 0)
 					charge = charge*Integer.parseInt(diff);
 				
-				System.out.println("chrg : "+charge);
+				//System.out.println("chrg : "+charge);
 				if(meter.get(0).getNew_reading() != null)
 					pr = Integer.parseInt(meter.get(0).getNew_reading());
 				else
@@ -142,10 +147,11 @@ public class UserFunctionController {
 		if(sn == "success") {
 			List<UserModel> user = ufdao.ViewSpecificUser(id);
 			List<MeterModel> meter = ufdao.ViewSpecificUserMeterBill(id);
+			String remaining = ufdao.ViewSpecificUserRemainingBalance(id);
 			Gson gson = new Gson();
-			String finals1 = gson.toJson(user);
-			String finals2 = gson.toJson(meter);
-			String finals = '['+finals1+','+finals2+']';
+			String us = gson.toJson(user);
+			String mt = gson.toJson(meter);
+			String finals = '['+us+','+mt+','+remaining+']';
 			return finals; 
 		}
 		else
@@ -181,9 +187,25 @@ public class UserFunctionController {
 	
 	@ResponseBody
 	@PostMapping("MakePayment")
-	public String MakePayment(@RequestParam String uid, String amount, HttpSession session) {
+	public String MakePayment(@RequestParam String uid, String amount, String date, HttpSession session) {
 		String sn = sccot.CheckSession(session);
 		if(sn == "success") {
+			int pr;
+			String pr_rem = ufdao.ViewSpecificUserRemainingBalance(uid);
+			if(Float.parseFloat(pr_rem)<Float.parseFloat(amount))
+				return "amoun_error";
+			
+			float nw_rem = Float.parseFloat(pr_rem) - Float.parseFloat(amount); 
+			
+			List<UserModel> user = ufdao.ViewSpecificUser(uid);
+			List<MeterModel> meter = ufdao.ViewMeterDetails(user.get(0).getMeter_number());
+
+			if(meter.get(0).getNew_reading() != null)
+				pr = Integer.parseInt(meter.get(0).getNew_reading());
+			else
+				pr = Integer.parseInt(meter.get(0).getPrevious_reading());
+			ufdao.PayPayment(uid, String.valueOf(pr), pr_rem, amount, String.valueOf(nw_rem), "1");
+			ufdao.PayPaymentIntoMeterBill(uid, meter.get(0).getMeter_number(), String.valueOf(pr), pr_rem, amount, String.valueOf(nw_rem), "1", date);
 			return "success"; 
 		}
 		else

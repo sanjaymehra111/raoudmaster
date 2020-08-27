@@ -175,7 +175,8 @@
     
     .dataTables_length
     {
-      text-align: left;
+      	text-align: center;
+    	padding-bottom: 10px;
     }
     .dataTables_filter
     {
@@ -349,36 +350,65 @@
         
         
         $(document).on("click",".print_user", function(){
-        	$("#example1").dataTable().fnDestroy();
-        	
-        	StartLoader();
         	var uid = $(this).attr("uid");
+			GetSpecificMeterBill(uid);
+        })	
+        
+        
+		function GetSpecificMeterBill(uid){
+        	$("#example1").dataTable().fnDestroy();
+        	$(".update_bill_amount").val("");
+    		$(".update_date").val("");
+    		
+        	StartLoader();
         	$.ajax({
         		url:"ViewSpecificUserMeterBill",
         		data:{"id":uid},
         		type:"post",
         		dataType:"json",
         		success:function(res){
-        			console.log(res);
+        			//console.log(res);
         			/* User Details */
         			$(".payment_button").attr("uid",uid);
         			$(".print_u_name").html(res[0][0].name);
         			$(".print_u_contact").html(res[0][0].contact);
         			$(".print_u_meter").html(res[0][0].meter_number);
-					$("#PritnUserModel").modal("show");
 					
+        			if(res[2] != null)
+        				$(".Remaining_balance").html(res[2]);
+        			else
+        				$(".Remaining_balance").html("0.0");
+        			
 					/* Bill History */
 					
 					var data =""; 
 					if(res[1] != null){
 						for(var i=0; i<res[1].length; i++){
-						 		data += '<tr>';
+								
+								var color;
+								var Initial;
+								if(res[1][i].status == "0"){
+									color="red";
+									Initial ="";
+								}
+								else if(res[1][i].status == "1"){
+									color="green";
+									Initial ="";
+								}
+								else {
+									color="gray";
+									Initial = " (Initial)";
+								}
+						 		data += '<tr style="color:'+color+'">';
 	                            //data += '<th scope="row">' +(i+1)+ '</th>';
 	                            var dt = res[1][i].date.split("T")
-	                            data += '<td style="text-align:center">' + dt[0] + '</td>';
+	                            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+								const d = new Date(dt[0]);
+								data += '<td style="text-align:center">' + res[1][i].date + ' ('+monthNames[d.getMonth()]+')' + '</td>';
+								//data += '<td style="text-align:center">' + res[1][i].date + '</td>';
 	                            
 	                            if(res[1][i].new_reading == null)
-	                            	data += '<td class="print_u_pr_rerading">' + res[1][i].previous_reading + '</td>';
+	                            	data += '<td class="print_u_pr_rerading">' + res[1][i].previous_reading + Initial + ' </td>';
 	                            else
 	                            	data += '<td class="print_u_pr_rerading">' + res[1][i].new_reading + '</td>';
 	                            
@@ -409,8 +439,8 @@
 						aaSorting: [],
 						responsive: true,
 						pageLength : 5,
-						"bLengthChange" : false, //thought this line could hide the LengthMenu
-			    		//"bInfo":false, 
+						"bLengthChange" : true, //thought this line could hide the LengthMenu
+			    		//"bInfo":true, 
 						
 						columnDefs: [
 							{
@@ -424,7 +454,7 @@
 						]
 					});	
         			
-        			$("#example").wrap( "<div style='width:100%; overflow:scroll'></div>" );
+        			$("#example1").wrap( "<div style='width:100%; overflow:scroll'></div>" );
 					$(".dataTables_filter input")
 					.attr("placeholder", "Search here...")
 					.css({
@@ -434,12 +464,13 @@
 					width:'250px'
 					});
 					
-        			CloseLoader();
+					$("#PritnUserModel").modal("show");
+					CloseLoader();
         			
         		}, // success close
 				error:function(){CloseLoader(); console.log("Specific User Details");}
         	}) // ajax close
-        })// close click function
+        }
         
     </script>
 
@@ -463,7 +494,7 @@
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Contact</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Email</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Address</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Meter No.</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; min-width: 100px;">Meter No.</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; min-width: 100px;">Created</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; min-width: 100px;">Updated</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Action</td>
@@ -667,9 +698,14 @@
                     font-weight: bold;
                 }
 
-				.dataTables_info {
-					color: #ad9999;
+				#example1_info {
+					color: black;
 				}
+				 
+				#example1_length, .form-control-sm{
+					color:#b9a1a1!important; 
+				}
+				
                 @media(max-width:975px) {
                     #PritnUserModel .modal-dialog {
                         width: auto;
@@ -704,25 +740,35 @@
             $(function(){
             	$(".payment_button").click(function(){
             		var amount = $(".update_bill_amount").val();
+            		var date = $(".update_date").val();
             		var uid = $(this).attr("uid");
             		
             		if(amount == ""){
             			$(".update_bill_amount").css({"border-bottom":"solid 2px red"});
             			$(".update_bill_amount").focus();
             		}
-            		else {
+            		else if(date == ""){
             			$(".update_bill_amount").css({"border-bottom":""});
+            			$(".update_date").css({"border-bottom":"solid 2px red"});
+            			$(".update_date").focus();
+            		}
+            		else {
+            			$(".update_bill_amount, .update_date").css({"border-bottom":""});
             			StartLoader();
 	        			
 	            		$.ajax({
 	            			url:"MakePayment",
-	            			data:{"uid":uid, "amount":amount}, 
+	            			//data:{"uid":uid, "amount":amount},
+	            			data:{"uid":uid, "amount":amount, "date":date},
 	            			type:"post",
 	            			dataType:"text",
 	            			success:function(e){
 	            				CloseLoader();
-	            				//$(".validation_check").val(""); 
 	            				console.log("Res", e);
+	            				if(e == "amoun_error")
+	            					alert("Server Amount Error");
+	            				else
+	            					GetSpecificMeterBill(uid);
 	            			},
 	            			error:function(){ CloseLoader(); console.log("Payment Server Error"); }
 	            		}) // ajax close
@@ -759,9 +805,12 @@
                             <br />
                             <br />
                         </div>
-
-                        <div align="left" style="font-weight:bolder">History</div>
-                        
+						<div class="container-fluid"></div>
+                        	<div align="left" style="font-weight: bolder; background: #80808029; padding: 5px; padding-left: 20px; padding-right: 20px;">
+                        		HISTORY
+                        		<span style="float:right; color:#c94141;">REMAINING : <i class="fa fa-inr"></i> <span class="Remaining_balance">00</span></span>
+                        	</div>
+                        <hr>
                         <div class="container-fluid" style="text-align: left;"></div>
 
                         <div class="table_data" style="width: 100%; overflow: scroll; color: black">
@@ -787,7 +836,12 @@
 
                     <div style="text-align: center;">
                         <b>AMOUNT :
-                            <input id="txtAmount" style="background: transparent; border: none; color: black; border-bottom: solid 1px gray; text-align: center;" type="number" class="update_bill_amount" placeholder="Amount"></b><br />
+                            <input id="txtAmount" style="background: transparent; border: none; color: black; border-bottom: solid 1px gray; text-align: center;" type="number" class="update_bill_amount" placeholder="Amount">
+                            
+                            DATE : <input style="background: transparent; border: none; color: black; border-bottom: solid 1px gray; text-align: center;" type="text" onfocus="(this.type='datetime-local')" class="update_date" placeholder="Enter Date" title="Date Should Be Greater Then Your Last Entry (Testing Only)">
+                            
+                            </b><br />
+                            
                         <br />
                     </div>
                     <div class="modal-footer" style="text-align: center;">
