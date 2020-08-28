@@ -156,11 +156,13 @@
                 		email  = $(".user_email").val();
                 		address = $(".user_address").val();
                 		meter = $(".user_meter_number").val();
+                		charge = $(".user_meter_charge").val();
+                		shop = $(".user_shop_name").val();
                 		reading = $(".user_bill_reading").val();
                 		
                 		$.ajax({
                 			url:"CreateUserGroup",
-                			data:{"name":name, "contact":contact, "email":email, "meter":meter, "reading":reading, "address":address}, 
+                			data:{"name":name, "contact":contact, "email":email, "meter":meter, "charge":charge, "shop":shop, "reading":reading, "address":address}, 
                 			type:"post",
                 			dataType:"text",
                 			success:function(e){
@@ -232,11 +234,29 @@
                 </div>
                 
                 <div class="col-md-12"></div>
-                <div class="col-md-2"></div>                
+                <div class="col-md-2"></div>
                 
                 <div class="col-md-4" style="text-align: center;">
 				    <i class="fa fa-dashboard fa_text_fonts1 fa_text_fonts12"></i>
                     <input type="text" class="text_field3 validation_check user_meter_number" placeholder="User Meter Number*">
+                    <br>
+                    <br>
+                </div>
+                
+                  <div class="col-md-4" style="text-align: center;">
+                    <i class="fa fa-inr  fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="number" class="text_field3 validation_check user_meter_charge" placeholder="Meter Charge*">
+                    <br>
+                    <br>
+                </div>
+                
+                <div class="col-md-12"></div>
+                <div class="col-md-2"></div>                
+                
+                
+                <div class="col-md-4" style="text-align: center;">
+                    <i class="fa fa-home fa_text_fonts1 fa_text_fonts12"></i>
+                    <input type="text" class="text_field3 validation_check user_shop_name" placeholder="Shop Name*">
                     <br>
                     <br>
                 </div>

@@ -18,10 +18,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
     <!-- For Search Table -->
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-    
-    
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.3/css/buttons.dataTables.min.css"/>
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/af-2.1.2/b-1.2.2/b-colvis-1.2.2/b-flash-1.2.2/b-html5-1.2.2/b-print-1.2.2/cr-1.3.2/fc-3.2.2/fh-3.1.2/kt-2.1.3/r-2.1.0/rr-1.1.2/sc-1.4.2/se-1.2.0/datatables.min.js"></script>    
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+	
 <style>
 
 	
@@ -233,6 +236,8 @@
       
 </style>
 
+
+
 <style>
 .click_button {
 	padding: 5px;
@@ -270,27 +275,53 @@
         		type:"post",
         		dataType:"json",
         		success:function(data){
-        			//console.log("Response : ", data);
+        			//console.log(data);
         			var html="";
         			for(var i=0; i<data.length; i++) {
 						html+='<tr>';
-						html+='<td>'+data[i].name+'</td>';
+						html+='<td>'+data[i].name.toUpperCase()+'</td>';
 						html+='<td>'+data[i].contact+'</td>';
-						html+='<td>'+data[i].meter_number+'</td>';
-						var date = data[i].date.split(" ");
-						html+='<td style="text-align:center">'+date[0]+'</td>';
+						html+='<td>'+data[i].meter+'</td>';
+						html+='<td>'+data[i].reading+'</td>';
+						
+						if(data[i].amount != null)
+							html+='<td>'+data[i].amount+'</td>';
+						else
+							html+='<td style="text-align:center"> - </td>';
+						
+						if(data[i].pay != null)
+							html+='<td>'+data[i].pay+'</td>';
+						else
+							html+='<td style="text-align:center"> - </td>';
+						
+						if(data[i].remaining != null)
+							html+='<td>'+data[i].remaining+'</td>';
+						else
+							html+='<td style="text-align:center"> - </td>';
+
+						if(data[i].remaining == null)
+							html+='<td> - </td>';
+						else if(data[i].remaining > 0)
+							html+='<td style="text-align:center; color:#f35d5d; text-transform: uppercase; font-weight: bold;"> Pending </td>';
+						else
+							html+='<td style="text-align:center; color:#84e684; text-transform: uppercase; font-weight: bold;"> Paid </td>';
+
 						html+='</tr>';
         			}
         			$(".userlist").html(html);
         			
         			$("#example").DataTable({
-						columnDefs: [ { type: 'date', 'targets': [3] } ],
-				    	order: [[3, 'desc' ]],
+						//columnDefs: [ { type: 'date', 'targets': [3] } ],
+				    	//order: [[3, 'desc' ]],
 						aaSorting: [],
 						responsive: true,
 						pageLength : 10,
 						"bLengthChange" : true, //thought this line could hide the LengthMenu
-			    		//"bInfo":false, 
+						dom: 'Bfrtip',
+				        buttons: [
+				            'copy', 'csv', 'excel', 'pdf', 'print'
+				        ],
+						"bInfo":true, 
 						
 						columnDefs: [
 							{
@@ -338,13 +369,17 @@
 	<div style="background-color: #464646; border-radius: 5px;">
 	<br><br>
 	<div class="test-1" align="center">
-        <table id="example" class="table-bordered table_padding" style="width: 100%; color: white;">
+	    <table id="example" class="table-bordered table_padding" style="width: 100%; color: white;">
 			<thead>
 				<tr>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Name</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Contact</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; min-width: 100px;">Meter No.</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; min-width: 100px;">Created</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; min-width: 100px;">Reading</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Total Amount</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Paid Amount</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; min-width: 100px;">Remaining</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; min-width: 100px;">Status</td>
 					
 				</tr>
 			</thead>

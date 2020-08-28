@@ -90,9 +90,9 @@ public class UserFunctionDaoImpl {
 		return template.update(query);
 	}
 
-	public int CreateMeter(String number, String shop, String charge) {
+	public int CreateMeter(String uid, String number, String shop, String charge) {
 		String dates = GetDate();
-		String query= "insert into meter (meter_number, shop_name, charge, date) values('"+number+"', '"+shop+"', '"+charge+"', '"+dates+"')";
+		String query= "insert into meter (user_id, meter_number, shop_name, charge, date) values('"+uid+"', '"+number+"', '"+shop+"', '"+charge+"', '"+dates+"')";
 		return template.update(query);
 	}
 	
@@ -152,7 +152,7 @@ public class UserFunctionDaoImpl {
 	}
 	
 	
-	public List<MeterModel> ViewMeterDetails(String meter) {
+	public List<MeterModel> ViewLastMeterDetails(String meter) {
 		
 		List<MeterModel> query = template.query("SELECT * FROM meter_bill WHERE meter_number='"+meter+"' ORDER BY DATE DESC LIMIT 1", new RowMapper<MeterModel>() {
 			@Override
@@ -165,6 +165,8 @@ public class UserFunctionDaoImpl {
 				mm.setNew_reading(rs.getString("new_reading"));
 				mm.setPrevious_reading(rs.getString("previous_reading"));
 				mm.setAmount(rs.getString("amount"));
+				mm.setPay(rs.getString("pay"));
+				mm.setRemaining(rs.getString("remaining"));
 				mm.setStatus(rs.getString("status"));
 				mm.setDate(rs.getString("date"));
 				return mm;
@@ -292,6 +294,7 @@ public List<UserModel> ViewSpecificUser(String id) {
 				// TODO Auto-generated method stub
 				MeterModel mm = new MeterModel();
 				mm.setId(rs.getString("id"));
+				mm.setUser_id(rs.getString("user_id"));
 				mm.setMeter_number(rs.getString("meter_number"));
 				mm.setShop_name(rs.getString("shop_name"));
 				mm.setCharge(rs.getString("charge"));
