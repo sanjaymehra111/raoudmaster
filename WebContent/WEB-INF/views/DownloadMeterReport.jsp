@@ -2,16 +2,17 @@
 
 <html lang="en">
 <head>
-    <title>View Users</title>
+    
+    <title>Download Meter</title>
+	<!--For Webpage Logo-->
+    <link rel="shortcut icon" href="/raoudmarket/files/images/login.png">
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!--For Webpage Logo-->
-    <link rel="shortcut icon" href="images/logo3-plane.png" />
 
     <!--For Multiple Select-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
@@ -275,7 +276,7 @@
         		type:"post",
         		dataType:"json",
         		success:function(data){
-        			console.log(data);
+        			//console.log(data);
         			var html="";
         			for(var i=0; i<data.length; i++) {
 						html+='<tr>';

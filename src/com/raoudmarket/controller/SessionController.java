@@ -32,8 +32,8 @@ public class SessionController {
 			if(sn != null)
 				return "success";
 			else
-				//return "error";
-				return "success";
+				return "error";
+				//return "success";
 		}
 		catch(Exception e) {
 			System.out.println("Exception "+ e);

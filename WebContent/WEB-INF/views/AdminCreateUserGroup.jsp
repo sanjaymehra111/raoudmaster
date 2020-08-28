@@ -2,7 +2,11 @@
 <html>
 <head>
 
-<meta charset="utf-8">
+    <title>Create User</title>
+	<!--For Webpage Logo-->
+    <link rel="shortcut icon" href="/raoudmarket/files/images/login.png">
+
+	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -10,9 +14,6 @@
 
     <!-- Font Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!--For Webpage Logo-->
-    <link rel="shortcut icon" href="images/logo3-plane.png">
 
     <!--For Multiple Select-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
@@ -150,7 +151,6 @@
                     $(".insert_error_alert").css({ "font-size": "0px" });
 
                 	$(function(){
-                		StartLoader();
                 		name = $(".user_name").val();
                 		contact = $(".user_contact").val();
                 		email  = $(".user_email").val();
@@ -160,6 +160,18 @@
                 		shop = $(".user_shop_name").val();
                 		reading = $(".user_bill_reading").val();
                 		
+                		if(contact.length != 10)
+                			$(".user_contact").css({"border-bottom":"solid 1px red"});
+                		else if(charge < 0){
+                			$(".user_contact").css({"border-bottom":""});
+                			$(".user_meter_charge").css({"border-bottom":"solid 1px red"});
+                		}
+                		else if(reading < 0){
+                			$(".user_meter_charge, .user_contact").css({"border-bottom":""});
+                			$(".user_bill_reading").css({"border-bottom":"solid 1px red"});
+                		}
+                		else{
+                		StartLoader();
                 		$.ajax({
                 			url:"CreateUserGroup",
                 			data:{"name":name, "contact":contact, "email":email, "meter":meter, "charge":charge, "shop":shop, "reading":reading, "address":address}, 
@@ -177,8 +189,8 @@
                 				CloseLoader();
                 				console.log("User Creation Server Error");
                 			}
-                			
                 		}) // ajax close
+                		}// else close
                 	})// function close
                 	
                 }

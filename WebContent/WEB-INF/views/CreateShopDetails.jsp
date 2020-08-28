@@ -3,6 +3,10 @@
 <html>
 <head>
 
+    <title>Create Shop</title>
+	<!--For Webpage Logo-->
+    <link rel="shortcut icon" href="/raoudmarket/files/images/login.png">
+
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -11,9 +15,6 @@
 
     <!-- Font Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!--For Webpage Logo-->
-    <link rel="shortcut icon" href="images/logo3-plane.png">
 
     <!--For Multiple Select-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
@@ -151,9 +152,47 @@
                 else {
                     $(".insert_error_alert").css({ "font-size": "0px" });
                     $(function(){
-                		console.log("Stored data");
-                	}) 
-                }
+                		var contact = $(".user_contact").val();
+                		img = $(".user_file")[0].files;
+                		
+                		if(contact.length != 10){
+                			$(".user_contact").css({"border-bottom":"solid 1px red"});
+                		}
+                		else {
+                			
+                			$(".user_contact").css({"border-bottom":""});
+                			var data = new FormData();
+                			data.append("shop", $(".shop_name").val());
+            				data.append("contact", contact);
+            				data.append("name", $(".user_name").val());
+            				data.append("address", $(".user_address").val());
+            				data.append("from", $(".date_from").val());
+            				data.append("to", $(".date_to").val());
+            				
+            				for(var i =0; i<5; i++){
+            					data.append("file",$(".user_file")[0].files[i]);
+            				}
+            				
+                			$.ajax({
+        					 	url:"InsertShopDetails",
+        					 	data: data,
+        				 		enctype: 'multipart/form-data',
+        					 	processData: false,
+        					 	contentType: false,
+        				 	  	type: 'Post',    
+        					 	cache: false,
+        					 	dataType:"text",
+        					 	success : function(e){
+        					 		//console.log("res : ", e)
+        					 		$(".validation_check").val("");
+        					 	},
+        					 	error : function(){alert("Insert Shop Details Server Error")}
+        				});//ajax close
+                			
+                		}// else close
+                			
+                	})// function close 
+                }// else close
             }); //user_save_button3 click close
 
         })
@@ -183,7 +222,7 @@
                 
                 <div class="col-md-6" style="text-align: center;">
 	                <i class="fa fa-phone fa_text_fonts1 fa_text_fonts12"></i>
-	                <input type="number" class="text_field3 validation_check user_contact" placeholder="Contact Number*">
+	                <input type="number" onkeypress="if(this.value.length>=10) return false" class="text_field3 validation_check user_contact" placeholder="Contact Number*">
 	                <br>
 	                <br> 
 	            </div>
@@ -219,7 +258,7 @@
 
                 
                 <div class="col-md-12">
-                     <input type="file" class="text_field3 validation_check user_file" placeholder="Upload File*">
+                     <input type="file" class="text_field3 validation_check user_file" multiple="multiple" placeholder="Upload File*" title="Max 5 Files">
                     <br>
                     <br>
                 </div>

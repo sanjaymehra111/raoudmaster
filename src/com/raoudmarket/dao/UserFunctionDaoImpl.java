@@ -17,6 +17,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.raoudmarket.model.MeterModel;
+import com.raoudmarket.model.ShopModel;
 import com.raoudmarket.model.UserModel;
 
 @Repository
@@ -126,6 +127,11 @@ public class UserFunctionDaoImpl {
 		return template.update(query);
 	}
 
+	public int InsertShopDetails(String shop, String contact, String owner, String address, String bill_from, String bill_to, String file) {
+		String date = GetDate();
+		String query= "insert into shop_details (shop_name, contact, owner_name, address, bill_from, bill_to, file, date) values('"+shop+"', '"+contact+"', '"+owner+"', '"+address+"', '"+bill_from+"', '"+bill_to+"', '"+file+"', '"+date+"')";
+		return template.update(query);
+	}
 	
 	public List<UserModel> ViewAllUserGroup() {
 		List<UserModel> query = template.query("select * from user_group", new RowMapper<UserModel>() {
@@ -309,5 +315,35 @@ public List<UserModel> ViewSpecificUser(String id) {
 		return query;
 	}
 
+	public List<ShopModel> ViewAllShopDetails() {
+		List<ShopModel> query = template.query("select * from shop_details", new RowMapper<ShopModel>() {
+
+			@Override
+			public ShopModel mapRow(ResultSet rs, int arg1) throws SQLException {
+				// TODO Auto-generated method stub
+				ShopModel sm = new ShopModel();
+				sm.setId(rs.getString("id"));
+				sm.setShop_name(rs.getString("shop_name"));
+				sm.setContact(rs.getString("contact"));
+				sm.setOwner_name(rs.getString("owner_name"));
+				sm.setAddress(rs.getString("address"));
+				sm.setBill_from(rs.getString("bill_from"));
+				sm.setBill_to(rs.getString("bill_to"));
+				sm.setFile(rs.getString("file"));
+				sm.setDate(rs.getString("date"));
+				return sm;
+			}
+			
+		});
+		return query;
+	}
 	
-}
+	
+	
+	
+	
+	
+	
+	
+	
+}// main class close

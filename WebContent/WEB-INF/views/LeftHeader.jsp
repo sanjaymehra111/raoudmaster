@@ -681,7 +681,7 @@
             <li><i class="fa fa-tasks fa-fw"></i><a>services</a> 
                 <ul class="side-nav-dropdown">
                     <li class="import_admin hide_sidebar_button" pagename="create_bill" textname="Bill Creation Page"><a href="admincreatebill">Create Bill</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="create_meter" textname="Meter Creation Page"><a href="admincreatemeter">Create Meter</a></li>
+                    <!-- <li class="import_admin hide_sidebar_button" pagename="create_meter" textname="Meter Creation Page"><a href="admincreatemeter">Create Meter</a></li> -->
                     <li class="import_admin hide_sidebar_button" pagename="meter_list" textname="Meter List"><a href="adminmeterlist">View Meter</a></li>
                     <li class="import_admin hide_sidebar_button" pagename="print_user_group" textname="Report"><a href="downloadmeterreport">Download Meter Report</a></li>
 					<li class="import_admin hide_sidebar_button" pagename="company_readings" textname="CompanyReadings"><a href="companyreadings">Create Company Readings</a></li>

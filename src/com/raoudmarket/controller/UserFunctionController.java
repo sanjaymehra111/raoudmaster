@@ -1,5 +1,9 @@
 package com.raoudmarket.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -12,12 +16,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.raoudmarket.dao.UniqueCodeGenerator;
 import com.raoudmarket.dao.UserFunctionDaoImpl;
 import com.raoudmarket.model.MeterModel;
+import com.raoudmarket.model.ShopModel;
 import com.raoudmarket.model.UserModel;
 
 @Controller
@@ -28,6 +35,9 @@ public class UserFunctionController {
 	
 	@Autowired
 	SessionController sccot;
+	
+	@Autowired
+	UniqueCodeGenerator ucdao;
 	
 	
 	@ResponseBody
@@ -56,17 +66,17 @@ public class UserFunctionController {
 		String sn = sccot.CheckSession(session);
 		if(sn == "success") {
 			List<MeterModel> meter = ufdao.ViewLastMeterDetails(number);
-			int pr;
-			if(meter.get(0).getNew_reading() != null)
-				pr = Integer.parseInt(meter.get(0).getNew_reading());
-			else
-				pr = Integer.parseInt(meter.get(0).getPrevious_reading());
-			
-			if(pr > Integer.parseInt(reading)) {
-				return "reading_error";
-			}
-			else {
-				if(meter != null) {
+				
+			if(meter != null) {
+				int pr;
+				if(meter.get(0).getNew_reading() != null)
+					pr = Integer.parseInt(meter.get(0).getNew_reading());
+				else
+					pr = Integer.parseInt(meter.get(0).getPrevious_reading());
+				
+					if(pr > Integer.parseInt(reading))
+						return "reading_error";
+				
 					int charge=200;
 					int unit=9;
 					
@@ -93,7 +103,7 @@ public class UserFunctionController {
 				else {
 					return "meter_error";
 				}
-			}
+		
 			return "success";
 		}
 		else
@@ -333,6 +343,50 @@ public class UserFunctionController {
 			return "Login Error";
 	}
 	
+	@ResponseBody
+	@PostMapping("InsertShopDetails")
+	public String InsertShopDetails(@RequestParam String shop, String contact, String name, String address, String from, String to, @RequestParam(value="file", required=false) CommonsMultipartFile[] file, HttpSession session) throws IOException {
+		String sn = sccot.CheckSession(session);
+		if(sn == "success") {
+			//String path = "D:/ServiceOnWay/Images/eclipseimages";
+			String path = "/home/pcsetupvsss/public_html/UploadedFiles/shop/";
+			
+			String finalfile = ""; 
+			
+			if(file != null) {
+				for(int i=0; i<file.length; i++) {
+					String files = ucdao.GetUniqueCode()+"-"+file[i].getOriginalFilename();
+					byte[] bytes = file[i].getBytes();
+					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path+ File.separator+ files)));
+					stream.write(bytes);
+					stream.flush();
+					stream.close();
+					finalfile+=files+",";
+				}
+			}
+			String files = finalfile.replaceAll(",$", "");
+			ufdao.InsertShopDetails(shop, contact, name, address, from, to, files);
+			return "success"; 
+		}
+		else
+			return "Login Error";
+	}
+
+	
+	@ResponseBody
+	@PostMapping("ViewAllShopDetails")
+	public String ViewAllShopDetails(HttpSession session) {
+		String sn = sccot.CheckSession(session);
+		if(sn == "success") {
+			List<ShopModel> shop = ufdao.ViewAllShopDetails();
+			Gson gson = new Gson();
+			String finals = gson.toJson(shop);
+			return finals; 
+		}
+		else
+			return "Login Error";
+	}
 	
 	
-}
+	
+}// main class close
