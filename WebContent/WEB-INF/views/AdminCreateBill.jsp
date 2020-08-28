@@ -156,12 +156,14 @@
                 			type:"post",
                 			dataType:"text",
                 			success:function(e){
-                				CloseLoader();
+                				//console.log("Success", e);
+                    			CloseLoader();
                     			if(e == "meter_error")
                 					alert("Meter Not Exist");
+                				else if(e == "reading_error")
+                					alert("Low Reading");
                 				else
                 					$(".validation_check").val(""); 
-                				//console.log("Success", e);
                 			},
                 			error:function(){
                 				CloseLoader();

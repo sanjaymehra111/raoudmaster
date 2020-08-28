@@ -35,10 +35,16 @@ public class UserFunctionController {
 	public String CreateUserGroup(@RequestParam String name, String contact, String email, String address, String meter, String charge, String shop, String reading, HttpSession session) {
 		String sn = sccot.CheckSession(session);
 		if(sn == "success") {
-			Number number = ufdao.CreateUserGroup(name, contact, email, address, meter);
-			ufdao.PreviousBillRecord(number.toString(), meter, reading, "2");
-			ufdao.CreateMeter(number.toString(), meter, shop, charge);
-			return "success";
+			List<MeterModel> user = ufdao.ViewSpecMeterList(meter);
+			if(user.size() > 0) {
+				return "meter_exist";
+			}
+			else {
+				Number number = ufdao.CreateUserGroup(name, contact, email, address, meter);
+				ufdao.PreviousBillRecord(number.toString(), meter, reading, "2");
+				ufdao.CreateMeter(number.toString(), meter, shop, charge);
+				return "success";
+			}
 		}
 		else
 			return "Login Error";
@@ -50,37 +56,43 @@ public class UserFunctionController {
 		String sn = sccot.CheckSession(session);
 		if(sn == "success") {
 			List<MeterModel> meter = ufdao.ViewLastMeterDetails(number);
-			if(meter != null) {
-				int pr;
-				int charge=200;
-				int unit=9;
-				
-				//String remaining = ufdao.ViewSpecificUserRemainingBalance(meter.get(0).getUser_id());
-				//System.out.println("rem : " +remaining);
-				
-				String[] dt_new = date.split("T");
-				String[] dt_pr = meter.get(0).getDate().split("T");
-				
-				//System.out.println(dt_pr[0]);
-				
-				String diff = String.valueOf(ChronoUnit.MONTHS.between(LocalDate.parse(dt_pr[0]).withDayOfMonth(1),LocalDate.parse(dt_new[0]).withDayOfMonth(1)));
-				
-				//System.out.println("diff : "+diff);
-				if(Integer.parseInt(diff) > 0)
-					charge = charge*Integer.parseInt(diff);
-				
-				//System.out.println("chrg : "+charge);
-				if(meter.get(0).getNew_reading() != null)
-					pr = Integer.parseInt(meter.get(0).getNew_reading());
-				else
-					pr = Integer.parseInt(meter.get(0).getPrevious_reading());
-				
-				float cr = Float.parseFloat(reading);
-				float total_amount = (cr-pr)*unit+charge;
-				ufdao.CreateBill(meter.get(0).getUser_id(), number, reading, String.valueOf(pr), String.valueOf(total_amount), String.valueOf(charge), String.valueOf(unit), date);
+			int pr;
+			if(meter.get(0).getNew_reading() != null)
+				pr = Integer.parseInt(meter.get(0).getNew_reading());
+			else
+				pr = Integer.parseInt(meter.get(0).getPrevious_reading());
+			
+			if(pr > Integer.parseInt(reading)) {
+				return "reading_error";
 			}
 			else {
-				return "meter_error";
+				if(meter != null) {
+					int charge=200;
+					int unit=9;
+					
+					//String remaining = ufdao.ViewSpecificUserRemainingBalance(meter.get(0).getUser_id());
+					//System.out.println("rem : " +remaining);
+					
+					String[] dt_new = date.split("T");
+					String[] dt_pr = meter.get(0).getDate().split("T");
+					
+					//System.out.println(dt_pr[0]);
+					
+					String diff = String.valueOf(ChronoUnit.MONTHS.between(LocalDate.parse(dt_pr[0]).withDayOfMonth(1),LocalDate.parse(dt_new[0]).withDayOfMonth(1)));
+					
+					//System.out.println("diff : "+diff);
+					if(Integer.parseInt(diff) > 0)
+						charge = charge*Integer.parseInt(diff);
+					
+					//System.out.println("chrg : "+charge);
+					
+					float cr = Float.parseFloat(reading);
+					float total_amount = (cr-pr)*unit+charge;
+					ufdao.CreateBill(meter.get(0).getUser_id(), number, reading, String.valueOf(pr), String.valueOf(total_amount), String.valueOf(charge), String.valueOf(unit), date);
+				}
+				else {
+					return "meter_error";
+				}
 			}
 			return "success";
 		}
@@ -298,7 +310,10 @@ public class UserFunctionController {
 		if(sn == "success") {
 			int pr;
 			String pr_rem = ufdao.ViewSpecificUserRemainingBalance(uid);
-			if(Float.parseFloat(pr_rem)<Float.parseFloat(amount))
+			
+			//System.out.println("previous : "+ pr_rem +" amount : "+ amount);
+			
+			if(pr_rem == null || Float.parseFloat(pr_rem) < Float.parseFloat(amount))
 				return "amoun_error";
 			
 			float nw_rem = Float.parseFloat(pr_rem) - Float.parseFloat(amount); 

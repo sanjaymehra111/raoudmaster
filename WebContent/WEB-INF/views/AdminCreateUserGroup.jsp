@@ -167,8 +167,11 @@
                 			dataType:"text",
                 			success:function(e){
                 				CloseLoader();
-                				 $(".validation_check").val(""); 
                 				//console.log("Success", e);
+                    			if(e == "meter_exist")
+                    				alert("Meter Already Exist");
+                    			else
+                					$(".validation_check").val(""); 
                 			},
                 			error:function(){
                 				CloseLoader();
