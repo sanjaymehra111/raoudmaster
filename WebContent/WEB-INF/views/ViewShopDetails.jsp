@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     
-    <title>Download Meter</title>
+    <title>Shop DEtails</title>
 	<!--For Webpage Logo-->
     <link rel="shortcut icon" href="/raoudmarket/files/images/login.png">
 
@@ -295,7 +295,7 @@
 						html+='<td>'+data[i].address.toUpperCase()+'</td>';
  						//html+='<td>'+data[i].file+'</td>';
  						var fls = data[i].file.split(",");
- 						html+='<td>';
+ 						html+='<td style="text-align:center">';
  						for(var j=0; j<fls.length; j++){
  							//html+='<span class="download_image_button" img="'+fls[j]+'">Image_'+(j+1)+' </span>';
  							html+='<span class="download_image_button" img="'+fls[j]+'" title="Image '+(j+1)+'"> <i class="fa fa-download"></i> </span>';

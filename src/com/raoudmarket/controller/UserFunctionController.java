@@ -74,7 +74,7 @@ public class UserFunctionController {
 				else
 					pr = Integer.parseInt(meter.get(0).getPrevious_reading());
 				
-					if(pr > Integer.parseInt(reading))
+					if(pr >= Integer.parseInt(reading))
 						return "reading_error";
 				
 					int charge=200;

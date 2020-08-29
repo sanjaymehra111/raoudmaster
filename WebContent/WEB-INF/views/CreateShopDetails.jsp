@@ -159,7 +159,7 @@
                 			$(".user_contact").css({"border-bottom":"solid 1px red"});
                 		}
                 		else {
-                			
+                			StartLoader();
                 			$(".user_contact").css({"border-bottom":""});
                 			var data = new FormData();
                 			data.append("shop", $(".shop_name").val());
@@ -185,8 +185,9 @@
         					 	success : function(e){
         					 		//console.log("res : ", e)
         					 		$(".validation_check").val("");
+        					 		CloseLoader();
         					 	},
-        					 	error : function(){alert("Insert Shop Details Server Error")}
+        					 	error : function(){CloseLoader(); alert("Insert Shop Details Server Error")}
         				});//ajax close
                 			
                 		}// else close
