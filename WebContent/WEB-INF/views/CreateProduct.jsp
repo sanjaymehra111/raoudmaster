@@ -3,7 +3,7 @@
 <html>
 <head>
 
-    <title>Company Reading</title>
+    <title>Create Product</title>
 	<!--For Webpage Logo-->
     <link rel="shortcut icon" href="/raoudmarket/files/images/login.png">
 
@@ -27,7 +27,7 @@
 
      <script>
         $(function ImportPage() {
-        	$(".pagename").html("Create Company Reading");
+        	$(".pagename").html("Create Product");
 		});
     </script>
 
@@ -49,8 +49,8 @@
             width: 100%;
             padding: 10px;
             font-size: 15px;
-            text-align: left;
-            padding-left: 10px;
+            text-align: center;
+            padding-left: 30px;
             cursor: default;
             transition: 0.3s;
         }
@@ -123,43 +123,14 @@
                 padding: 5px;
                 font-size: 15px;
                 width: 100%;
-                padding-left: 10px;
+                padding-left: 35px;
             }
-            
-            		
         }
-        
-        .previous_reading, .user_reading, .total_reading, .miscellaneous_reading {
-            	cursor:not-allowed;
-            }
-            
     </style>
-    
     
     <script>
 
         $(function () {
-        	
-        	
-        	$.ajax({
-        		url:"GetReadingReport",
-        		type:"post",
-        		dataType:"json",
-        		success:function(data){
-        			//console.log(data)
-        			if(data[0].length > 0){
-	        			$(".previous_reading").val(data[0][0].current_reading);
-	        			$(".user_reading").val(data[1]);
-	        			$(".total_reading").val(parseFloat(data[0][0].current_reading)+parseFloat(data[1]));
-	        			$(".miscellaneous_reading").val("")
-        			}
-        			
-        		},
-        		error:function(){
-        			console.warn("Get Reading Error");
-        		}
-        	});
-        	
             $(".text_field3").focus(function () {
                 $(".fa_text_fonts12").css({ "color": "#6f6486" });
                 $(this).prev(".fa_text_fonts1").css({ "color": "rgb(9, 156, 156)" });
@@ -168,7 +139,7 @@
             $(".user_save_button3").click(function () {
                 var a = 5;
                 $(".validation_check").each(function () {
-                    if ($(this).val() == ""){
+                	if ($(this).val() == ""){
                     	$(this).css({"border-bottom":"solid 1px red"});
                     	a = a - 1;
                     }
@@ -180,50 +151,37 @@
                     $(".insert_error_alert").css({ "font-size": "15px" });
                 else {
                     $(".insert_error_alert").css({ "font-size": "0px" });
-                    
                     $(function(){
-                    	StartLoader();
-                 		var previous = $(".previous_reading").val();
-                 		var user = $(".user_reading").val();
-            			var total = $(".total_reading").val();
-        				var current = $(".current_reading").val();
-        				var balance = $(".miscellaneous_reading").val()
-                 		
-                 		$.ajax({
-                 			url:"CreateCompanyReading",
-                 			data:{"previous":previous, "user":user, "total":total, "current":current, "balance":balance}, 
-                 			type:"post",
-                 			dataType:"text",
-                 			success:function(e){
-                 				CloseLoader();
-                 				//$(".validation_check").val(""); 
-                 			},
-                 			error:function(){
-                 				CloseLoader();
-                 				console.log("Company Meter Creation Server Error");
-                 			}
-                 			
-                 		}) // ajax close
-                	})
-                }
+                			StartLoader();
+                			$(".user_contact").css({"border-bottom":""});
+                			var data = new FormData();
+                			data.append("product", $(".product_name").val());
+            				data.append("file",$(".user_file")[0].files[0]);
+            				
+                			$.ajax({
+        					 	url:"InsertproductDetails", 
+        					 	data: data,
+        				 		enctype: 'multipart/form-data',
+        					 	processData: false,
+        					 	contentType: false,
+        				 	  	type: 'Post',    
+        					 	cache: false,
+        					 	dataType:"text",
+        					 	success : function(e){
+        					 		//console.log("res : ", e)
+        					 		$(".validation_check").val("");
+        					 		CloseLoader();
+        					 	},
+        					 	error : function(){CloseLoader(); alert("Insert product Details Server Error")}
+        				});//ajax close
+                			
+                	})// function close 
+                }// else close
             }); //user_save_button3 click close
 
         })
-        
-            function MiscellaneousFunction(){
-        		var total = $(".total_reading").val();
-        		var current = $(".current_reading").val();
-        		if((current-total) > 0)
-        			$(".miscellaneous_reading").css({"color":"red"})
-        		else
-        			$(".miscellaneous_reading").css({"color":"green"})
-        		$(".miscellaneous_reading").val(current-total)
-        	}
-
 
     </script>
-    
- 
 </head>
 
 	<jsp:include page="LeftHeader.jsp"/> 
@@ -231,8 +189,7 @@
 	<jsp:include page="TopHeader.jsp"/>
 	  
 	
-	
-    <br>
+	    <br>
     <br>
     <br>
     <div class="admin_create_user">
@@ -240,46 +197,26 @@
             <div class="test-1">
                 <br>
                 <br>
-                <div class="col-md-4" style="text-align: center;">
-                	 <div style="text-align:left; text-transform: uppercase;">Previous Reading</div>
-                     <input type="text" class="text_field3 validation_check previous_reading" placeholder="Previous Reading*" readonly>
+                <div class="col-md-6" style="text-align: center;">
+                    <i class="fa fa-home fa_text_fonts1 fa_text_fonts12"></i>
+                     <input type="text" class="text_field3 validation_check product_name" placeholder="product Name*">
+                     <br>
                     <br>
-                    <br>
-                </div>
-                <div class="col-md-4" style="text-align: center;">
-                	<div style="text-align:left; text-transform: uppercase;">User Reading</div>
-                    <input type="text" class="text_field3 validation_check user_date validation_check user_reading" placeholder="User Reading*" readonly>
-                    <br>
-                    <br>                   
-                </div>
-                <div class="col-md-4" style="text-align: center;">
-                	<div style="text-align:left; text-transform: uppercase;">Total Reading</div>
-                    <input type="text" class="text_field3 validation_check user_date validation_check total_reading" placeholder="Total Bill Reading*" readonly>
-                    <br>
-                    <br>                   
-                </div>
-                <div class="col-md-4" style="text-align: center;">
-                	<div style="text-align:left; text-transform: uppercase;">Current Reading</div>
-                    <input type="number" onkeyup="MiscellaneousFunction()" class="text_field3 validation_check user_date validation_check current_reading" placeholder="Current Reading*">
-                    <br>
-                    <br>                   
-                </div>
-                <div class="col-md-4" style="text-align: center;">
-                	<div style="text-align:left; text-transform: uppercase;">miscellaneous reading</div>
-                    <input type="text" class="text_field3 validation_check user_date validation_check miscellaneous_reading" placeholder="Miscellaneous Reading*" readonly>
-                    <br>
-                    <br>                   
                 </div>
                 
-                <div class="col-md-12"></div>
-                <div class="col-md-2"></div>                
+                
+                <div class="col-md-6">
+                     <input type="file" class="text_field3 validation_check user_file" placeholder="Upload File*">
+                    <br>
+                    <br>
+                </div>
                 
                 <div class="col-md-12" style="text-align: center;">
                     <br>
                     <p class="insert_error_alert">Please Insert All Necessary Details (*)</p>
                     <br>
-                    <div class="user_buttons">       
-                    <button class="user_edit_button2 user_save_button3">Submit</button> 
+                    <div class="user_buttons">
+                    <button class="user_edit_button2 user_save_button3">Submit</button>
                     </div>
                 </div>
                 <div class="container-fluid"></div>
@@ -288,8 +225,7 @@
             </div>
         </div>
     </div>
-
     </section>
     
     </html>
-   
+    

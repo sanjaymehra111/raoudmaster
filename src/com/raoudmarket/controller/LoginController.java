@@ -29,7 +29,7 @@ public class LoginController {
 		String new_pwd = pdc.PasswordEncrypt(pwd); 
 		String check = aldao.AdminLoginCheck(id, new_pwd);
 		if(check != null) {
-			String sc_msg = sccot.CreateSession(id, session);
+			String sc_msg = sccot.CreateSession(id, "admin", session);
 			if(sc_msg == "success") {
 				return "success";
 			}
@@ -39,5 +39,24 @@ public class LoginController {
 		else
 			return "Login Error";
 	}
+	
+	@ResponseBody
+	@PostMapping("UserLoginCheck")
+	public String UserLoginCheck(@RequestParam String id, String pwd, HttpSession session) {
+		
+		String new_pwd = pdc.PasswordEncrypt(pwd); 
+		String check = aldao.UserLoginCheck(id, new_pwd);
+		if(check != null) {
+			String sc_msg = sccot.CreateSession(id, "user", session);
+			if(sc_msg == "success") {
+				return "success";
+			}
+			else
+				return "error";
+		}
+		else
+			return "Login Error";
+	}
+
 
 }

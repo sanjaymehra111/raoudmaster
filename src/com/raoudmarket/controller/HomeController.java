@@ -16,7 +16,7 @@ public class HomeController {
 	@RequestMapping("/")
 	public String IndexPage(HttpSession session, HttpServletResponse response) {
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		//System.out.println("sesson"+ sn);
 		if(sn == "success")
 			return "AdminDashboard";
@@ -27,7 +27,7 @@ public class HomeController {
 	@RequestMapping("login")
 	public String Login(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "AdminDashboard";
 		else
@@ -37,7 +37,7 @@ public class HomeController {
 	@RequestMapping("admincreatebill")
 	public String AdminCreateBill(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "AdminCreateBill";
 		else
@@ -47,7 +47,7 @@ public class HomeController {
 	@RequestMapping("admincreatemeter")
 	public String AdminCreateMeter(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "AdminCreateMeter"; 
 		else
@@ -57,7 +57,7 @@ public class HomeController {
 	@RequestMapping("admincreateusergroup")
 	public String AdminCreateUserGroup(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "AdminCreateUserGroup"; 
 		else
@@ -67,7 +67,7 @@ public class HomeController {
 	@RequestMapping("admindashboard")
 	public String AdminDashboard(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "AdminDashboard"; 
 		else
@@ -77,7 +77,7 @@ public class HomeController {
 	@RequestMapping("adminmeterlist")
 	public String AdminMeterList(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "AdminMeterList"; 
 		else
@@ -87,7 +87,7 @@ public class HomeController {
 	@RequestMapping("adminusergroup")
 	public String AdminUserGroup(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "AdminUserGroup"; 
 		else
@@ -97,7 +97,7 @@ public class HomeController {
 	@RequestMapping("companyreadingreport")
 	public String CompanyReading_Report(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "CompanyReading_Report"; 
 		else
@@ -107,7 +107,7 @@ public class HomeController {
 	@RequestMapping("companyreadings")
 	public String CompanyReadings(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "CompanyReadings"; 
 		else
@@ -117,7 +117,7 @@ public class HomeController {
 	@RequestMapping("createshopdetails")
 	public String CreateShopDetails(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "CreateShopDetails"; 
 		else
@@ -127,7 +127,7 @@ public class HomeController {
 	@RequestMapping("downloadmeterreport")
 	public String DownloadMeterReport(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "DownloadMeterReport"; 
 		else
@@ -137,7 +137,7 @@ public class HomeController {
 	@RequestMapping("downloadreport")
 	public String DownloadReport(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "DownloadReport"; 
 		else
@@ -147,14 +147,80 @@ public class HomeController {
 	@RequestMapping("viewshopdetails")
 	public String ViewShopDetails(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success")
 			return "ViewShopDetails"; 
 		else
 			return "Login";
 	}
-	
 
+	
+	@RequestMapping("CreateProduct")
+	public String CreateProduct(HttpSession session, HttpServletResponse response){
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		String sn = sccot.CheckSession(session, "admin");
+		if(sn == "success")
+			return "CreateProduct"; 
+		else
+			return "Login";
+	}
+
+	@RequestMapping("AdminCreateUser")
+	public String AdminCreateUser(HttpSession session, HttpServletResponse response){
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		String sn = sccot.CheckSession(session, "admin");
+		if(sn == "success")
+			return "AdminCreateUser"; 
+		else
+			return "Login";
+	}
+	
+	@RequestMapping("AdminViewUser")
+	public String AdminViewUser(HttpSession session, HttpServletResponse response){
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		String sn = sccot.CheckSession(session, "admin");
+		if(sn == "success")
+			return "AdminViewUser"; 
+		else
+			return "Login";
+	}
+
+	@RequestMapping("ViewProductDetails")
+	public String ViewProductDetails(HttpSession session, HttpServletResponse response){
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		String sn = sccot.CheckSession(session, "admin");
+		if(sn == "success")
+			return "ViewProductDetails"; 
+		else
+			return "Login";
+	}
+
+	
+	/**************************************************** USER LOGIN ***************************************************/
+	
+	@RequestMapping("userlogin")
+	public String userlogin(HttpSession session, HttpServletResponse response){
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		String sn = sccot.CheckSession(session, "user");
+		if(sn == "success")
+			return "user/UserDashboard";
+		else
+			return "user/Login";
+	}
+	
+	@RequestMapping("userdashboard")
+	public String UserDashboard(HttpSession session, HttpServletResponse response){
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		String sn = sccot.CheckSession(session, "user");
+		if(sn == "success")
+			return "user/UserDashboard"; 
+		else
+			return "Login";
+	}
+
+	
+	
+	
 	@RequestMapping("logout")
 	public String logout(HttpSession session){
 		sccot.TerminateSession(session);

@@ -670,36 +670,12 @@
                 </ul>
             </li>
 
-            <li><i class="fa fa-support fa-fw"></i><a>Group</a>
+            <li><i class="fa fa-support fa-fw"></i><a>Bills</a>
                 <ul class="side-nav-dropdown">
-                    <li class="import_admin hide_sidebar_button" pagename="create_user_group" textname="New User"><a href="admincreateusergroup">Insert User</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="user_group" textname="User List"><a href="adminusergroup">View Users</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="print_user_group" textname="Report"><a href="downloadreport">Download Report</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="UserCreateBill"><a href="UserCreateBill">Create</a></li>
+                    <li class="import_admin hide_sidebar_button" pagename="UserViewBill"><a href="UserViewBill">View</a></li>
                 </ul>
             </li>
-
-            <li><i class="fa fa-tasks fa-fw"></i><a>services</a> 
-                <ul class="side-nav-dropdown">
-                    <li class="import_admin hide_sidebar_button" pagename="create_bill" textname="Bill Creation Page"><a href="admincreatebill">Create Bill</a></li>
-                    <!-- <li class="import_admin hide_sidebar_button" pagename="create_meter" textname="Meter Creation Page"><a href="admincreatemeter">Create Meter</a></li> -->
-                    <li class="import_admin hide_sidebar_button" pagename="meter_list" textname="Meter List"><a href="adminmeterlist">View Meter</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="print_user_group" textname="Report"><a href="downloadmeterreport">Download Meter Report</a></li>
-					<li class="import_admin hide_sidebar_button" pagename="company_readings" textname="CompanyReadings"><a href="companyreadings">Create Company Readings</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="download_company_readings" textname="DownloadCompanyReadingsreport"><a href="companyreadingreport">Download Company Readings Report</a></li>
-                                        <li class="import_admin hide_sidebar_button" pagename="create_shop_details" textname="CreateShopDetails"><a href="createshopdetails">Create Shop Details</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="view_shop_details" textname="ViewShopDetails"><a href="viewshopdetails">View Shop Details</a></li>
-                </ul>
-            </li>
-            
-            <li><i class="fa fa-tachometer fa-fw"></i><a>Master</a>
-                <ul class="side-nav-dropdown">
-					<li class="import_admin hide_sidebar_button" pagename="AdminViewUser"><a href="AdminCreateUser">Create User</a></li>
-					<li class="import_admin hide_sidebar_button" pagename="AdminViewUser"><a href="AdminViewUser">View User</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="createProduct"><a href="CreateProduct">Insert Product</a></li>
-                    <li class="import_admin hide_sidebar_button" pagename="ViewProductDetails"><a href="ViewProductDetails">View Product</a></li>
-                </ul>
-            </li>
-            
 
         </ul>
         

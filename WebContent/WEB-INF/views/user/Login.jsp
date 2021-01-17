@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>Login</title>
+    <title>User Login</title>
     <!-- Bootstrap -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -188,7 +188,7 @@
                 				CloseLoader();
                 				//console.log("Response : ", res);
                 				if(res == "success")
-                					window.location.href="admindashboard";
+                					window.location.href="userdashboard";
                 				else
                 					alert("INCORRECT ID/PASSWORD");
                 			},
@@ -237,10 +237,10 @@
                         <br />
                         <br />
                         <br />
-                        <!-- <div style="text-align: right;"><span class="admin_forgot_password">Forgot Password..?</span></div> -->
+						<!-- <div style="text-align: right;"><span class="admin_forgot_password">Forgot Password..?</span></div> -->
                         <br />
                         <br />           
-                        <button ID="btnLogin" Class="admin_login_button1">LOGIN</button>
+                        <button ID="btnLogin" Class="admin_login_button1">USER LOGIN</button>
                                      
                     </div>
                     <div class="container-fluid"></div>

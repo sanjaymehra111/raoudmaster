@@ -37,7 +37,30 @@ public class AdminLoginDaoImpl {
 			return query.get(0).getUser_id().equals(id) && query.get(0).getPassword().equals(pwd) ? "success" : null;
 		else
 			return null;
-
-		
 	}
+	
+	
+	public String UserLoginCheck(String id, String pwd) {
+		String sqlquery = "select * from user where user_id='"+id+"' and password='"+pwd+"'";
+		List<AdminModel> query = template.query(sqlquery, new RowMapper<AdminModel>() {
+
+			@Override
+			public AdminModel mapRow(ResultSet rs, int arg1) throws SQLException {
+				// TODO Auto-generated method stub
+				AdminModel am = new AdminModel();
+				am.setId(rs.getString("id"));
+				am.setUser_id(rs.getString("user_id"));
+				am.setPassword(rs.getString("password"));
+				return am;
+			}
+			
+		});
+		
+		if(query.size() > 0)
+			return query.get(0).getUser_id().equals(id) && query.get(0).getPassword().equals(pwd) ? "success" : null;
+		else
+			return null;
+	}
+	
+	
 }

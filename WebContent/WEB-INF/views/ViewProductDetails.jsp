@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     
-    <title>Shop Details</title>
+    <title>product Details</title>
 	<!--For Webpage Logo-->
     <link rel="shortcut icon" href="/raoudmarket/files/images/login.png">
 
@@ -273,13 +273,13 @@
     <script>
     
         $(function ImportPage() {
-        	$(".pagename").html("User's");
+        	$(".pagename").html("Product Details");
 		});
         
         $(function(){
         	StartLoader();
         	$.ajax({
-        		url:"ViewAllShopDetails",
+        		url:"ViewAllproductDetails",
         		type:"post",
         		dataType:"json",
         		success:function(data){
@@ -287,26 +287,15 @@
         			var html="";
         			for(var i=0; i<data.length; i++) {
 						html+='<tr>';
-						html+='<td>'+data[i].shop_name.toUpperCase()+'</td>';
-						html+='<td>'+data[i].owner_name.toUpperCase()+'</td>';
-						html+='<td>'+data[i].contact+'</td>';
-						html+='<td>'+data[i].bill_from+'</td>';
-						html+='<td>'+data[i].bill_to+'</td>';
-						html+='<td>'+data[i].address.toUpperCase()+'</td>';
- 						//html+='<td>'+data[i].file+'</td>';
- 						var fls = data[i].file.split(",");
- 						html+='<td style="text-align:center">';
- 						for(var j=0; j<fls.length; j++){
- 							//html+='<span class="download_image_button" img="'+fls[j]+'">Image_'+(j+1)+' </span>';
- 							html+='<span class="download_image_button" img="'+fls[j]+'" title="Image '+(j+1)+'"> <i class="fa fa-download"></i> </span>';
- 						}
- 						html+='</td>';
+						html+='<td style="text-align:center">'+data[i].name.toUpperCase()+'</td>';
+						html+='<td style="text-align:center"> <img style="width: 70px; height: 70px; border-radius: 100px; border: solid 2px white; padding: 2px;" src="http://pcsetupvsss.xyz/UploadedFiles/ProductImages/'+data[i].image+'"></td>';
+						html+='<td style="text-align:center">'+data[i].date+'</td>';
 						html+='</tr>';
         			}
         			
-        			$(".shoplist").html(html);
+        			$(".productlist").html(html);
         			
-        			//https://pcsetupvsss.xyz/UploadedFiles/shop/05599d5b43314de2bce6f346b103f317-IMG_20200717_131717.jpg
+        			//https://pcsetupvsss.xyz/UploadedFiles/product/05599d5b43314de2bce6f346b103f317-IMG_20200717_131717.jpg
         			
         			$("#example").DataTable({
 						//columnDefs: [ { type: 'date', 'targets': [3] } ],
@@ -315,10 +304,6 @@
 						responsive: true,
 						pageLength : 10,
 						"bLengthChange" : true, //thought this line could hide the LengthMenu
-						dom: 'Bfrtip',
-				        buttons: [
-				            'copy', 'csv', 'excel', 'pdf', 'print'
-				        ],
 						"bInfo":true, 
 						
 						columnDefs: [
@@ -349,29 +334,7 @@
         		error:function(){CloseLoader(); console.log("Admin View Meter List Server Error");}
         	}) // ajax close
         })// function close
-        
-        $(function(){
-            $(document).on("click", ".download_image_button", function(){
-        		var id=$(this).attr("img");
-        		var url = "https://pcsetupvsss.xyz/UploadedFiles/shop/"+id;
-        		download(url,"ShopImage"+id);
-            }); //view_spec_Booking_details Close
-
-            
-        	function download(url, filename) {
-        		fetch(url).then(function(t) {
-        		    return t.blob().then((b)=>{
-        		        var a = document.createElement("a");
-        		        a.href = URL.createObjectURL(b);
-        		        a.setAttribute("download", filename);
-        		        a.click();
-        		    }
-        		    );
-        		});
-        	}
-            
-        })
-        
+                
     </script>
 
 
@@ -390,17 +353,12 @@
 	    <table id="example" class="table-bordered table_padding" style="width: 100%; color: white;">
 			<thead>
 				<tr>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Shop Name</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Owner Name</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Contact</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Bill Date From</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Bill Date To</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Address</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Images</td>
-					
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Name</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Image</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Date</td>
 				</tr>
 			</thead>
-			<tbody style="font-size:12px" class="shoplist"></tbody>
+			<tbody style="font-size:12px" class="productlist"></tbody>
 		</table>
             
     </div>

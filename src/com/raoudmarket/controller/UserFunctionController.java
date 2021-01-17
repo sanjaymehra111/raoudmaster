@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import com.raoudmarket.dao.UniqueCodeGenerator;
 import com.raoudmarket.dao.UserFunctionDaoImpl;
 import com.raoudmarket.model.MeterModel;
+import com.raoudmarket.model.ProductModel;
 import com.raoudmarket.model.ShopModel;
 import com.raoudmarket.model.UserModel;
 
@@ -43,7 +44,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("CreateUserGroup")
 	public String CreateUserGroup(@RequestParam String name, String contact, String email, String address, String meter, String charge, String shop, String reading, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<MeterModel> user = ufdao.ViewSpecMeterList(meter);
 			if(user.size() > 0) {
@@ -63,7 +64,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("CreateBill")
 	public String CreateBill(@RequestParam String number, String reading, String date, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<MeterModel> meter = ufdao.ViewLastMeterDetails(number);
 				
@@ -113,9 +114,21 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("CreateMeter")
 	public String CreateMeter(@RequestParam String number, String shop, String charge, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			ufdao.CreateMeter("", number, shop, charge);
+			return "success";
+		}
+		else
+			return "Login Error";
+	}
+	
+	@ResponseBody
+	@PostMapping("CreateCompanyReading")
+	public String CreateCompanyReading(@RequestParam String previous, String user, String total, String current, String balance, HttpSession session) {
+		String sn = sccot.CheckSession(session, "admin");
+		if(sn == "success") {
+			ufdao.CreateCompanyReading(previous, user, total, current, balance);
 			return "success";
 		}
 		else
@@ -125,7 +138,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("ViewUserGroup")
 	public String ViewUserGroup(HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<UserModel> user = ufdao.ViewAllUserGroup();
 			Gson gson = new Gson();
@@ -141,7 +154,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("ViewUserGroupAllDetails")
 	public JsonArray ViewUserGroupAllDetails(HttpSession session) throws JSONException {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		JsonArray final_list = new JsonArray();
 		if(sn == "success") {
 			List<UserModel> user = ufdao.ViewAllUserGroup();
@@ -175,7 +188,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("ViewUserMeterAllDetails")
 	public JsonArray ViewUserMeterAllDetails(HttpSession session) throws JSONException {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		JsonArray final_list = new JsonArray();
 		if(sn == "success") {
 			List<UserModel> user = ufdao.ViewAllUserGroup();
@@ -201,7 +214,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("ViewMeterList")
 	public String ViewMeterList(HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<MeterModel> user = ufdao.ViewMeterList();
 			Gson gson = new Gson();
@@ -212,10 +225,35 @@ public class UserFunctionController {
 			return "Login Error";
 	}
 	
+	
+	@ResponseBody
+	@PostMapping("GetReadingReport")
+	public String GetReadingReport(HttpSession session) {
+		String sn = sccot.CheckSession(session, "admin");
+		if(sn == "success") {
+			Gson gson = new Gson();
+			List<MeterModel> previousReading = ufdao.MainMeterPreviousReading();
+			String monthReading = String.valueOf(ufdao.MonthReading());
+			
+			if(monthReading == "null"){
+				monthReading = "0";
+			}
+			
+			String preR = gson.toJson(previousReading);
+			String newR = gson.toJson(monthReading);
+			
+			String finealDetails = "["+preR+", "+newR+"]";
+			
+			return finealDetails; 
+		}
+		else
+			return "Login Error";
+	}
+
 	@ResponseBody
 	@PostMapping("ViewSpecMeterList")
 	public String ViewSpecMeterList(@RequestParam String mid, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<MeterModel> user = ufdao.ViewSpecMeterList(mid);
 			Gson gson = new Gson();
@@ -230,7 +268,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("ViewSpecificUser")
 	public String ViewSpecificUser(@RequestParam String id, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<UserModel> user = ufdao.ViewSpecificUser(id);
 			Gson gson = new Gson();
@@ -244,7 +282,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("ViewSpecificUserMeterBill")
 	public String ViewSpecificUserMeterBill(@RequestParam String id, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<UserModel> user = ufdao.ViewSpecificUser(id);
 			List<MeterModel> meter = ufdao.ViewSpecificUserMeterBill(id);
@@ -264,7 +302,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("UpdateUserGroup")
 	public String UpdateUserGroup(@RequestParam String uid, String name, String contact, String email, String address, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			ufdao.UpdateUserGroup(uid, name, contact, email, address);
 			return "success"; 
@@ -276,7 +314,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("UpdateMeterDetails")
 	public String UpdateMeterDetails(@RequestParam String mid, String shop, String charge, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			ufdao.UpdateMeterDetails(mid, shop, charge);
 			return "success"; 
@@ -288,7 +326,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("UpdateMeterStatus")
 	public String UpdateMeterStatus(@RequestParam String mid, String status, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			ufdao.UpdateMeterStatus(mid, status);
 			return "success"; 
@@ -304,7 +342,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("DeleteUserGroup")
 	public String DeleteUserGroup(@RequestParam String uid, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			ufdao.DeleteUserGroup(uid);
 			return "success"; 
@@ -316,7 +354,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("MakePayment")
 	public String MakePayment(@RequestParam String uid, String amount, String date, HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			int pr;
 			String pr_rem = ufdao.ViewSpecificUserRemainingBalance(uid);
@@ -346,7 +384,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("InsertShopDetails")
 	public String InsertShopDetails(@RequestParam String shop, String contact, String name, String address, String from, String to, @RequestParam(value="file", required=false) CommonsMultipartFile[] file, HttpSession session) throws IOException {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			//String path = "D:/ServiceOnWay/Images/eclipseimages";
 			String path = "/home/pcsetupvsss/public_html/UploadedFiles/shop/";
@@ -354,7 +392,7 @@ public class UserFunctionController {
 			String finalfile = ""; 
 			
 			if(file != null) {
-				for(int i=0; i<file.length; i++) {
+				for(int i=0; i<file.length; i++) { 
 					String files = ucdao.GetUniqueCode()+"-"+file[i].getOriginalFilename();
 					byte[] bytes = file[i].getBytes();
 					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path+ File.separator+ files)));
@@ -374,9 +412,37 @@ public class UserFunctionController {
 
 	
 	@ResponseBody
+	@PostMapping("InsertproductDetails")
+	public String InsertproductDetails(@RequestParam String product, @RequestParam(value="file", required=false) CommonsMultipartFile file, HttpSession session) throws IOException {
+		String sn = sccot.CheckSession(session, "admin");
+		if(sn == "success") {
+			//String path = "c:/UploadedFiles/ProductImages/";
+			String path = "/home/pcsetupvsss/public_html/UploadedFiles/ProductImages/";
+			
+			String finalfile = ""; 
+			
+			if(file != null) {
+					String files = ucdao.GetUniqueCode()+"-"+file.getOriginalFilename();
+					byte[] bytes = file.getBytes();
+					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path+ File.separator+ files)));
+					stream.write(bytes);
+					stream.flush();
+					stream.close();
+					finalfile+=files+",";
+				}
+			String files = finalfile.replaceAll(",$", "");
+			ufdao.InsertProductDetails(product, files);
+			return "success"; 
+		}
+		else
+			return "Login Error";
+	}
+
+	
+	@ResponseBody
 	@PostMapping("ViewAllShopDetails")
 	public String ViewAllShopDetails(HttpSession session) {
-		String sn = sccot.CheckSession(session);
+		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<ShopModel> shop = ufdao.ViewAllShopDetails();
 			Gson gson = new Gson();
@@ -386,7 +452,22 @@ public class UserFunctionController {
 		else
 			return "Login Error";
 	}
+
 	
+	@ResponseBody
+	@PostMapping("ViewAllproductDetails")
+	public String ViewAllproductDetails(HttpSession session) {
+		String sn = sccot.CheckSession(session, "admin");
+		if(sn == "success") {
+			List<ProductModel> shop = ufdao.ViewAllproductDetails();
+			Gson gson = new Gson();
+			String finals = gson.toJson(shop);
+			return finals; 
+		}
+		else
+			return "Login Error";
+	}
+
 	
 	
 }// main class close

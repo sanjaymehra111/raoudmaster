@@ -17,6 +17,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.raoudmarket.model.MeterModel;
+import com.raoudmarket.model.ProductModel;
 import com.raoudmarket.model.ShopModel;
 import com.raoudmarket.model.UserModel;
 
@@ -39,6 +40,33 @@ public class UserFunctionDaoImpl {
 	{
 		Date today = new Date();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    df.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+	    String date = df.format(today);
+	    return date;
+	}
+	
+	public String GetCurrentYear()
+	{
+		Date today = new Date();
+		DateFormat df = new SimpleDateFormat("yyyy");
+	    df.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+	    String date = df.format(today);
+	    return date;
+	}
+	
+	public String GetCurrentMonth()
+	{
+		Date today = new Date();
+		DateFormat df = new SimpleDateFormat("MM");
+	    df.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+	    String date = df.format(today);
+	    return date;
+	}
+	
+	public String GetCurrentDay()
+	{
+		Date today = new Date();
+		DateFormat df = new SimpleDateFormat("dd");
 	    df.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
 	    String date = df.format(today);
 	    return date;
@@ -97,6 +125,12 @@ public class UserFunctionDaoImpl {
 		return template.update(query);
 	}
 	
+	public int CreateCompanyReading(String previous, String user, String total, String current, String balance) {
+		String dates = GetDateTime2();
+		String query= "insert into company_reading (previous_reading, user_reading, total_reading, current_reading, balance, date) values('"+previous+"', '"+user+"', '"+total+"', '"+current+"', '"+balance+"', '"+dates+"')";
+		return template.update(query);
+	}
+	
 	
 	public int UpdateUserGroup(String uid, String name, String contact, String email, String address) {
 		String date = GetDate();
@@ -132,6 +166,14 @@ public class UserFunctionDaoImpl {
 		String query= "insert into shop_details (shop_name, contact, owner_name, address, bill_from, bill_to, file, date) values('"+shop+"', '"+contact+"', '"+owner+"', '"+address+"', '"+bill_from+"', '"+bill_to+"', '"+file+"', '"+date+"')";
 		return template.update(query);
 	}
+	
+	
+	public int InsertProductDetails(String product, String file) {
+		String date = GetDate();
+		String query= "insert into product_details (name, image, date) values('"+product+"', '"+file+"', '"+date+"')";
+		return template.update(query);
+	}
+
 	
 	public List<UserModel> ViewAllUserGroup() {
 		List<UserModel> query = template.query("select * from user_group", new RowMapper<UserModel>() {
@@ -290,7 +332,80 @@ public List<UserModel> ViewSpecificUser(String id) {
 		
 		return query;
 	}
+	
+	
+	public List<MeterModel> MainMeterPreviousReading() {
+		String year= GetCurrentYear();
+		String month = GetCurrentMonth();
+		int lastMonth = Integer.parseInt(month)-1;
+		String day = GetCurrentDay();
+		
+		List<MeterModel> query = template.query("SELECT * FROM company_reading WHERE DATE > '"+year+"-"+lastMonth+"-01' AND DATE < '"+year+"-"+lastMonth+"-31' ORDER BY id DESC LIMIT 0,1", new RowMapper<MeterModel>() {
 
+			@Override
+			public MeterModel mapRow(ResultSet rs, int arg1) throws SQLException {
+				// TODO Auto-generated method stub
+				MeterModel mm = new MeterModel();
+				mm.setId(rs.getString("id"));
+				mm.setMeter_number(rs.getString("meter_number"));
+				mm.setPrevious_reading(rs.getString("previous_reading"));
+				mm.setUser_reading(rs.getString("user_reading"));
+				mm.setTotal_reading(rs.getString("total_reading"));
+				mm.setCurrent_reading(rs.getString("current_reading"));
+				mm.setBalance(rs.getString("balance"));
+				mm.setDate(rs.getString("date"));
+				return mm;
+			}
+			
+		});
+		
+		return query;
+	}
+	
+	
+	public Float MonthReading() {
+		String year= GetCurrentYear();
+		String month = GetCurrentMonth();
+		String day = GetCurrentDay();
+
+		String PrevoiusReadingSumQuery = "SELECT SUM(previous_reading) FROM `meter_bill` WHERE DATE > '"+year+"-"+month+"-01' AND DATE < '"+year+"-"+month+"-31'  AND STATUS = 0";
+		String NewReadingSumQuery = "SELECT SUM(new_reading) FROM `meter_bill` WHERE DATE > '"+year+"-"+month+"-01' AND DATE < '"+year+"-"+month+"-31'  AND STATUS = 0";
+		
+		List<MeterModel> Prequery = template.query(PrevoiusReadingSumQuery, new RowMapper<MeterModel>() {
+			@Override
+			public MeterModel mapRow(ResultSet rs, int arg1) throws SQLException {
+				// TODO Auto-generated method stub
+				MeterModel mm = new MeterModel();
+				mm.setPrevious_reading(rs.getString("SUM(previous_reading)"));
+				return mm;
+			}
+		});
+		
+		List<MeterModel> Newquery = template.query(NewReadingSumQuery, new RowMapper<MeterModel>() {
+			@Override
+			public MeterModel mapRow(ResultSet rs, int arg1) throws SQLException {
+				MeterModel mm = new MeterModel();
+				mm.setNew_reading(rs.getString("SUM(new_reading)"));
+				return mm;
+			}
+		});
+		
+		Float final_reading;
+		
+		
+		if(Newquery.size() > 0 && Newquery.get(0).getNew_reading() != null) {
+			if(Prequery.size() > 0 && Prequery.get(0).getPrevious_reading() != null) {
+				final_reading = Float.parseFloat(Newquery.get(0).getNew_reading()) - Float.parseFloat(Prequery.get(0).getPrevious_reading());
+				return final_reading;
+			}
+			else
+				return Float.parseFloat(Newquery.get(0).getNew_reading());
+		}
+		
+		return null;
+	}
+	
+	
 	
 	public List<MeterModel> ViewSpecMeterList(String mid) {
 		List<MeterModel> query = template.query("select * from meter where meter_number = '"+mid+"'", new RowMapper<MeterModel>() {
@@ -337,7 +452,26 @@ public List<UserModel> ViewSpecificUser(String id) {
 		});
 		return query;
 	}
+
 	
+	public List<ProductModel> ViewAllproductDetails() {
+		List<ProductModel> query = template.query("select * from product_details", new RowMapper<ProductModel>() {
+
+			@Override
+			public ProductModel mapRow(ResultSet rs, int arg1) throws SQLException {
+				// TODO Auto-generated method stub
+				ProductModel sm = new ProductModel();
+				sm.setId(rs.getString("id"));
+				sm.setName(rs.getString("name"));
+				sm.setImage(rs.getString("image"));
+				sm.setDate(rs.getString("date"));
+				return sm;
+			}
+			
+		});
+		return query;
+	}
+
 	
 	
 	
