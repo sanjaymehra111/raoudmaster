@@ -13,7 +13,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Dashboard <span class="caret"></span></a>
                         <ul class="dropdown-menu">
 
-                            <li><a href="logout"><i class="fa fa-sign-out"></i>Log out</a></li>
+                            <li><a href="Userlogout"><i class="fa fa-sign-out"></i>Log out</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -64,6 +64,16 @@ public class HomeController {
 			return "Login";
 	}
 	
+	@RequestMapping("AdminViewBill")
+	public String AdminViewBill(HttpSession session, HttpServletResponse response){
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		String sn = sccot.CheckSession(session, "admin");
+		if(sn == "success")
+			return "AdminViewBill"; 
+		else
+			return "Login";
+	}
+	
 	@RequestMapping("admindashboard")
 	public String AdminDashboard(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -212,10 +222,11 @@ public class HomeController {
 	public String UserDashboard(HttpSession session, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		String sn = sccot.CheckSession(session, "user");
+		System.out.println(sn);
 		if(sn == "success")
 			return "user/UserDashboard"; 
 		else
-			return "Login";
+			return "user/Login";
 	}
 
 	
@@ -225,7 +236,34 @@ public class HomeController {
 	public String logout(HttpSession session){
 		sccot.TerminateSession(session);
 		return "Login";
-		
 	}
+	
+	@RequestMapping("Userlogout")
+	public String Userlogout(HttpSession session){
+		sccot.TerminateSession(session);
+		return "user/Login";
+	}
+	
+	
+	@RequestMapping("UserCreateBill")
+	public String UserCreateBill(HttpSession session, HttpServletResponse response){
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		String sn = sccot.CheckSession(session, "user");
+		if(sn == "success")
+			return "user/UserCreateBill";
+		else
+			return "user/Login";
+	}
+	
+	@RequestMapping("UserViewBill")
+	public String UserViewBill(HttpSession session, HttpServletResponse response){
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		String sn = sccot.CheckSession(session, "user");
+		if(sn == "success")
+			return "user/UserViewBill";
+		else
+			return "user/Login";
+	}
+
 
 }

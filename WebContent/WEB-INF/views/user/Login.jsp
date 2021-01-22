@@ -180,7 +180,7 @@
                 		pwd = $(".admin_pwd").val();
                 		
                 		$.ajax({
-                			url:"AdminLoginCheck",
+                			url:"UserLoginCheck",
                 			data:{"id":id, "pwd":pwd}, 
                 			type:"post",
                 			dataType:"text",

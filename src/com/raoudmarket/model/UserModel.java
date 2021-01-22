@@ -16,4 +16,6 @@ public class UserModel {
 	String date;
 	String updated_date;
 	
+	String password;
+	
 }

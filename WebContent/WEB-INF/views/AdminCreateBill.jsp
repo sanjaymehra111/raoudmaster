@@ -156,7 +156,7 @@
                 			type:"post",
                 			dataType:"text",
                 			success:function(e){
-                				//console.log("Success", e);
+                				console.log("Success", e);
                     			CloseLoader();
                     			if(e == "meter_error")
                 					alert("Meter Not Exist");

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
@@ -21,12 +22,15 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.raoudmarket.dao.AdminLoginDaoImpl;
 import com.raoudmarket.dao.UniqueCodeGenerator;
 import com.raoudmarket.dao.UserFunctionDaoImpl;
 import com.raoudmarket.model.MeterModel;
 import com.raoudmarket.model.ProductModel;
+import com.raoudmarket.model.SessionModel;
 import com.raoudmarket.model.ShopModel;
 import com.raoudmarket.model.UserModel;
+import com.raoudmarket.model.ViewBillModel;
 
 @Controller
 public class UserFunctionController {
@@ -39,6 +43,12 @@ public class UserFunctionController {
 	
 	@Autowired
 	UniqueCodeGenerator ucdao;
+	
+	@Autowired
+	AdminLoginDaoImpl aldao;
+	
+	@Autowired
+	PasswordEncryption pdc;
 	
 	
 	@ResponseBody
@@ -64,10 +74,11 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("CreateBill")
 	public String CreateBill(@RequestParam String number, String reading, String date, HttpSession session) {
+
 		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<MeterModel> meter = ufdao.ViewLastMeterDetails(number);
-				
+
 			if(meter != null) {
 				int pr;
 				if(meter.get(0).getNew_reading() != null)
@@ -99,6 +110,7 @@ public class UserFunctionController {
 					
 					float cr = Float.parseFloat(reading);
 					float total_amount = (cr-pr)*unit+charge;
+
 					ufdao.CreateBill(meter.get(0).getUser_id(), number, reading, String.valueOf(pr), String.valueOf(total_amount), String.valueOf(charge), String.valueOf(unit), date);
 				}
 				else {
@@ -468,6 +480,101 @@ public class UserFunctionController {
 			return "Login Error";
 	}
 
+	@ResponseBody
+	@PostMapping("CreateNewUser")
+	public String CreateNewUser(@RequestParam String name, String password,String date)
+	{
+		String new_pwd = pdc.PasswordEncrypt(password);
+		aldao.CreateNewUser(name, new_pwd , date);
+		return "Data Stored";
+		
+	}
 	
+	
+	@ResponseBody
+	@PostMapping("ViewAllUserDetails")
+	public String AdminViewUser()
+	{
+		Gson gson = new Gson();
+		List<UserModel> data = aldao.AdminViewUser();
+		String FinalData = gson.toJson(data);
+		if(data!=null)
+			return FinalData;
+		else
+			return "error";
+	}
+	
+	@ResponseBody
+	@PostMapping("fetchdataOfViewBill")
+	  public String fetchData(){
+		Gson gson = new Gson();
+		List<ViewBillModel> data = aldao.adminviewbill();
+		String FinalData = gson.toJson(data);
+		
+		if(data!=null)
+			return FinalData;
+		else
+			return "error";
+		
+	  }
+	
+	@ResponseBody
+	@PostMapping("fetchdataOfuserspent")
+	public String fetchdataOfuserspent()
+	{
+		Gson gson = new Gson();
+		List<ProductModel> data = ufdao.fetchdataOfuserspent();
+		String FinalData = gson.toJson(data);
+		
+		if(data!=null)
+			return FinalData;
+		else
+			return "error";
+	}
+	
+
+	  @ResponseBody
+	  @PostMapping("storeDataInUserSpent")
+	  public String storeDataInUserSpent(@RequestParam String product_name, String amount,HttpSession session,HttpServletResponse response){
+		  SessionModel sm = (SessionModel) session.getAttribute("AdminSession");
+		 // System.out.println("ID : "+sm.getUser_id());
+		  List<UserModel> userData = ufdao.FetchUserDetails(sm.getUser_id());
+		  //System.out.println("ID : "+userData.get(0).getName());
+		  ufdao.storeDataInUserSpent(sm.getUser_id(), userData.get(0).getName(), product_name ,amount);
+		  return "Data Stored";
+		  
+	  }
+	  
+	 
+	
+	@ResponseBody
+	@PostMapping("fetchdataOfUserViewBill")
+	  public String fetchDataOfUserViewBill(HttpSession session){
+		Gson gson = new Gson();
+		SessionModel sm = (SessionModel) session.getAttribute("AdminSession");
+		List<ViewBillModel> data = ufdao.fetchuserviewbill(sm.getUser_id());
+		String FinalData = gson.toJson(data);
+		
+		if(data!=null)
+			return FinalData;
+		else
+			return "error";
+		
+	  }
+	
+	@ResponseBody
+	@PostMapping("fetchusername")
+	  public String fetchusername(HttpSession session){
+		Gson gson = new Gson();
+		SessionModel sm = (SessionModel) session.getAttribute("AdminSession");
+		List<UserModel> data = ufdao.fetchusername(sm.getUser_id());
+		String FinalData = gson.toJson(data);
+		
+		if(data!=null)
+			return FinalData;
+		else
+			return "error";
+		
+	  }
 	
 }// main class close

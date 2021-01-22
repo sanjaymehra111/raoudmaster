@@ -20,6 +20,7 @@ import com.raoudmarket.model.MeterModel;
 import com.raoudmarket.model.ProductModel;
 import com.raoudmarket.model.ShopModel;
 import com.raoudmarket.model.UserModel;
+import com.raoudmarket.model.ViewBillModel;
 
 @Repository
 public class UserFunctionDaoImpl {
@@ -472,12 +473,93 @@ public List<UserModel> ViewSpecificUser(String id) {
 		return query;
 	}
 
+	public List<ProductModel> fetchdataOfuserspent()
+	{
+		List<ProductModel> query = template.query("select * from product_details ", new RowMapper<ProductModel>() {
+
+			@Override
+			public ProductModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				ProductModel pm = new ProductModel();
+				pm.setId(rs.getString("id"));
+				pm.setName(rs.getString("name"));
+				pm.setImage(rs.getString("image"));
+				return pm;
+			}
+			
+		});
+		return query;
+	}
 	
+	public int storeDataInUserSpent(String user_id,  String user_name, String product_name, String amount) {
+		String dates = GetDateTime();
+		String query= "insert into user_spent (user_id, user_name, product_name, amount, date) values('"+user_id+"', '"+user_name+"', '"+product_name+"', '"+amount+"', '"+dates+"')";
+		return template.update(query);
+	}
+
 	
+	public List<ViewBillModel> fetchuserviewbill(String id)
+	{
+		//List<ViewBillModel> query = template.query("select * from user_spent where id="+id+"", new RowMapper<ViewBillModel>() {
+		List<ViewBillModel> query = template.query("SELECT user_spent.id, user_spent.user_id, user_spent.user_name, user_spent.product_name, user_spent.amount, user_spent.date, product_details.image\n"
+				+ "FROM user_spent\n"
+				+ "INNER JOIN product_details\n"
+				+ "WHERE \n"
+				+ "user_id = "+id+" \n"
+				+ "AND user_spent.`product_name` = `product_details`.`name`\n"
+				+ "GROUP BY user_spent.`id`", new RowMapper<ViewBillModel>() {
+			@Override
+			public ViewBillModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				ViewBillModel vm = new ViewBillModel();
+				vm.setId(rs.getString("id"));
+				vm.setUser_id(rs.getString("user_id"));
+				vm.setUser_name(rs.getString("user_name"));
+				vm.setProduct_name(rs.getString("product_name"));
+				vm.setAmount(rs.getString("amount"));
+				vm.setDate(rs.getString("date"));
+				vm.setImage(rs.getString("image"));
+				return vm;
+			}
+			
+		});
+		return query;
+	}
+
 	
-	
-	
-	
-	
+	public List<UserModel> FetchUserDetails(String id)
+	{
+		List<UserModel> query = template.query("select * from user where id = '"+id+"'", new RowMapper<UserModel>() {
+
+			@Override
+			public UserModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				UserModel um = new UserModel();
+				um.setId(rs.getString("id"));
+				um.setName(rs.getString("name"));
+				um.setDate(rs.getString("date"));
+				return um;
+			}
+			
+		});
+		return query;
+	}
+
+	public List<UserModel> fetchusername(String id)
+	{
+		List<UserModel> query = template.query("select * from user where id="+id+"", new RowMapper<UserModel>() {
+
+			@Override
+			public UserModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+				UserModel um = new UserModel();
+				um.setId(rs.getString("id"));
+				um.setName(rs.getString("name"));
+				return um;
+			}
+			
+		});
+		return query;
+	}
+
 	
 }// main class close

@@ -46,8 +46,9 @@ public class LoginController {
 		
 		String new_pwd = pdc.PasswordEncrypt(pwd); 
 		String check = aldao.UserLoginCheck(id, new_pwd);
+		//System.out.println("UID : "+check);
 		if(check != null) {
-			String sc_msg = sccot.CreateSession(id, "user", session);
+			String sc_msg = sccot.CreateSession(check, "user", session);
 			if(sc_msg == "success") {
 				return "success";
 			}
@@ -57,6 +58,6 @@ public class LoginController {
 		else
 			return "Login Error";
 	}
-
+	
 
 }

@@ -26,6 +26,7 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 	
+	
 <style>
 
 	
@@ -279,14 +280,15 @@
         $(function(){
         	StartLoader();
         	$.ajax({
-        		url:"ViewAllUserDetails",
-        		type:"post",
-        		dataType:"json",
+        		url: "ViewAllUserDetails",
+        		type: "post",
+        		dataType: "json",
         		success:function(data){
-        			console.log(data);
+        			/* console.log(data); */
         			var html="";
         			for(var i=0; i<data.length; i++) {
 						html+='<tr>';
+						html+='<td style="text-align:center">'+data[i].id+'</td>';
 						html+='<td style="text-align:center">'+data[i].name.toUpperCase()+'</td>';
 						html+='<td style="text-align:center">'+data[i].date+'</td>';
 						html+='</tr>';
@@ -352,6 +354,7 @@
 	    <table id="example" class="table-bordered table_padding" style="width: 100%; color: white;">
 			<thead>
 				<tr>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Id</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Name</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Date</td>
 				</tr>

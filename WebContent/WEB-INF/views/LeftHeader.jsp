@@ -695,6 +695,7 @@
                 <ul class="side-nav-dropdown">
 					<li class="import_admin hide_sidebar_button" pagename="AdminViewUser"><a href="AdminCreateUser">Create User</a></li>
 					<li class="import_admin hide_sidebar_button" pagename="AdminViewUser"><a href="AdminViewUser">View User</a></li>
+					<li class="import_admin hide_sidebar_button" pagename="AdminViewUser"><a href="AdminViewBill">View Bill</a></li>
                     <li class="import_admin hide_sidebar_button" pagename="createProduct"><a href="CreateProduct">Insert Product</a></li>
                     <li class="import_admin hide_sidebar_button" pagename="ViewProductDetails"><a href="ViewProductDetails">View Product</a></li>
                 </ul>

@@ -648,7 +648,33 @@
         });
 
     </script>
+	<script>
+	$(document).ready(function() {
+		
+    	$.ajax({
+    		url: "fetchusername",
+    		type: "post",
+    		dataType: "json",
+    		success:function(data){
+    			//console.log(data);
+    			var html="";
+				for(var i=0; i<data.length; i++) {
+				 html+=data[i].name;
+				}
+    			
+    			$(".info").html(html);
+    			
+				CloseLoader();
+    			
+    		},
+    		error:function(){CloseLoader(); console.log("Admin View Meter List Server Error");}
+    	}) // ajax close
 
+});
+
+	
+	
+	</script>
 
    
 
@@ -657,16 +683,14 @@
         <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1" style="margin-top: 10px;"></i>
         <div class="heading">
             <img style="border: solid 1px white; background: #dad8d5;" src="https://www.serviceonway.com/serviceonway/files/images/admin.png" alt="">
-            <div class="info" style="margin-left: 20px; margin-top: 10px;">
-                <h3><a href="#">Electric Service</a></h3>
-                <p>Electric Service Pvt.Ltd.</p>
+            <div class="info" style="margin-left: 20px; margin-top: 10px; font-size:18px; text-transform:uppercase">
             </div>
         </div>
 
         <ul class="categories">
             <li><i class="fa fa-home fa-fw" aria-hidden="true"></i><a>Dashboard</a>
                 <ul class="side-nav-dropdown">
-                    <li class="import_admin hide_sidebar_button import_admin_dashboard" pagename="home" textname="Dashboard"><a href="admindashboard">Home</a></li>                    
+                    <li class="import_admin hide_sidebar_button import_admin_dashboard" pagename="home" textname="Dashboard"><a href="userdashboard">Home</a></li>                    
                 </ul>
             </li>
 

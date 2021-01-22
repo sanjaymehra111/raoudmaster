@@ -26,7 +26,7 @@ public class SessionController {
 		}
 	}
 	
-	public String CheckSession(HttpSession session, String type) throws IOException {
+	public String CheckSession(HttpSession session, String type ) throws IOException {
 		try {
 			SessionModel sn = (SessionModel) session.getAttribute("AdminSession");
 			//System.out.println("sess : "+sn);
@@ -35,7 +35,6 @@ public class SessionController {
 					return "success";
 				else
 					return "error";
-					
 			}
 			else
 				return "error";

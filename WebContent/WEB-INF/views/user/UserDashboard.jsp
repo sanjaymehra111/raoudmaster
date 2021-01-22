@@ -29,6 +29,7 @@
         $(function ImportPage() {
         	$(".pagename").html("Dashboard");
 		});
+        
     </script>
 
 
@@ -55,10 +56,8 @@
                 </div>
             </div>
         </div>
-
-        
     </div>
     
     </section>
-    
+   
 </html>
