@@ -148,11 +148,11 @@
                 		StartLoader();
                 		number = $(".user_meter_number").val();
                 		reading = $(".user_bill_reading").val();
-                		date  = $(".user_date").val();
+                		//date  = $(".user_date").val();
                 		
                 		$.ajax({
                 			url:"CreateBill",
-                			data:{"number":number, "reading":reading, "date":date}, 
+                			data:{"number":number, "reading":reading}, 
                 			type:"post",
                 			dataType:"text",
                 			success:function(e){
@@ -203,25 +203,25 @@
         <div class="test-1">
             <br>
             <br>
-            <div class="col-md-4" style="text-align: center;">
+            <div class="col-md-6" style="text-align: center;">
                 <i class="fa fa-dashboard fa_text_fonts1 fa_text_fonts12"></i>
                 <input type="text" class="text_field3 validation_check user_meter_number" placeholder="User Meter Number*">
                 <br>
                 <br> 
             </div>
-            <div class="col-md-4" style="text-align: center;">
+            <div class="col-md-6" style="text-align: center;">
                 <i class="fa fa-pencil fa_text_fonts1 fa_text_fonts12"></i>
                 <input type="number" class="text_field3 validation_check user_bill_reading" placeholder="User Bill Reading*">
                 <br>
                 <br>
             </div>
 
-            <div class="col-md-4" style="text-align: center;">
-                <!-- <i class="fa fa-pencil fa_text_fonts1 fa_text_fonts12"></i> -->
+<!--             <div class="col-md-4" style="text-align: center;">
+                <i class="fa fa-pencil fa_text_fonts1 fa_text_fonts12"></i>
                 <input type="text" onfocus="(this.type='datetime-local')" class="text_field3 validation_check user_date" placeholder="Bill Date*" title="Date Should Be Greater Then Your Last Entry (Testing Only)">
                 <br>
                 <br>
-            </div>
+            </div> -->
 
             <div class="col-md-12" style="text-align: center;">
                 <br>

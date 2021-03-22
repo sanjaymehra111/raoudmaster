@@ -4,9 +4,13 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.google.gson.Gson;
@@ -49,7 +54,15 @@ public class UserFunctionController {
 	
 	@Autowired
 	PasswordEncryption pdc;
-	
+
+	public String GetDateTime(){
+		Date today = new Date();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+	    df.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+	    String date = df.format(today);
+	    return date;
+	}
+
 	
 	@ResponseBody
 	@PostMapping("CreateUserGroup")
@@ -73,8 +86,11 @@ public class UserFunctionController {
 
 	@ResponseBody
 	@PostMapping("CreateBill")
-	public String CreateBill(@RequestParam String number, String reading, String date, HttpSession session) {
+	public String CreateBill(@RequestParam String number, String reading, HttpSession session) {
 
+		String date = GetDateTime();
+		//System.out.println(date);
+		
 		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<MeterModel> meter = ufdao.ViewLastMeterDetails(number);
@@ -97,8 +113,6 @@ public class UserFunctionController {
 					
 					String[] dt_new = date.split("T");
 					String[] dt_pr = meter.get(0).getDate().split("T");
-					
-					//System.out.println(dt_pr[0]);
 					
 					String diff = String.valueOf(ChronoUnit.MONTHS.between(LocalDate.parse(dt_pr[0]).withDayOfMonth(1),LocalDate.parse(dt_new[0]).withDayOfMonth(1)));
 					
@@ -246,7 +260,7 @@ public class UserFunctionController {
 			Gson gson = new Gson();
 			List<MeterModel> previousReading = ufdao.MainMeterPreviousReading();
 			String monthReading = String.valueOf(ufdao.MonthReading());
-			
+
 			if(monthReading == "null"){
 				monthReading = "0";
 			}
@@ -365,7 +379,7 @@ public class UserFunctionController {
 	
 	@ResponseBody
 	@PostMapping("MakePayment")
-	public String MakePayment(@RequestParam String uid, String amount, String date, HttpSession session) {
+	public String MakePayment(@RequestParam String uid, String amount, HttpSession session) {
 		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			int pr;
@@ -386,7 +400,7 @@ public class UserFunctionController {
 			else
 				pr = Integer.parseInt(meter.get(0).getPrevious_reading());
 			ufdao.PayPayment(uid, String.valueOf(pr), pr_rem, amount, String.valueOf(nw_rem), "1");
-			ufdao.PayPaymentIntoMeterBill(uid, meter.get(0).getMeter_number(), String.valueOf(pr), pr_rem, amount, String.valueOf(nw_rem), "1", date);
+			ufdao.PayPaymentIntoMeterBill(uid, meter.get(0).getMeter_number(), String.valueOf(pr), pr_rem, amount, String.valueOf(nw_rem), "1");
 			return "success"; 
 		}
 		else
@@ -425,12 +439,11 @@ public class UserFunctionController {
 	
 	@ResponseBody
 	@PostMapping("InsertproductDetails")
-	public String InsertproductDetails(@RequestParam String product, @RequestParam(value="file", required=false) CommonsMultipartFile file, HttpSession session) throws IOException {
+	public String InsertproductDetails(@RequestParam String product, @RequestParam(value="file", required=false) MultipartFile file, HttpSession session) throws IOException {
 		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
-			//String path = "c:/UploadedFiles/ProductImages/";
-			String path = "/home/pcsetupvsss/public_html/UploadedFiles/ProductImages/";
-			
+			String path = "c:/UploadedFiles/ProductImages/";
+			//String path = "/home/pcsetupvsss/public_html/UploadedFiles/ProductImages/";
 			String finalfile = ""; 
 			
 			if(file != null) {
