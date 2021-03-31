@@ -4,9 +4,13 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -49,7 +53,15 @@ public class UserFunctionController {
 	
 	@Autowired
 	PasswordEncryption pdc;
-	
+
+	public String GetDateTime(){
+		Date today = new Date();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+	    df.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+	    String date = df.format(today);
+	    return date;
+	}
+
 	
 	@ResponseBody
 	@PostMapping("CreateUserGroup")
@@ -73,7 +85,8 @@ public class UserFunctionController {
 
 	@ResponseBody
 	@PostMapping("CreateBill")
-	public String CreateBill(@RequestParam String number, String reading, String date, HttpSession session) {
+	public String CreateBill(@RequestParam String number, String reading, HttpSession session) {
+		String date = GetDateTime();
 
 		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
@@ -535,12 +548,12 @@ public class UserFunctionController {
 
 	  @ResponseBody
 	  @PostMapping("storeDataInUserSpent")
-	  public String storeDataInUserSpent(@RequestParam String product_name, String amount,HttpSession session,HttpServletResponse response){
+	  public String storeDataInUserSpent(@RequestParam String product_name, String amount, String text , HttpSession session,HttpServletResponse response){
 		  SessionModel sm = (SessionModel) session.getAttribute("AdminSession");
-		 // System.out.println("ID : "+sm.getUser_id());
+		  System.out.println("ID : "+sm.getUser_id());
 		  List<UserModel> userData = ufdao.FetchUserDetails(sm.getUser_id());
 		  //System.out.println("ID : "+userData.get(0).getName());
-		  ufdao.storeDataInUserSpent(sm.getUser_id(), userData.get(0).getName(), product_name ,amount);
+		  ufdao.storeDataInUserSpent(sm.getUser_id(), userData.get(0).getName(), product_name ,amount,text);
 		  return "Data Stored";
 		  
 	  }
@@ -576,5 +589,12 @@ public class UserFunctionController {
 			return "error";
 		
 	  }
+	
+	@ResponseBody
+	@PostMapping("deletedata") 
+	public String deletedata(@RequestParam String id){
+		ufdao.deletedata(id);
+		return "success";
+	}
 	
 }// main class close
