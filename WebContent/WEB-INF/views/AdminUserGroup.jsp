@@ -2,7 +2,6 @@
 
 <html lang="en">
 <head>
-
     <title>User List</title>
 	<!--For Webpage Logo-->
     <link rel="shortcut icon" href="/raoudmarket/files/images/login.png">
