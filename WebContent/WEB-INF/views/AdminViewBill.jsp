@@ -32,7 +32,8 @@
 	
 	
 <style>
-
+button, input, select, textarea{
+color:black!important;}
 	
 	::-webkit-scrollbar {
       background: transparent;
@@ -257,10 +258,10 @@ background:white;
 
 .dataTables_filter input {
     width: 100%!important;
+    margin-top: -67px;
 }
     
 </style>
-
 
 
 
@@ -388,6 +389,8 @@ background:white;
         			
         			
 					var table = $("#example").DataTable({
+						columnDefs: [ { type: 'date', 'targets': [2] } ],
+				    	order: [[5, 'desc' ]],
 					    aaSorting: [],
 					    responsive: true,
 					    orderCellsTop: true,
@@ -483,8 +486,10 @@ background:white;
 	    <option value='11'>November</option>
 	    <option value='12'>December</option>
 	</select> -->
-	<input type="date" id="fini">
-	<input type="date" id="ffin">
+	<div style="padding-top:25px; color:white; padding-left:10px;">
+	FROM <input type="date" id="fini" style="color:black">
+	TO <input type="date" id="ffin" style="color:black">
+	</div>
 	<!-- <button  onclick="myfunc()" id="button">GET</button> -->
 	<br><br>
 	<div class="test-1" align="center">
