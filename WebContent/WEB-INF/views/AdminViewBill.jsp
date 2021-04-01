@@ -33,7 +33,13 @@
 	
 <style>
 button, input, select, textarea{
-color:black!important;}
+	color:black!important;
+	padding-top: 3%;
+    padding-left: 2%;
+    padding-bottom: 3%;
+    border-radius: 10px;
+    border: 1px solid #4d4848;
+}
 	
 	::-webkit-scrollbar {
       background: transparent;
@@ -238,6 +244,22 @@ color:black!important;}
 	  .dataTables_length {
       	text-align: center;
       }
+      
+      .dataTables_filter input {
+    	margin-top: -32px!important;
+		}
+		
+		.form-control{
+		width:43%!important;
+		}
+		.dataTables_filter input{
+		width: 46%!important;
+    	margin-left: 183px;
+    	margin-top: -75px!important;
+		}
+		table.dataTable{
+		margin-top: 1px !important;
+		}
     
 	  }
       
@@ -257,8 +279,8 @@ background:white;
 }
 
 .dataTables_filter input {
-    width: 100%!important;
-    margin-top: -67px;
+    width: 119%;
+    margin-top: -110px;
 }
     
 </style>
@@ -309,14 +331,16 @@ background:white;
         		type: "post",
         		dataType: "json",
         		success:function(data){
-        			/* console.log(data); */
+        			 //console.log(data); 
         			var htmlText="";
         			for(var i=0; i<data.length; i++) {
+        				//console.log(data[i].id);
         				htmlText+='<tr>';
         				htmlText+='<td style="text-align:center">'+data[i].id+'</td>';
         				htmlText+='<td style="text-align:center">'+data[i].user_id+'</td>';
         				htmlText+='<td style="text-align:center">'+data[i].user_name.toUpperCase()+'</td>';
         				htmlText+='<td style="text-align:center">'+data[i].product_name+'</td>';
+        				htmlText+='<td style="text-align:center">'+data[i].description+'</td>';
         				htmlText+='<td style="text-align:center">'+data[i].charge+'</td>';
         				htmlText+='<td style="text-align:center">'+data[i].date+'</td>';
         				htmlText+='<td style="text-align:center"><img style="width:50px; height:50px; border-radius: 100px" src="http://pcsetupvsss.xyz/UploadedFiles/ProductImages/'+data[i].image+'"></td>';
@@ -354,7 +378,7 @@ background:white;
 
                         $.fn.dataTable.ext.search.push(
                             function( settings, data, dataIndex ) {
-                                var date = new Date( data[5] );
+                                var date = new Date( data[6] );
                                 date = date.getFullYear()+ '-' + ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))+ '-'+ ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())));
                          
                                 if (
@@ -389,8 +413,8 @@ background:white;
         			
         			
 					var table = $("#example").DataTable({
-						columnDefs: [ { type: 'date', 'targets': [2] } ],
-				    	order: [[5, 'desc' ]],
+						columnDefs: [ { type: 'date', 'targets': [6] } ],
+				    	order: [[6, 'desc' ]],
 					    aaSorting: [],
 					    responsive: true,
 					    orderCellsTop: true,
@@ -487,8 +511,8 @@ background:white;
 	    <option value='12'>December</option>
 	</select> -->
 	<div style="padding-top:25px; color:white; padding-left:10px;">
-	FROM <input type="date" id="fini" style="color:black">
-	TO <input type="date" id="ffin" style="color:black">
+	FROM <input class="form-control" type="date" id="fini" style="color:black; width:22%">
+	TO <input class="form-control" type="date" id="ffin" style="color:black; width:22%">
 	</div>
 	<!-- <button  onclick="myfunc()" id="button">GET</button> -->
 	<br><br>
@@ -498,8 +522,10 @@ background:white;
 				<tr>
 					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Id</th>
 					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">User Id</th>
+					
 					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">User Name</th>
 					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Product Name</th>
+					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Description</th>
 					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Charge</th>
 					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Date</th>
 					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Image</th>
