@@ -444,7 +444,7 @@ public class UserFunctionController {
 			//String path = "c:/UploadedFiles/ProductImages/";
 			String path = "/home/pcsetupvsss/public_html/UploadedFiles/ProductImages/";
 			
-			String finalfile = ""; 
+			String finalfile = "";
 			
 			if(file != null) {
 					String files = ucdao.GetUniqueCode()+"-"+file.getOriginalFilename();
