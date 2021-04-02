@@ -87,6 +87,7 @@ public class UserFunctionController {
 	@ResponseBody
 	@PostMapping("CreateBill")
 	public String CreateBill(@RequestParam String number, String reading, HttpSession session) {
+		String date = GetDateTime();
 
 		String date = GetDateTime();
 		//System.out.println(date);
@@ -442,6 +443,10 @@ public class UserFunctionController {
 	public String InsertproductDetails(@RequestParam String product, @RequestParam(value="file", required=false) MultipartFile file, HttpSession session) throws IOException {
 		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
+			//String path = "c:/UploadedFiles/ProductImages/";
+			String path = "/home/pcsetupvsss/public_html/UploadedFiles/ProductImages/";
+			
+			String finalfile = "";
 			String path = "c:/UploadedFiles/ProductImages/";
 			//String path = "/home/pcsetupvsss/public_html/UploadedFiles/ProductImages/";
 			String finalfile = ""; 
@@ -548,12 +553,12 @@ public class UserFunctionController {
 
 	  @ResponseBody
 	  @PostMapping("storeDataInUserSpent")
-	  public String storeDataInUserSpent(@RequestParam String product_name, String amount,HttpSession session,HttpServletResponse response){
+	  public String storeDataInUserSpent(@RequestParam String product_name, String amount, String text , HttpSession session,HttpServletResponse response){
 		  SessionModel sm = (SessionModel) session.getAttribute("AdminSession");
-		 // System.out.println("ID : "+sm.getUser_id());
+		  //System.out.println("ID : "+sm.getUser_id());
 		  List<UserModel> userData = ufdao.FetchUserDetails(sm.getUser_id());
 		  //System.out.println("ID : "+userData.get(0).getName());
-		  ufdao.storeDataInUserSpent(sm.getUser_id(), userData.get(0).getName(), product_name ,amount);
+		  ufdao.storeDataInUserSpent(sm.getUser_id(), userData.get(0).getName(), product_name ,amount,text);
 		  return "Data Stored";
 		  
 	  }
@@ -589,5 +594,12 @@ public class UserFunctionController {
 			return "error";
 		
 	  }
+	
+	@ResponseBody
+	@PostMapping("deletedata") 
+	public String deletedata(@RequestParam String id){
+		ufdao.deletedata(id);
+		return "success";
+	}
 	
 }// main class close

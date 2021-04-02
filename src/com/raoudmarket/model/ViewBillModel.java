@@ -10,6 +10,7 @@ public class ViewBillModel {
 	String product_name;
 	String charge;
 	String amount;
+	String description;
 	String date;
 	String image;
 }

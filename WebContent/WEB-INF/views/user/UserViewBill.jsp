@@ -293,6 +293,7 @@
 						html+='<td style="text-align:center">'+data[i].user_name.toUpperCase()+'</td>';
 						html+='<td style="text-align:center">'+data[i].product_name+'</td>';
 						html+='<td style="text-align:center">'+data[i].amount+'</td>';
+						html+='<td style="text-align:center">'+data[i].description+'</td>';
 						html+='<td style="text-align:center">'+data[i].date+'</td>';
 						html+='<td style="text-align:center"><img style="width:50px; height:50px;border-radius: 100px;" src="http://pcsetupvsss.xyz/UploadedFiles/ProductImages/'+data[i].image+'"></td>';
 						html+='</tr>';
@@ -363,6 +364,7 @@
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">User Name</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Product Name</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Amount</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Description</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Date</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Image</td>
 				</tr>

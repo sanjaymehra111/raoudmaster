@@ -337,11 +337,12 @@
             $(".user_save_button3").click(function () {
         				var product_name = $('#product_name').val();
         				var amount = $('#amount').val();
+        				var text = $('#text').val();
                     	StartLoader();
         				$.ajax({
     						url: "storeDataInUserSpent",
     						type: "post",
-    						data:{"product_name":product_name, "amount":amount},
+    						data:{"product_name":product_name, "amount":amount, "text":text},
     						success : function(data){
     							CloseLoader();
     						},
@@ -455,6 +456,13 @@
                 
                 <div class="col-md-4" style="text-align: center;">
                     <img src="" class="PrintImage" style="width:100px; height:100px; display:none; border-radius: 100px; border: solid 1px black;">
+                    <br>
+                    <br>
+                </div>
+                <br><br>
+                <div class="col-md-12" style="text-align: center;">
+                    <i class=""></i>
+                    <input type="text" class="text_field3 validation_check user_password" id="text" placeholder="Description">
                     <br>
                     <br>
                 </div>

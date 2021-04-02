@@ -296,10 +296,10 @@
         			$(".productlist").html(html);
         			
         			//https://pcsetupvsss.xyz/UploadedFiles/product/05599d5b43314de2bce6f346b103f317-IMG_20200717_131717.jpg
-        			
+    
         			$("#example").DataTable({
-						//columnDefs: [ { type: 'date', 'targets': [3] } ],
-				    	//order: [[3, 'desc' ]],
+						columnDefs: [ { type: 'date', 'targets': [2] } ],
+				    	order: [[2, 'desc' ]],
 						aaSorting: [],
 						responsive: true,
 						pageLength : 10,
@@ -318,7 +318,7 @@
 						]
 					});	
         			
-        			$("#example").wrap( "<div style='width:100%; overflow:scroll'></div>" );
+        										  
 					$(".dataTables_filter input")
 					.attr("placeholder", "Search here...")
 					.css({
@@ -329,6 +329,7 @@
 					});
 					
 					CloseLoader();
+        			$("#example").wrap( "<div style='width:100%; overflow:scroll'></div>" );
         			
         		},
         		error:function(){CloseLoader(); console.log("Admin View Meter List Server Error");}
