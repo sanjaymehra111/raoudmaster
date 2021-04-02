@@ -550,7 +550,7 @@ public class UserFunctionController {
 	  @PostMapping("storeDataInUserSpent")
 	  public String storeDataInUserSpent(@RequestParam String product_name, String amount, String text , HttpSession session,HttpServletResponse response){
 		  SessionModel sm = (SessionModel) session.getAttribute("AdminSession");
-		  System.out.println("ID : "+sm.getUser_id());
+		  //System.out.println("ID : "+sm.getUser_id());
 		  List<UserModel> userData = ufdao.FetchUserDetails(sm.getUser_id());
 		  //System.out.println("ID : "+userData.get(0).getName());
 		  ufdao.storeDataInUserSpent(sm.getUser_id(), userData.get(0).getName(), product_name ,amount,text);

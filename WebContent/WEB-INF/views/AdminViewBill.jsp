@@ -344,7 +344,7 @@ background:white;
         				htmlText+='<td style="text-align:center">'+data[i].charge+'</td>';
         				htmlText+='<td style="text-align:center">'+data[i].date+'</td>';
         				htmlText+='<td style="text-align:center"><img style="width:50px; height:50px; border-radius: 100px" src="http://pcsetupvsss.xyz/UploadedFiles/ProductImages/'+data[i].image+'"></td>';
-        				htmlText+='<td style="text-align:center; color:black;"><button onclick="deleteData('+data[i].id+')"> delete </button></td>';
+        				htmlText+='<td style="text-align:center; color:black; "><button onclick="deleteData('+data[i].id+')" style="width:50%!important;"> Delete </button></td>';
         				htmlText+='</tr>';
         			}
         			
@@ -456,7 +456,7 @@ background:white;
         
         function deleteData(id)
     	{
-        	console.log(id);
+        	//console.log(id);
     		$.ajax({
     			url:"deletedata",
     		    type:"post",
