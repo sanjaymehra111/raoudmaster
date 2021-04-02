@@ -502,9 +502,9 @@ public List<UserModel> ViewSpecificUser(String id) {
 		return query;
 	}
 	
-	public int storeDataInUserSpent(String user_id,  String user_name, String product_name, String amount) {
+	public int storeDataInUserSpent(String user_id,  String user_name, String product_name, String amount, String text) {
 		String dates = GetDateTime();
-		String query= "insert into user_spent (user_id, user_name, product_name, amount, date) values('"+user_id+"', '"+user_name+"', '"+product_name+"', '"+amount+"', '"+dates+"')";
+		String query= "insert into user_spent (user_id, user_name, product_name, amount, description, date) values('"+user_id+"', '"+user_name+"', '"+product_name+"', '"+amount+"', '"+text+"','"+dates+"')";
 		return template.update(query);
 	}
 
@@ -512,7 +512,7 @@ public List<UserModel> ViewSpecificUser(String id) {
 	public List<ViewBillModel> fetchuserviewbill(String id)
 	{
 		//List<ViewBillModel> query = template.query("select * from user_spent where id="+id+"", new RowMapper<ViewBillModel>() {
-		List<ViewBillModel> query = template.query("SELECT user_spent.id, user_spent.user_id, user_spent.user_name, user_spent.product_name, user_spent.amount, user_spent.date, product_details.image\n"
+		List<ViewBillModel> query = template.query("SELECT user_spent.id, user_spent.user_id, user_spent.user_name, user_spent.product_name, user_spent.amount, user_spent.description,user_spent.date, product_details.image\n"
 				+ "FROM user_spent\n"
 				+ "INNER JOIN product_details\n"
 				+ "WHERE \n"
@@ -528,6 +528,7 @@ public List<UserModel> ViewSpecificUser(String id) {
 				vm.setUser_name(rs.getString("user_name"));
 				vm.setProduct_name(rs.getString("product_name"));
 				vm.setAmount(rs.getString("amount"));
+				vm.setDescription(rs.getString("description"));
 				vm.setDate(rs.getString("date"));
 				vm.setImage(rs.getString("image"));
 				return vm;
@@ -570,6 +571,12 @@ public List<UserModel> ViewSpecificUser(String id) {
 			
 		});
 		return query;
+	}
+	
+	public int deletedata(String id)
+	{
+		String sql ="delete from user_spent where id='"+id+"'";
+		return template.update(sql);
 	}
 
 	

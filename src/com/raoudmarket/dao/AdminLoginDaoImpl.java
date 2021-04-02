@@ -122,7 +122,7 @@ public class AdminLoginDaoImpl {
 	public List<ViewBillModel> adminviewbill() 
 	{
 	//	List<ViewBillModel> list = template.query("select * from user_spent group by date desc" , new RowMapper<ViewBillModel>() {
-		List<ViewBillModel> list = template.query("SELECT user_spent.id, user_spent.user_id, user_spent.user_name, user_spent.product_name, user_spent.amount, user_spent.date, product_details.image FROM user_spent INNER JOIN product_details WHERE user_spent.`product_name` = `product_details`.`name` GROUP BY user_spent.`id`" , new RowMapper<ViewBillModel>() {
+		List<ViewBillModel> list = template.query("SELECT user_spent.id, user_spent.user_id, user_spent.user_name, user_spent.product_name, user_spent.amount, user_spent.description,user_spent.date, product_details.image FROM user_spent INNER JOIN product_details WHERE user_spent.`product_name` = `product_details`.`name` GROUP BY user_spent.`id`" , new RowMapper<ViewBillModel>() {
 			public ViewBillModel mapRow(ResultSet rs, int rowNum) throws SQLException {
 				ViewBillModel v= new ViewBillModel();
 				v.setId(rs.getString("id"));
@@ -130,6 +130,7 @@ public class AdminLoginDaoImpl {
 				v.setUser_name(rs.getString("user_name"));
 				v.setProduct_name(rs.getString("product_name"));
 				v.setCharge(rs.getString("amount"));
+				v.setDescription(rs.getString("description"));
 				v.setDate(rs.getString("date"));
 				v.setImage(rs.getString("image"));
 				return v;

@@ -221,6 +221,7 @@
                 <input type="text" onfocus="(this.type='datetime-local')" class="text_field3 validation_check user_date" placeholder="Bill Date*" title="Date Should Be Greater Then Your Last Entry (Testing Only)">
                 <br>
                 <br>
+            </div>
             </div> -->
 
             <div class="col-md-12" style="text-align: center;">
