@@ -206,7 +206,7 @@
                 
                 
                 <div class="col-md-6">
-                     <input type="file" class="text_field3 validation_check user_file" placeholder="Upload File*">
+                     <input type="file" class="text_field3 user_file" placeholder="Upload File*">
                     <br>
                     <br>
                 </div>

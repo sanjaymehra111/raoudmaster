@@ -37,8 +37,7 @@ public class UserFunctionDaoImpl {
 	    return date;
 	}
 	
-	public String GetDateTime()
-	{
+	public String GetDateTime(){
 		Date today = new Date();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    df.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
@@ -114,8 +113,8 @@ public class UserFunctionDaoImpl {
 		return template.update(query);
 	}
 	
-	public int PayPaymentIntoMeterBill(String uid, String meter, String reading, String amount, String pay, String remaining, String status, String date) {
-		String dates = GetDateTime2();
+	public int PayPaymentIntoMeterBill(String uid, String meter, String reading, String amount, String pay, String remaining, String status) {
+		String date = GetDateTime2();
 		String query= "insert into meter_bill (user_id, meter_number, previous_reading, amount, pay, remaining, date, status) values('"+uid+"', '"+meter+"', '"+reading+"', '"+amount+"', '"+pay+"', '"+remaining+"', '"+date+"', '"+status+"')";
 		return template.update(query);
 	}
@@ -341,7 +340,7 @@ public List<UserModel> ViewSpecificUser(String id) {
 		int lastMonth = Integer.parseInt(month)-1;
 		String day = GetCurrentDay();
 		
-		List<MeterModel> query = template.query("SELECT * FROM company_reading WHERE DATE > '"+year+"-"+lastMonth+"-01' AND DATE < '"+year+"-"+lastMonth+"-31' ORDER BY id DESC LIMIT 0,1", new RowMapper<MeterModel>() {
+		List<MeterModel> query = template.query("SELECT * FROM company_reading WHERE DATE > '"+year+"-"+'0'+lastMonth+"-01' AND DATE < '"+year+"-"+'0'+lastMonth+"-31' ORDER BY id DESC LIMIT 0,1", new RowMapper<MeterModel>() {
 
 			@Override
 			public MeterModel mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -367,10 +366,22 @@ public List<UserModel> ViewSpecificUser(String id) {
 	public Float MonthReading() {
 		String year= GetCurrentYear();
 		String month = GetCurrentMonth();
+		
+		//***************************		For Testing
+		//int month1 = Integer.parseInt(month)-1;
+		//month = "0"+String.valueOf(month1);
+		//***************************		For Testing
+		
 		String day = GetCurrentDay();
 
 		String PrevoiusReadingSumQuery = "SELECT SUM(previous_reading) FROM `meter_bill` WHERE DATE > '"+year+"-"+month+"-01' AND DATE < '"+year+"-"+month+"-31'  AND STATUS = 0";
 		String NewReadingSumQuery = "SELECT SUM(new_reading) FROM `meter_bill` WHERE DATE > '"+year+"-"+month+"-01' AND DATE < '"+year+"-"+month+"-31'  AND STATUS = 0";
+
+		//String PrevoiusReadingSumQuery = "SELECT SUM(previous_reading) FROM `meter_bill` WHERE DATE > '2020-12-1' AND DATE < '2020-12-31'  AND STATUS = 0";
+		//String NewReadingSumQuery = "SELECT SUM(new_reading) FROM `meter_bill` WHERE DATE > '2020-12-1' AND DATE < '2020-12-31'  AND STATUS = 0";
+
+		//System.out.println(PrevoiusReadingSumQuery);
+		//System.out.println(NewReadingSumQuery);
 		
 		List<MeterModel> Prequery = template.query(PrevoiusReadingSumQuery, new RowMapper<MeterModel>() {
 			@Override

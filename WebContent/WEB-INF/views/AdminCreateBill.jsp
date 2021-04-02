@@ -222,7 +222,8 @@
                 <br>
                 <br>
             </div>
- -->
+            </div> -->
+
             <div class="col-md-12" style="text-align: center;">
                 <br>
                 <p class="insert_error_alert">Please Insert All Necessary Details (*)</p>

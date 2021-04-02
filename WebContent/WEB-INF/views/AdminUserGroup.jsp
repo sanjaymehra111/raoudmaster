@@ -741,26 +741,26 @@
             $(function(){
             	$(".payment_button").click(function(){
             		var amount = $(".update_bill_amount").val();
-            		var date = $(".update_date").val();
+            		//var date = $(".update_date").val();
             		var uid = $(this).attr("uid");
             		
             		if(amount == ""){
             			$(".update_bill_amount").css({"border-bottom":"solid 2px red"});
             			$(".update_bill_amount").focus();
             		}
-            		else if(date == ""){
+            		/* else if(date == ""){
             			$(".update_bill_amount").css({"border-bottom":""});
             			$(".update_date").css({"border-bottom":"solid 2px red"});
             			$(".update_date").focus();
-            		}
+            		} */
             		else {
             			$(".update_bill_amount, .update_date").css({"border-bottom":""});
             			StartLoader();
 	        			
 	            		$.ajax({
 	            			url:"MakePayment",
-	            			//data:{"uid":uid, "amount":amount},
-	            			data:{"uid":uid, "amount":amount, "date":date},
+	            			data:{"uid":uid, "amount":amount},
+	            			//data:{"uid":uid, "amount":amount, "date":date},
 	            			type:"post",
 	            			dataType:"text",
 	            			success:function(e){
@@ -839,8 +839,8 @@
                         <b>AMOUNT :
                             <input id="txtAmount" style="background: transparent; border: none; color: black; border-bottom: solid 1px gray; text-align: center;" type="number" class="update_bill_amount" placeholder="Amount">
                             
-                            DATE : <input style="background: transparent; border: none; color: black; border-bottom: solid 1px gray; text-align: center;" type="text" onfocus="(this.type='datetime-local')" class="update_date" placeholder="Enter Date" title="Date Should Be Greater Then Your Last Entry (Testing Only)">
-                            
+<!--                             DATE : <input style="background: transparent; border: none; color: black; border-bottom: solid 1px gray; text-align: center;" type="text" onfocus="(this.type='datetime-local')" class="update_date" placeholder="Enter Date" title="Date Should Be Greater Then Your Last Entry (Testing Only)">
+ -->                            
                             </b><br />
                             
                         <br />
