@@ -291,10 +291,59 @@
 						html+='<td style="text-align:center">'+data[i].id+'</td>';
 						html+='<td style="text-align:center">'+data[i].name.toUpperCase()+'</td>';
 						html+='<td style="text-align:center">'+data[i].date+'</td>';
+						html+='<td style="text-align:center; color:black; "><button id="'+data[i].id+'" style="width:50%!important;" class="DeleteData"> Delete </button></td>';
+						if(data[i].status == 0)
+		                html+='<td><i data-toggle="tooltip" id="'+data[i].id+'" title="Block" class="fa fa-ban ActionFontAwesomeDelete  StatusBlock ActionFontAwesome" style="cursor:pointer"></i></td>';
+		                else
+		                html+='<td><i data-toggle="tooltip" id="'+data[i].id+'" title="Unblock" class="fa fa-check UserBlockStatusChange StatusUnBlock ActionFontAwesomeCheck ActionFontAwesome" style="cursor:pointer"></i></td>';
 						html+='</tr>';
         			}
         			
         			$(".userlist").html(html);
+        			 $(".StatusBlock").click(function(){
+                         var id = $(this).attr("id");
+                         //console.log(id);
+                         var status = 1;
+
+                         $.ajax({
+                           url:"StatusUnBlock",
+                           type: "post",
+                           data :{ "id":id,"status":status}, 
+                           
+                           success:function(data)
+                           {
+                             console.log("Success : ",data);
+                             location.reload();
+                           },
+                           error:function(e){
+             						  console.log("Error : ",e);
+             				  	}
+
+                         })
+                       })
+
+                       $(".StatusUnBlock").click(function(){
+                         var id = $(this).attr("id");
+                         //console.log(id);
+                         var status = 0;
+
+                         $.ajax({
+                           url:"StatusBlock",
+                           type: "post",
+                           data :{ "id":id,"status":status}, 
+                           
+                           success:function(data)
+                           {
+                             console.log("Success : ",data);
+                             location.reload();
+                           },
+                           error:function(e){
+             						  console.log("Error : ",e);
+             				  	}
+
+                         })
+                       })
+
         			
         			//https://pcsetupvsss.xyz/UploadedFiles/user/05599d5b43314de2bce6f346b103f317-IMG_20200717_131717.jpg
         			
@@ -334,6 +383,24 @@
         		},
         		error:function(){CloseLoader(); console.log("Admin View Meter List Server Error");}
         	}) // ajax close
+        	 $(document).on("click", ".DeleteData", function(){
+           		var id = $(this).attr("id");
+                   console.log(id);
+           		var r = confirm("Are You Sure Want To Delete This");
+           		if(r == true)
+           			{
+           				$.ajax({
+           					url:"deleteDataofUser",
+                               type: "post",
+           					data:{"id":id},
+           					
+           					
+           					success:function(data){alert(data)},
+           					error:function(){alert("error")},
+           				})
+           				}
+           			})
+           		
         })// function close
                 
     </script>
@@ -357,6 +424,8 @@
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Id</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Name</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Date</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Delete</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Block/UnBlock</td>
 				</tr>
 			</thead>
 			<tbody style="font-size:12px" class="userlist"></tbody>

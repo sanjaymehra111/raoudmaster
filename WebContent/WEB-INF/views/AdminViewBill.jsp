@@ -1,3 +1,5 @@
+
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <html lang="en">
@@ -21,14 +23,23 @@
     <!-- For Search Table -->
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.3/css/buttons.dataTables.min.css"/>
+    
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.3/css/buttons.dataTables.min.css"/>
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/af-2.1.2/b-1.2.2/b-colvis-1.2.2/b-flash-1.2.2/b-html5-1.2.2/b-print-1.2.2/cr-1.3.2/fc-3.2.2/fh-3.1.2/kt-2.1.3/r-2.1.0/rr-1.1.2/sc-1.4.2/se-1.2.0/datatables.min.js"></script>    
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+	 -->  
 	
 	
 <style>
-
+button, input, select, textarea{
+	color:black!important;
+	padding-top: 3%;
+    padding-left: 2%;
+    padding-bottom: 3%;
+    border-radius: 10px;
+    border: 1px solid #4d4848;
+}
 	
 	::-webkit-scrollbar {
       background: transparent;
@@ -80,7 +91,16 @@
       margin-bottom: 0;
     }
     
-    
+    .total{
+    margin-top: -36px;
+    margin-bottom: 28px;
+    margin-left: -30px;
+    height: 0%;
+    width: 16%;
+    padding-top: -10%;
+    padding-top: 13px;
+}
+    }
     .btn-icon {
       background: #fff;
     }
@@ -233,9 +253,45 @@
 	  .dataTables_length {
       	text-align: center;
       }
+      
+      .dataTables_filter input {
+    	margin-top: -32px!important;
+		}
+		
+		.form-control{
+		width:43%!important;
+		}
+		.dataTables_filter input{
+		width: 46%!important;
+    	margin-left: 183px;
+    	margin-top: -75px!important;
+		}
+		table.dataTable{
+		margin-top: 1px !important;
+		}
     
 	  }
       
+</style>
+
+
+<style>
+.ql-toolbar{
+width:97%!important;
+background:white;
+}
+.dataTables_info{
+    color:black!important
+}
+.dataTables_filter input {
+    display: block!important; 
+}
+
+.dataTables_filter input {
+    width: 119%;
+    margin-top: -110px;
+}
+    
 </style>
 
 
@@ -284,70 +340,185 @@
         		type: "post",
         		dataType: "json",
         		success:function(data){
-        			//console.log(data); 
-        			var html="";
+        			 //console.log(data); 
+        			var htmlText="";
         			for(var i=0; i<data.length; i++) {
-						html+='<tr>';
-						html+='<td style="text-align:center">'+data[i].id+'</td>';
-						html+='<td style="text-align:center">'+data[i].user_id+'</td>';
-						html+='<td style="text-align:center">'+data[i].user_name.toUpperCase()+'</td>';
-						html+='<td style="text-align:center">'+data[i].product_name+'</td>';
-						html+='<td style="text-align:center">'+data[i].charge+'</td>';
-						html+='<td style="text-align:center">'+data[i].date+'</td>';
-						html+='<td style="text-align:center"><img style="width:50px; height:50px; border-radius: 100px" src="http://pcsetupvsss.xyz/UploadedFiles/ProductImages/'+data[i].image+'"></td>';
-						html+='</tr>';
+        				//console.log(data[i].id);
+        				htmlText+='<tr>';
+        				htmlText+='<td style="text-align:center">'+data[i].id+'</td>';
+        				htmlText+='<td style="text-align:center">'+data[i].user_id+'</td>';
+        				htmlText+='<td style="text-align:center">'+data[i].user_name.toUpperCase()+'</td>';
+        				htmlText+='<td style="text-align:center">'+data[i].product_name+'</td>';
+        				htmlText+='<td style="text-align:center">'+data[i].description+'</td>';
+        				htmlText+='<td style="text-align:center">'+data[i].charge+'</td>';
+        				htmlText+='<td style="text-align:center">'+data[i].date+'</td>';
+        				htmlText+='<td style="text-align:center"><img style="width:50px; height:50px; border-radius: 100px" src="http://pcsetupvsss.xyz/UploadedFiles/ProductImages/'+data[i].image+'"></td>';
+        				htmlText+='<td style="text-align:center; color:black; "><button id="'+data[i].id+'" style="width:50%!important;" class="DeleteData"> Delete </button></td>';
+        				htmlText+='</tr>';
         			}
         			
-        			$(".userlist").html(html);
+        			$(".userlist").html(htmlText);
         			
         			//https://pcsetupvsss.xyz/UploadedFiles/user/05599d5b43314de2bce6f346b103f317-IMG_20200717_131717.jpg
+        	
+        			
+        			$('#example thead tr').clone(true).appendTo( '#example thead' );
+						//console.log("asdasda");
+        			$('#example thead tr:eq(1) th').each(  function (i) {
+					        var title = $(this).text();
+					        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+					
+					        $( 'input', this ).on( 'keyup change', function () {
+					            if ( table.column(i).search() !== this.value ) {
+					                table
+					                    .column(i)
+					                    .search( this.value )
+					                    .draw();
+					            }
+					        } );
+					        
+					} );
+
+        					
+        				var min = "1999-01-01";
+                        var date = new Date();
+                        max = date.getFullYear()+ '-' + ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))+ '-'+ ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())));
+
+
+                        $.fn.dataTable.ext.search.push(
+                            function( settings, data, dataIndex ) {
+                                var date = new Date( data[6] );
+                                date = date.getFullYear()+ '-' + ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))+ '-'+ ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())));
+                         
+                                if (
+                                    ( min === null && max === null ) ||
+                                    ( min === null && date <= max ) ||
+                                    ( min <= date   && max === null ) ||
+                                    ( min <= date   && date <= max )
+                                ) {
+                                    return true;
+                                }
+                                return false;
+                            }
+                        );
+                        
+                        $("#fini, #ffin").change( function() {
+                            min = $("#fini").val();
+                            max = $("#ffin").val();
+                            if(min == "")
+                                min = "1999-01-01";
+                            if(max == ""){
+                                var date = new Date();
+                                max = date.getFullYear()+ '-' + ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))+ '-'+ ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())));
+                            }
+                            table.draw();
+                        } );
+                    
+        				
+        				/* table.column(5)
+	                    .search( this.value)
+	                    .draw();
+ */			        
         			
         			
-        			$("#example").DataTable({
-						//columnDefs: [ { type: 'date', 'targets': [3] } ],
-				    	//order: [[3, 'desc' ]],
-						aaSorting: [],
-						responsive: true,
-						pageLength : 10,
-						"bLengthChange" : true, //thought this line could hide the LengthMenu
-						dom: 'Bfrtip',
-				        buttons: [
-				            'copy', 'csv', 'excel', 'pdf', 'print'
-				        ],
-						"bInfo":true, 
-						
-						columnDefs: [
-							{
-								responsivePriority: 1,
-								targets: 0
-							},
-							{
-								responsivePriority: 2,
-								targets: -1
-							}
-						]
-					});	
-        			
-        			$("#example").wrap( "<div style='width:100%; overflow:scroll'></div>" );
+					var table = $("#example").DataTable({
+						columnDefs: [ { type: 'date', 'targets': [6] } ],
+				    	order: [[6, 'desc' ]],
+					    aaSorting: [],
+					    responsive: true,
+					    orderCellsTop: true,
+					    fixedHeader: true,
+					    "pageLength": 10,
+					    "bLengthChange": false, // page length
+					    "bFilter": true, // search bar
+					
+					
+					    columnDefs: [
+					        {
+					            responsivePriority: 1,
+					            targets: 0
+					        },
+					        {
+					            responsivePriority: 2,
+					            targets: -1
+					        }
+					    ]
+					});
+					
 					$(".dataTables_filter input")
-					.attr("placeholder", "Search here...")
-					.css({
-					'text-align': "center",
-					background : 'transparent',
-					color:'white',
-					width:'250px'
+					    .attr("placeholder", "Search here...")
+					    .addClass("SeacrhFunction")
+					  
+					    .css({
+					        width: "300px",
+					        display: "inline-block"
+					    });
+					$("#example").wrap("<div class='service_provider_details' style='overflow:scroll'></div>");
+					// alert("total")
+ 					
+					$(".SeacrhFunction").on("keyup",function(){
+						//console.log("Pressed Key : ",$(this).val())
+						//var table = $('#example').DataTable();
+						//var info = table.page.info();
+						//console.log(info);
+						//console.log(info.end);
+						//var count= info.end;
+						
 					});
 					
 					CloseLoader();
         			
         		},
         		error:function(){CloseLoader(); console.log("Admin View Meter List Server Error");}
-        	}) // ajax close
+        	 	}) // ajax close
+        	 	
+        	 	$(document).on("click", ".DeleteData", function(){
+               		var id = $(this).attr("id");
+                       console.log(id);
+               		var r = confirm("Are You Sure Want To Delete This");
+               		if(r == true)
+               			{
+               				$.ajax({
+               					url:"deletedata",
+                                   type: "post",
+               					data:{"id":id},
+               					
+               					
+               					success:function(data){alert(data)},
+               					error:function(){alert("error")},
+               				})
+               				}
+               			})
+        	 	
+        	 	$.ajax({
+            		url: "fetchTotalCharge",
+            		type: "post",
+            		dataType: "json",
+            		success:function(data){
+            			//console.log(data);
+            			$(".total").val(data[0].amount);
+            		},
+            		error:function(){CloseLoader(); console.log("Admin View Meter List Server Error");}
+        	 	}) // ajax close
+        	 	
         })// function close
+        
+
+        
+       
+        
                 
+    	/* function myfunc(){
+    		var start_date = document.getElementById("start_date").value;
+    		var end_date = document.getElementById("end_date").value;
+    		console.log(start_date);
+    		console.log(end_date);
+    	} */
+
     </script>
-
-
+    <script>
+  
+    </script>
 </head>
 
 	<jsp:include page="LeftHeader.jsp"/> 
@@ -358,26 +529,53 @@
 <div style="background-color: #d2d2d2; height: 100%;">
 <br>
 	<div style="background-color: #464646; border-radius: 5px;">
+	<!-- <select class="selectmonth">
+		<option value=''>--Select Month--</option>
+	    <option selected value='1'>Janaury</option>
+	    <option value='2'>February</option>
+	    <option value='3'>March</option>
+	    <option value='4'>April</option>
+	    <option value='5'>May</option>
+	    <option value='6'>June</option>
+	    <option value='7'>July</option>
+	    <option value='8'>August</option>
+	    <option value='9'>September</option>
+	    <option value='10'>October</option>
+	    <option value='11'>November</option>
+	    <option value='12'>December</option>
+	</select> -->
+	<div style="padding-top:25px; color:white; padding-left:10px;">
+	FROM <input class="form-control" type="date" id="fini" style="color:black; width:22%">
+	TO <input class="form-control" type="date" id="ffin" style="color:black; width:22%">
+	</div>
+	<!-- <button  onclick="myfunc()" id="button">GET</button> -->
 	<br><br>
 	<div class="test-1" align="center">
 	    <table id="example" class="table-bordered table_padding" style="width: 100%; color: white;">
 			<thead>
 				<tr>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Id</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">User Id</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">User Name</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Product Name</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Charge</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Date</td>
-					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Image</td>
+					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Id</th>
+					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">User Id</th>
+					
+					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">User Name</th>
+					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Product Name</th>
+					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Description</th>
+					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase; " id="charge">Charge</th>
+					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Date</th>
+					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Image</th>
+					<th  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Delete</th>
 				</tr>
 			</thead>
+			
 			<tbody style="font-size:12px" class="userlist"></tbody>
+			
 		</table>
-            
+		
+			Total    <input type="number" class="total" readonly>
+		          
     </div>
     </div> 
-    <div class="container-fluid"></div> 
+   <div class="container-fluid"></div> 
 </div>
 	</section>
 </html>

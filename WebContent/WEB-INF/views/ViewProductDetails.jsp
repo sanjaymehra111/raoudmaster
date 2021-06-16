@@ -290,6 +290,7 @@
 						html+='<td style="text-align:center">'+data[i].name.toUpperCase()+'</td>';
 						html+='<td style="text-align:center"> <img style="width: 70px; height: 70px; border-radius: 100px; border: solid 2px white; padding: 2px;" src="http://pcsetupvsss.xyz/UploadedFiles/ProductImages/'+data[i].image+'"></td>';
 						html+='<td style="text-align:center">'+data[i].date+'</td>';
+						html+='<td style="text-align:center; color:black; "><button id="'+data[i].id+'" style="width:50%!important;" class="DeleteData"> Delete </button></td>';
 						html+='</tr>';
         			}
         			
@@ -334,6 +335,23 @@
         		},
         		error:function(){CloseLoader(); console.log("Admin View Meter List Server Error");}
         	}) // ajax close
+        	  $(document).on("click", ".DeleteData", function(){
+          		var id = $(this).attr("id");
+                  console.log(id);
+          		var r = confirm("Are You Sure Want To Delete This");
+          		if(r == true)
+          			{
+          				$.ajax({
+          					url:"deleteDataofProductDetails",
+                              type: "post",
+          					data:{"id":id},
+          					
+          					
+          					success:function(data){alert(data)},
+          					error:function(){alert("error")},
+          				})
+          			}
+          	})
         })// function close
                 
     </script>
@@ -357,6 +375,7 @@
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Name</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Image</td>
 					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Date</td>
+					<td  style="text-align:center; padding:8px;  font-size:12px; font-weight:bold; text-transform: uppercase;">Delete</td>
 				</tr>
 			</thead>
 			<tbody style="font-size:12px" class="productlist"></tbody>

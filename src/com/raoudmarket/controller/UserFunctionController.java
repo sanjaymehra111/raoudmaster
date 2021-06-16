@@ -424,6 +424,7 @@ public class UserFunctionController {
 		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			//String path = "D:/ServiceOnWay/Images/eclipseimages";
+			//String path = "C:/image";
 			String path = "/home/pcsetupvsss/public_html/UploadedFiles/shop/";
 			
 			String finalfile = ""; 
@@ -453,7 +454,7 @@ public class UserFunctionController {
 	public String InsertproductDetails(@RequestParam String product, @RequestParam(value="file", required=false) MultipartFile file, HttpSession session) throws IOException {
 		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
-			
+			//String path = "C:/image";
 			String path = "/home/pcsetupvsss/public_html/UploadedFiles/ProductImages/";
 			String finalfile1 = ""; 
 			
@@ -576,6 +577,7 @@ public class UserFunctionController {
 	  public String fetchDataOfUserViewBill(HttpSession session){
 		Gson gson = new Gson();
 		SessionModel sm = (SessionModel) session.getAttribute("AdminSession");
+		System.out.println("sm : "+sm.getUser_id());
 		List<ViewBillModel> data = ufdao.fetchuserviewbill(sm.getUser_id());
 		String FinalData = gson.toJson(data);
 		
@@ -607,5 +609,55 @@ public class UserFunctionController {
 		ufdao.deletedata(id);
 		return "success";
 	}
+	
+	
+	  @ResponseBody
+	  @PostMapping("fetchTotalCharge")
+	  public String fetchTotalCharge(){ 
+		 Gson gson = new Gson(); 
+		 List<ViewBillModel> data = aldao.fetchTotalCharge();
+		 String FinalData = gson.toJson(data);
+		 if(data!=null) return FinalData;
+		 else
+		  return "error";
+	  }
+	 
+	 
+	  @ResponseBody
+		@PostMapping("deleteDataofProductDetails") 
+		public String deleteDataofProductDetails(@RequestParam String id){
+			ufdao.deleteDataofProductDetails(id);
+			return "success";
+		}
+	  //delete data of AdminViewUser page
+	  @ResponseBody
+		@PostMapping("deleteDataofUser") 
+		public String deleteDataofUser(@RequestParam String id){
+			ufdao.deleteDataofUser(id);
+			return "success";
+		}
+	  @ResponseBody
+	  @PostMapping("StatusUnBlock") 
+		public String StatusUnBlock(@RequestParam String id,String status){
+			ufdao.StatusUnBlock(id,status);
+			return "success";
+		}
+	  @ResponseBody
+	  @PostMapping("StatusBlock") 
+		public String StatusBlock(@RequestParam String id,String status){
+			ufdao.StatusBlock(id,status);
+			return "success";
+		}
+	  @ResponseBody
+	  @PostMapping("CheckUserBlockUnblock")
+	  public String CheckUserBlockUnblock(@RequestParam String id){ 
+		 Gson gson = new Gson(); 
+		 List<UserModel> data = ufdao.CheckUserBlockUnblock(id);
+		 String FinalData = gson.toJson(data);
+		 if(data!=null) 
+			 return FinalData;
+		 else
+		  return "error";
+	  }
 	
 }// main class close

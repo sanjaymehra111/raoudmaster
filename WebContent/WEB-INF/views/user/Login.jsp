@@ -179,7 +179,7 @@
                 		id = $(".admin_id").val();
                 		pwd = $(".admin_pwd").val();
                 		
-                		$.ajax({
+                		/* $.ajax({
                 			url:"UserLoginCheck",
                 			data:{"id":id, "pwd":pwd}, 
                 			type:"post",
@@ -194,7 +194,43 @@
                 			},
                 			error:function(){ CloseLoader(); console.log("Admin Login Server Error");}
                 			
-                		}) // ajax close
+                		}) // ajax close */
+                		
+                		//check block or unblock
+                		$.ajax({
+                			url:"CheckUserBlockUnblock",
+                			data:{"id":id}, 
+                			type:"post",
+                			dataType:"json",
+                			success:function(data){
+                				CloseLoader();
+                				//console.log("Response : ",data[0].status);
+                				if(data[0].status == "1")
+                				{
+                					$.ajax({
+                            			url:"UserLoginCheck",
+                            			data:{"id":id, "pwd":pwd},
+                            			type:"post",
+                            			dataType:"text",
+                            			success:function(res){
+                            				CloseLoader();
+                            				//console.log("Response : ", res);
+                            				if(res == "success")
+                            					window.location.href="userdashboard";
+                            				else
+                            					alert("INCORRECT ID/PASSWORD");
+                            			},
+                            			error:function(){ CloseLoader(); console.log("Admin Login Server Error");}
+                            			
+                            		}) // ajax close
+                				}
+                				else
+                					{
+                					alert("Blocked User");
+                					}
+                			},
+                			error:function(){ CloseLoader(); console.log("Admin Login Server Error");}
+                		})
                 	})// function close
                 	
                 	

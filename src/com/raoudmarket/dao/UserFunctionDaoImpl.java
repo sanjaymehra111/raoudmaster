@@ -484,6 +484,7 @@ public List<UserModel> ViewSpecificUser(String id) {
 		});
 		return query;
 	}
+	
 
 	public List<ProductModel> fetchdataOfuserspent()
 	{
@@ -579,6 +580,41 @@ public List<UserModel> ViewSpecificUser(String id) {
 		String sql ="delete from user_spent where id='"+id+"'";
 		return template.update(sql);
 	}
+	
+	public int deleteDataofProductDetails(String id)
+	{
+		String sql ="delete from product_details where id='"+id+"'";
+		return template.update(sql);
+	}
+	public int deleteDataofUser(String id)
+	{
+		String sql ="delete from user where id='"+id+"'";
+		return template.update(sql);
+	}
+	public int StatusUnBlock(String id,String status)
+	{
+		String sql ="update user set status='"+status+"' where id='"+id+"'";
+		return template.update(sql);
+	}
+	public int StatusBlock(String id,String status)
+	{
+		String sql ="update user set status='"+status+"' where id='"+id+"'";
+		return template.update(sql);
+	}
+	public List<UserModel> CheckUserBlockUnblock(String id)
+	{
+		List<UserModel> query = template.query("select * from user where name='"+id+"'", new RowMapper<UserModel>() {
 
+			@Override
+			public UserModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+				UserModel um = new UserModel();
+				//um.setId(rs.getString("id"));
+				um.setStatus(rs.getString("status"));
+				return um;
+			}
+			
+		});
+		return query;
+	}
 	
 }// main class close

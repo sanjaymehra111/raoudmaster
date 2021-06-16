@@ -105,13 +105,14 @@ public class AdminLoginDaoImpl {
 	
 	public List<UserModel> AdminViewUser()
 	{
-		List<UserModel> list = template.query("select * from user" , new RowMapper<UserModel>() {
+		List<UserModel> list = template.query("select * from user ORDER BY date DESC" , new RowMapper<UserModel>() {
 
 			public UserModel mapRow(ResultSet rs, int rowNum) throws SQLException {
 				UserModel um = new UserModel();
 				um.setId(rs.getString("id"));
 				um.setName(rs.getString("name"));
 				um.setDate(rs.getString("date"));
+				um.setStatus(rs.getString("status"));
 				return um;
 			}
 		});
@@ -136,8 +137,21 @@ public class AdminLoginDaoImpl {
 				return v;
 			}
 		});
-		return list;
+		return list;	
 
 	}
-
+	
+	  public List<ViewBillModel> fetchTotalCharge() {
+		  List<ViewBillModel> query =template.query("select sum(amount) from user_spent", new RowMapper<ViewBillModel>() {
+			  @Override
+			  public ViewBillModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+				  ViewBillModel um = new ViewBillModel();
+				  um.setAmount(rs.getString("sum(amount)")); 
+				  return um;
+				  }
+	  
+	  }); 
+		  return query;
+	}
+	 	 
 }
