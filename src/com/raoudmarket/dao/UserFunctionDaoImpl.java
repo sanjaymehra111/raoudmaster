@@ -103,6 +103,7 @@ public class UserFunctionDaoImpl {
 		if(date.length()>5)
 			dates = date;
 		String query= "insert into meter_bill (user_id, meter_number, new_reading, previous_reading, amount, charge, unit, date) values('"+uid+"', '"+number+"', '"+reading+"', '"+pr_reading+"', '"+amount+"', '"+charge+"', '"+unit+"', '"+dates+"')";
+		System.out.println(query);
 		return template.update(query);
 	}
 	

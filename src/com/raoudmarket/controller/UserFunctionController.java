@@ -85,18 +85,28 @@ public class UserFunctionController {
 	}
 
 	@ResponseBody
+	@PostMapping("CreateNewBill")
+	public String CreateNewBill() {
+
+	return "syucs";	
+	}	
+	@ResponseBody
 	@PostMapping("CreateBill")
 	public String CreateBill(@RequestParam String number, String reading, HttpSession session) {
 		String date = GetDateTime();
 
-		String date = GetDateTime();
-		//System.out.println(date);
 		
+		System.out.println("Number Data : "+number);
+
 		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
 			List<MeterModel> meter = ufdao.ViewLastMeterDetails(number);
 
+			System.out.println("Meter Data : "+meter);
+
 			if(meter != null) {
+				System.out.println("Calling 1");
+
 				int pr;
 				if(meter.get(0).getNew_reading() != null)
 					pr = Integer.parseInt(meter.get(0).getNew_reading());
@@ -443,13 +453,9 @@ public class UserFunctionController {
 	public String InsertproductDetails(@RequestParam String product, @RequestParam(value="file", required=false) MultipartFile file, HttpSession session) throws IOException {
 		String sn = sccot.CheckSession(session, "admin");
 		if(sn == "success") {
-			//String path = "c:/UploadedFiles/ProductImages/";
-			String path = "/home/pcsetupvsss/public_html/UploadedFiles/ProductImages/";
 			
-			String finalfile = "";
-			String path = "c:/UploadedFiles/ProductImages/";
-			//String path = "/home/pcsetupvsss/public_html/UploadedFiles/ProductImages/";
-			String finalfile = ""; 
+			String path = "/home/pcsetupvsss/public_html/UploadedFiles/ProductImages/";
+			String finalfile1 = ""; 
 			
 			if(file != null) {
 					String files = ucdao.GetUniqueCode()+"-"+file.getOriginalFilename();
@@ -458,9 +464,9 @@ public class UserFunctionController {
 					stream.write(bytes);
 					stream.flush();
 					stream.close();
-					finalfile+=files+",";
+					finalfile1+=files+",";
 				}
-			String files = finalfile.replaceAll(",$", "");
+			String files = finalfile1.replaceAll(",$", "");
 			ufdao.InsertProductDetails(product, files);
 			return "success"; 
 		}
