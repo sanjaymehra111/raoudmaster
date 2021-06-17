@@ -384,23 +384,29 @@ background:white;
                         var date = new Date();
                         max = date.getFullYear()+ '-' + ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))+ '-'+ ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())));
 
-
-                        $.fn.dataTable.ext.search.push(
-                            function( settings, data, dataIndex ) {
-                                var date = new Date( data[6] );
-                                date = date.getFullYear()+ '-' + ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))+ '-'+ ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())));
-                         
-                                if (
-                                    ( min === null && max === null ) ||
-                                    ( min === null && date <= max ) ||
-                                    ( min <= date   && max === null ) ||
-                                    ( min <= date   && date <= max )
-                                ) {
-                                    return true;
-                                }
-                                return false;
-                            }
-                        );
+                        
+                    	$(".ShowDateFunction").hide();
+                        var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
+                        if(!isSafari){
+                        	$(".ShowDateFunction").show();
+	                        $.fn.dataTable.ext.search.push(
+	                            function( settings, data, dataIndex ) {
+	                                var date = new Date( data[6] );
+	                                date = date.getFullYear()+ '-' + ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))+ '-'+ ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())));
+	                         
+	                                if (
+	                                    ( min === null && max === null ) ||
+	                                    ( min === null && date <= max ) ||
+	                                    ( min <= date   && max === null ) ||
+	                                    ( min <= date   && date <= max )
+	                                ) {
+	                                    return true;
+	                                }
+	                                return false;
+	                            }
+	                        );
+                        
+                        }
                         
                         $("#fini, #ffin").change( function() {
                             min = $("#fini").val();
@@ -580,10 +586,13 @@ background:white;
 	    <option value='11'>November</option>
 	    <option value='12'>December</option>
 	</select> -->
-	<div style="padding-top:25px; color:white; padding-left:10px;">
-	FROM <input class="form-control" type="date" id="fini" style="color:black; width:22%">
-	TO <input class="form-control" type="date" id="ffin" style="color:black; width:22%">
+	<div style="padding-top:25px; color:white; padding-left:10px; min-height:100px">
+		<div class="ShowDateFunction">
+			FROM <input class="form-control" type="date" id="fini" style="color:black; width:22%">
+			TO <input class="form-control" type="date" id="ffin" style="color:black; width:22%">
+		</div>
 	</div>
+	
 	<!-- <button  onclick="myfunc()" id="button">GET</button> -->
 	<br><br>
 	<div class="test-1" align="center">
@@ -607,7 +616,7 @@ background:white;
 			<tfoot>
             <tr>
                 <th colspan="5" style="text-align:right"></th>
-                <th style="text-align:center;padding-top:12px;"></th>
+                <th style="text-align:center;padding:15px;"></th>
             </tr>
         </tfoot>
 			
