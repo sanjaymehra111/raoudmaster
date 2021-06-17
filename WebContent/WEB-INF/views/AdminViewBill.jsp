@@ -431,8 +431,6 @@ background:white;
 					    "pageLength": 10,
 					    "bLengthChange": false, // page length
 					    "bFilter": true, // search bar
-					
-					
 					    columnDefs: [
 					        {
 					            responsivePriority: 1,
@@ -442,7 +440,43 @@ background:white;
 					            responsivePriority: 2,
 					            targets: -1
 					        }
-					    ]
+					    ],
+						 "footerCallback": function ( row, data, start, end, display ) {
+					            var api = this.api(), data;
+					 
+					            // Remove the formatting to get integer data for summation
+					            var intVal = function ( i ) {
+					                return typeof i === 'string' ?
+					                    i.replace(/[\$,]/g, '')*1 :
+					                    typeof i === 'number' ?
+					                        i : 0;
+					            };
+					 
+					            // Total over all pages
+					            total = api
+					                .column( 5 )
+					                .data()
+					                .reduce( function (a, b) {
+					                    return intVal(a) + intVal(b);
+					                }, 0 );
+					 
+					            // Total over this page
+					            pageTotal = api
+					                .column( 5, { page: 'current'} )
+					                .data()
+					                .reduce( function (a, b) {
+					                    return intVal(a) + intVal(b);
+					                }, 0 );
+					 
+					            // Update footer
+					            $( api.column( 5 ).footer() ).html(
+					                /* '$'+pageTotal +' ( $'+ total +' total)' */
+					            		'Total : ' +pageTotal
+					            );
+					           // console.log(pageTotal);
+					            //$(".total").val(pageTotal);
+					        }
+					  
 					});
 					
 					$(".dataTables_filter input")
@@ -456,15 +490,15 @@ background:white;
 					$("#example").wrap("<div class='service_provider_details' style='overflow:scroll'></div>");
 					// alert("total")
  					
-					$(".SeacrhFunction").on("keyup",function(){
+					//$(".SeacrhFunction").on("keyup",function(){
 						//console.log("Pressed Key : ",$(this).val())
 						//var table = $('#example').DataTable();
 						//var info = table.page.info();
 						//console.log(info);
 						//console.log(info.end);
 						//var count= info.end;
-						
-					});
+												
+					//});
 					
 					CloseLoader();
         			
@@ -484,13 +518,15 @@ background:white;
                					data:{"id":id},
                					
                					
-               					success:function(data){alert(data)},
+               					success:function(data){
+               						//alert(data)
+               					 location.reload();},
                					error:function(){alert("error")},
                				})
                				}
                			})
         	 	
-        	 	$.ajax({
+        	 	/* $.ajax({
             		url: "fetchTotalCharge",
             		type: "post",
             		dataType: "json",
@@ -499,7 +535,7 @@ background:white;
             			$(".total").val(data[0].amount);
             		},
             		error:function(){CloseLoader(); console.log("Admin View Meter List Server Error");}
-        	 	}) // ajax close
+        	 	}) // ajax close */
         	 	
         })// function close
         
@@ -568,10 +604,16 @@ background:white;
 			</thead>
 			
 			<tbody style="font-size:12px" class="userlist"></tbody>
+			<tfoot>
+            <tr>
+                <th colspan="5" style="text-align:right"></th>
+                <th style="text-align:center;padding-top:12px;"></th>
+            </tr>
+        </tfoot>
 			
 		</table>
 		
-			Total    <input type="number" class="total" readonly>
+			<!-- Total<input type="number" class="total" readonly> -->
 		          
     </div>
     </div> 

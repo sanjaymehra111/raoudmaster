@@ -29,7 +29,24 @@
 	
 <style>
 
-	
+	.ActionFontAwesomeDelete {
+    background-color: red;
+    font-size:15px;
+    }
+    .ActionFontAwesomeCheck {
+    background-color: rgb(40, 158, 50);
+    font-size:15px;
+	}
+    .ActionFontAwesome {
+    height: 30px;
+    width: 30px;
+    padding: 7.5px;
+    border-radius: 100px;
+    color: #ffffff !important;
+    cursor: pointer;
+    transition: 0.3s;
+    opacity: 0.7;
+    }
 	::-webkit-scrollbar {
       background: transparent;
       width: 5px;
@@ -293,7 +310,7 @@
 						html+='<td style="text-align:center">'+data[i].date+'</td>';
 						html+='<td style="text-align:center; color:black; "><button id="'+data[i].id+'" style="width:50%!important;" class="DeleteData"> Delete </button></td>';
 						if(data[i].status == 0)
-		                html+='<td><i data-toggle="tooltip" id="'+data[i].id+'" title="Block" class="fa fa-ban ActionFontAwesomeDelete  StatusBlock ActionFontAwesome" style="cursor:pointer"></i></td>';
+		                html+='<td><i data-toggle="tooltip" id="'+data[i].id+'" title="Block" class="fa fa-ban ActionFontAwesomeDelete  StatusBlock ActionFontAwesome" style="cursor:pointer;"></i></td>';
 		                else
 		                html+='<td><i data-toggle="tooltip" id="'+data[i].id+'" title="Unblock" class="fa fa-check UserBlockStatusChange StatusUnBlock ActionFontAwesomeCheck ActionFontAwesome" style="cursor:pointer"></i></td>';
 						html+='</tr>';
@@ -395,7 +412,10 @@
            					data:{"id":id},
            					
            					
-           					success:function(data){alert(data)},
+           					success:function(data){
+           						//alert(data)
+           					 location.reload();	
+           					},
            					error:function(){alert("error")},
            				})
            				}

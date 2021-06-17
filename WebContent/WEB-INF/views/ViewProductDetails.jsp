@@ -347,7 +347,9 @@
           					data:{"id":id},
           					
           					
-          					success:function(data){alert(data)},
+          					success:function(data){
+          						//alert(data)
+          						 location.reload();},
           					error:function(){alert("error")},
           				})
           			}
